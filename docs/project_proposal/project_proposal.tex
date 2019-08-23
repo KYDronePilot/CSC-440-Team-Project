@@ -1,8 +1,17 @@
 % Project proposal report
 % 
 % Authors: Michael Galliers and James Miller
-\documentclass{article}
+\documentclass[12pt]{article}
 \usepackage[utf8]{inputenc}
+
+
+% Document configuration
+
+% Section numbering
+\renewcommand \thesection{\Roman{section}}
+\renewcommand \thesubsection{\arabic{section}.\arabic{subsection}}
+% Do paragraph indenting after section tags
+\usepackage{indentfirst}
 
 
 \usepackage[usenames, dvipsnames]{color}
@@ -19,34 +28,105 @@
 
 \tableofcontents
 
-\section{Introduction}
+% \section{Introduction}
+
+\section{Project Overview}
 For our team and individual projects in CSC 440 this Fall semester, we have decided to make a grade
 tracking web application. Our proposed name for the project is \textbf{\{Insert Awesome Name\}}.
 
-\section{Problem and Needs}
+\subsection{Problems and Needs}
 This idea arose from personal experience, not being able to effectively manage grades from various
-classes on BlackBoard. This could be do to professors not entering grades for assignments or
-BlackBoard not weighting the grades properly. This can make it difficult for a student to track how
-well they need to do on assignments in order to do well in courses. Grading specification of the EKU
-grading policy further complicate this by introducing extra grade requirements for each category.
+courses on BlackBoard. This can be due to professors not using BlackBoard to manage grades or the
+inability of BlackBoard to correctly aggregate students grades because of an odd grading policy.
+This makes it difficult for students to track how well they are doing in a course overall. As a
+result, students can be more or less likely to study hard for assignments, since they believe they
+are doing worse or better in the course than they actually are.
 
-As a student, I should be able to track my grades in a system which takes all of the aforementioned
-requirements into consideration. I should also be able to view my grades in close detail to help me
-make decisions on the importance of an assignment, quiz, test, etc.
+For those who decide to manage their grades themselves with pen and paper, they are able to gain
+further insight into their performance in courses, but are limited by the amount of time it takes to
+manage and compute statistics about their grades. As a student, there should be a simple way to
+manage and visualize grades, without the need to do calculations by hand.
 
-\section{Solution}
-As a solution to this problem we propose building a grade tracking web application including, but
-not limited to, the following features:
+\subsection{System Requirements}
+As a solution to these problems, we propose a web based software application. This application shall
+include, but not be limited to, the following requirements:
+% We propose a software solution to these
+% As a solution to this problem we propose building a grade tracking web application including, but
+% not limited to, the following features:
 
 \begin{itemize}
-    \item Managing courses scores/grades across multiple semesters
-    \item Displaying summaries (with visualizations) of how well a student is doing in a course,
-    course category (homework, tests, etc.), or semester.
-    \item Give basic insights into how a student is doing in a course.
-    \item A "What If" feature, allowing students to pick their score on an item of coursework and
-    see how it would effect their grade (hopefully using an interactive GUI)
-    \item And any other features we think of!
+    \item Allow a student to create, retrieve, update and delete semesters.
+    \item Allow a student to create, retrieve, update and delete courses in each semester.
+    \item Allow a student to create, retrieve, update and delete grading categories in each course.
+    (e.g. homework, tests, etc.).
+    \item Allow a student to create, retrieve, update and delete grade entries in each category.
+    \item Allow different grading strategies to be used for each course, i.e. total point based vs.
+    weight based.
+    \item Account for additional grading requirements (e.g. to get an 'A' you need at least a 90\%
+    overall and at least 80\% in each category).
+    \item Include visualizations/summaries for how well a student is doing in a course, category or
+    the semester overall.
+    \item Include a "What If" feature, allowing a student to see how a score on a particular
+    assignment would effect his/her overall grade.
 \end{itemize}
+
+\section{Goals}
+\subsection{Project}
+In building this project, we intend to use a modern software development stack. As a result, our
+team will strive to gain knowledge in the following technologies/principals:
+
+% In working on this project, we intend to use modern/relevant open source software
+% languages/frameworks, management techniques and dev-ops principals. These include:
+
+\begin{itemize}
+    \item React.js and Javascript for the frontend
+    \item Python for the backend
+    \item JetBrains development IDEs
+    \item Continuous Integration and Continuous Development (CI/CD)
+    \item Container-based application deployment
+\end{itemize}
+
+\subsection{Product}
+
+\section{System Workflow}
+
+\section{Required Resources}
+\subsection{Hardware}
+For deployment of our application, we are planning on utilizing cloud based computing hardware for
+running the application backend, serving the frontend, and managing the database. Our final decision
+on a specific cloud provider is subject to change, but the online service \textit{Digital Ocean} is
+a possibility. It offers reasonable pricing and should allow us to run the application for a minimal
+amount of cost.
+
+\subsection{Software}
+To build the we plan on using a modern software development stack. This includes the following
+software/technologies:
+
+\begin{itemize}
+    \item React.js and Javascript for the frontend
+    \item Python for the backend
+    \item JetBrains development IDEs
+    \item Git with GitHub for source control
+    \item GitHub-integrated CI service for automatic building and deploying
+    \item Docker/Kubernetes for scalable containerized deployments
+    \item PostgreSQL relational database for storing data
+\end{itemize}
+
+\section{Dictionary}
+\begin{itemize}
+    \item \textbf{Semester}: A single semester of education consisting of courses. Each semester can
+    be associated with a different educational institution; consistency is not required.
+    \item \textbf{Course}: Any educational course/class occurring within a particular semester.
+    \item \textbf{Section}: An equally weighted or logically grouped collection of material within a
+    particular course (e.g. Homework, Tests, etc.).
+    \item \textbf{Grade Entry}: A graded item for a particular section (e.g. Homework 2, Exam 1,
+    etc.).
+\end{itemize}
+
+
+% \section{Problem and Needs}
+
+% \section{Solution}
 
 
 \end{document}
