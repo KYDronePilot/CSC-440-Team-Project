@@ -1,0 +1,2 @@
+export const FETCH_SEMESTERS = 'FETCH_SEMESTERS';
+export const NEW_SEMESTER = 'NEW_SEMESTER';
