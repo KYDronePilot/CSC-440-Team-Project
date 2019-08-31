@@ -11,9 +11,8 @@ before_install:
   - travis_wait 45 bash ./utils/travis_latex_setup.sh
   - export PATH="/tmp/texlive/bin/x86_64-linux:$PATH"
 script:
-  - sudo apt-get update
-  - sudo apt-get install pandoc
-  - /bin/bash ./utils/build_docs.sh
+  - ./utils/install_travis_requirements.sh
+  - ./utils/build_docs.sh
 deploy:
   - provider: releases
     api_key: $GITHUB_TOKEN
@@ -21,6 +20,6 @@ deploy:
     file:
       - /tmp/artifacts/docs/*
     skip_cleanup: true
-    # on:
-    #   repo: KYDronePilot/CSC-440-Team-Project
-    #   tags: true
+    on:
+      repo: KYDronePilot/CSC-440-Team-Project
+      tags: true
