@@ -11,8 +11,8 @@ before_install:
   - travis_wait 45 bash ./utils/travis_latex_setup.sh
   - export PATH="/tmp/texlive/bin/x86_64-linux:$PATH"
 script:
-  - sudo apt-get update
-  - sudo apt-get install pandoc
+  - apt-get update
+  - apt-get install pandoc
   - /bin/bash ./utils/build_docs.sh
 deploy:
   - provider: releases
