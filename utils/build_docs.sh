@@ -1,6 +1,8 @@
 #!/bin/bash
 
-DOCS_ROOT=../docs
+SCRIPT=`realpath ${0}`
+SCRIPTPATH=`dirname ${SCRIPT}`
+DOCS_ROOT=${SCRIPTPATH}/../docs
 ARTIFACTS=/tmp/artifacts/docs
 
 # Ensure artifact directory exists and is clean
