@@ -22,7 +22,7 @@ build-latex-ci: prepare
 
 build: build-latex build-docx
 
-build-ci: build-latex-ci
+build-ci: build-latex-ci build-docx
 	cp ${DIST}/* ${CI_DIST}
 
 clean:
