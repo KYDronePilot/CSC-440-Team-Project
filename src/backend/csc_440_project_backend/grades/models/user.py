@@ -5,16 +5,17 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     """
     An extension of the default user class with additional attributes.
+     - It seems like this class should be named "Student", but then all user accounts would be students,
+       including admins.
 
     Attributes:
-        college: College a student is a part of
-        major: Major a student is in
-        concentration: Concentration a student is in
+        colleges: Colleges a student is a part of
+        majors: Majors a student is in
+        concentrations: Concentrations a student is in
+        semesters: Semesters a student is enrolled in
     """
 
-    college = models.ForeignKey(to='College', on_delete=models.SET_NULL, related_name='students',
-                                verbose_name='College', null=True)
-    major = models.ForeignKey(to='Major', on_delete=models.SET_NULL, related_name='students', verbose_name='Major',
-                              null=True)
-    concentration = models.ForeignKey(to='Concentration', on_delete=models.SET_NULL, related_name='students',
-                                      verbose_name='Concentration', null=True)
+    colleges = models.ManyToManyField(to='College', related_name='students')
+    majors = models.ManyToManyField(to='Major', related_name='students')
+    concentrations = models.ManyToManyField(to='Concentration', related_name='students')
+    semesters = models.ManyToManyField(to='Semester', related_name='students')

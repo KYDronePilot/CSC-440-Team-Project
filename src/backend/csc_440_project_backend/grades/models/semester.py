@@ -1,14 +1,15 @@
 from django.db import models
+from grades.models import Common
 
 
-class Semester(models.Model):
+class Semester(Common):
     """
-    A semester in which a student is enrolled.
+    A semester at a college.
 
     Attributes:
         year: Year of the semester
         season: Season of the semester
-        school_name: Name of school (optional, if student is not associated with a college)
+        college: Associated college
     """
 
     # Seasons of a semester
@@ -25,6 +26,20 @@ class Semester(models.Model):
     ]
 
     year = models.SmallIntegerField(null=False, verbose_name='Year')
-    season = models.CharField(null=False, verbose_name='Season', choices=SEASON_CHOICES,
-                              validators=[lambda season: season in Semester.SEASONS])
-    school_name = models.CharField(max_length=50, null=True, verbose_name='School Name')
+    season = models.CharField(
+        max_length=20,
+        null=False,
+        verbose_name='Season',
+        choices=SEASON_CHOICES,
+        validators=[lambda season: season in Semester.SEASONS]
+    )
+    college = models.ForeignKey(
+        to='College',
+        on_delete=models.CASCADE,
+        related_name='semesters',
+        null=False,
+        verbose_name='College'
+    )
+
+    def __str__(self) -> str:
+        return f'{self.season}, {self.year}'

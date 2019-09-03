@@ -1,9 +1,8 @@
-from typing import ClassVar
-
 from django.db import models
+from grades.models import Common
 
 
-class College(models.Model):
+class College(Common):
     """
     A college with which everything (majors, concentrations, courses, etc.) are associated with.
 
@@ -14,3 +13,6 @@ class College(models.Model):
 
     name = models.CharField(max_length=50, null=False)
     location = models.CharField(max_length=70, null=False)
+
+    def __str__(self) -> str:
+        return f'{self.name}, {self.location}'
