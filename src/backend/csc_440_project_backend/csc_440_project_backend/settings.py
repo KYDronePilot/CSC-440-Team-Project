@@ -101,7 +101,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # User model
-AUTH_USER_MODEL = 'grades.models.User'
+AUTH_USER_MODEL = 'grades.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/

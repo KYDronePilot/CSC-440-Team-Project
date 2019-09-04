@@ -1,5 +1,5 @@
 from django.db import models
-from grades.models import Common
+from .common import Common
 
 
 class CourseInstance(Common):
@@ -72,7 +72,7 @@ class CourseInstance(Common):
         null=False,
         verbose_name='Semester'
     )
-    students = models.ManyToManyField(to='grades.models.User', related_name='course_instances')
+    students = models.ManyToManyField(to='grades.User', related_name='course_instances')
 
     def __str__(self) -> str:
         return f'{self.course}, section {self.section}, {self.semester}'

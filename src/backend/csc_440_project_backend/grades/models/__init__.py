@@ -1,7 +1,6 @@
 from .category import Category
 from .category_score_requirement import CategoryScoreRequirement
 from .college import College
-from .common import Common
 from .concentration import Concentration
 from .concentration_course import ConcentrationCourse
 from .course import Course

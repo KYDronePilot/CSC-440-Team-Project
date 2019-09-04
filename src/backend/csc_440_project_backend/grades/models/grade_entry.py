@@ -1,5 +1,5 @@
 from django.db import models
-from grades.models import Common
+from .common import Common
 
 
 class GradeEntry(Common):
@@ -22,7 +22,7 @@ class GradeEntry(Common):
         help_text='Maximum number of points possible'
     )
     student = models.ForeignKey(
-        to='grades.models.User',
+        to='grades.User',
         on_delete=models.CASCADE,
         related_name='grade_entries',
         null=False,

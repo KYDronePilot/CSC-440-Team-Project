@@ -1,5 +1,5 @@
 from django.db import models
-from grades.models import Common
+from .common import Common
 
 
 class ConcentrationCourse(Common):

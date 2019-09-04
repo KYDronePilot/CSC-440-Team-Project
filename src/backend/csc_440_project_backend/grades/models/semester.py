@@ -1,5 +1,19 @@
 from django.db import models
-from grades.models import Common
+from .common import Common
+
+
+def validate_season(season: str) -> bool:
+    """
+    Check whether a season is valid.
+
+    Args:
+        season: Season value to validate
+
+    Returns:
+        Whether the season is valid
+    """
+
+    return season in Semester.SEASONS
 
 
 class Semester(Common):
@@ -31,7 +45,7 @@ class Semester(Common):
         null=False,
         verbose_name='Season',
         choices=SEASON_CHOICES,
-        validators=[lambda season: season in Semester.SEASONS]
+        validators=[validate_season]
     )
     college = models.ForeignKey(
         to='College',
