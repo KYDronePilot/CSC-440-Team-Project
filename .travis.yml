@@ -28,5 +28,6 @@ matrix:
       before_script:
         - cd src/backend/csc_440_project_backend
         - python -m pip install -r requirements.txt
+        - python manage.py makemigrations
       script:
         - python manage.py test
