@@ -27,5 +27,6 @@ matrix:
       python: '3.7'
       before_script:
         - cd src/backend/csc_440_project_backend
+        - python -m pip install -r requirements.txt
       script:
         - python manage.py test
