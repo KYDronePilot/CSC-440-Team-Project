@@ -3,9 +3,6 @@ language: generic
 matrix:
   include:
     - os: linux
-      only_commits:
-        files:
-          docs/**
       cache:
         directories:
           - "/tmp/texlive"
