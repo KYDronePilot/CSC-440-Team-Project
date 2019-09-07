@@ -1,4 +1,6 @@
 # CSC-440-Team-Project
+[![Build Status](https://travis-ci.com/KYDronePilot/CSC-440-Team-Project.svg?token=UPpYeFG6qsnEPAAd486T&branch=master)](https://travis-ci.com/KYDronePilot/CSC-440-Team-Project)
+
 Team project for CSC 440
 
 ## Goal
