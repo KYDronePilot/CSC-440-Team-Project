@@ -2,10 +2,10 @@ from .category import Category
 from .category_score_requirement import CategoryScoreRequirement
 from .college import College
 from .concentration import Concentration
-from .concentration_course import ConcentrationCourse
 from .course import Course
 from .course_instance import CourseInstance
 from .grade_entry import GradeEntry
 from .major import Major
+from .requirement import Requirement
 from .semester import Semester
 from .user import User

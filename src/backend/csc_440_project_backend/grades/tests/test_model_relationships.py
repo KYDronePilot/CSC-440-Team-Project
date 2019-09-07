@@ -1,6 +1,6 @@
 from django.test import TestCase
-from grades.models import Category, CategoryScoreRequirement, College, Concentration, ConcentrationCourse, Course, \
-    CourseInstance, GradeEntry, Major, Semester, User
+from grades.models import Category, CategoryScoreRequirement, College, Concentration, Course, CourseInstance, \
+    GradeEntry, Major, Semester, User
 
 
 class TestModelRelationships(TestCase):
