@@ -25,6 +25,7 @@ matrix:
             tags: true
     - language: python
       python: '3.7'
+      cache: pip
       before_script:
         - cd src/backend/csc_440_project_backend
         - python -m pip install -r requirements.txt

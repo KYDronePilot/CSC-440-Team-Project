@@ -67,7 +67,7 @@ class Requirement(Common):
 
         return self.super_requirement is not None
 
-    def __str__(self):
+    def __str__(self) -> str:
         requirement_type = 'Sub-requirement' if self.is_sub_requirement() else 'Requirement'
         return (
             f'{requirement_type}: Courses: {list(self.courses.all())}, '

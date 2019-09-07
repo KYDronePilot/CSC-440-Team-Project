@@ -20,7 +20,7 @@ class Course(Common):
     name = models.CharField(max_length=50, null=False, verbose_name='Name')
     credit_hours = models.FloatField(null=False, verbose_name='Credit Hours')
     is_deprecated = models.BooleanField(default=False, null=False, verbose_name='Is Deprecated')
-    requirements = models.ManyToManyField(to='Requirement', related_name='courses')
+    requirements = models.ManyToManyField(to='Requirement', related_name='courses', blank=True)
     is_gen_ed = models.BooleanField(
         null=False,
         verbose_name='Gen Ed',
