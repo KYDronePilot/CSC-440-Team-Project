@@ -1,6 +1,6 @@
 from django.test import TestCase
 from grades.models import Category, CategoryScoreRequirement, College, Concentration, Course, CourseInstance, \
-    GradeEntry, Major, Semester, User
+    GradeEntry, Major, Semester, User, Requirement
 
 
 class TestModelRelationships(TestCase):
@@ -127,6 +127,32 @@ class TestModelRelationships(TestCase):
         self.student_william.concentrations.add(self.cs_general)
         self.student_john.concentrations.add(self.cs_ai_in_data_science)
         self.fs_general.students.add(self.student_jane)
+
+    def create_requirements_and_sub_requirements(self):
+        self.csg_gen_ed_req = Requirement.objects.create(
+            name='General Education & University Requirements',
+            concentration=self.cs_general,
+            course_count=1,
+            is_required=True
+        )
+        self.csg_core_course_req = Requirement.objects.create(
+            name='Core Course Requirements',
+            concentration=self.cs_general,
+            course_count=9,
+            is_required=True
+        )
+        self.csg_concentration_req = Requirement.objects.create(
+            name='Computer Science (General) Concentration Requirements',
+            concentration=self.cs_general,
+            course_count=8,
+            is_required=True
+        )
+        self.csg_concentration_sub_req = Requirement.objects.create(
+            name='Plus One (1) Hour Selected from',
+            course_count=1,
+            super_requirement=self.csg_concentration_req,
+            is_required=True
+        )
 
     def test_college_student_relationships(self):
         self.assertCountEqual(
