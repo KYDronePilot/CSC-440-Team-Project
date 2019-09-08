@@ -11,6 +11,11 @@ class TestModelRelationships(TestCase):
     def setUp(self) -> None:
         self.create_users()
         self.create_colleges()
+        self.create_college_user_relationships()
+        self.create_majors()
+        self.create_major_user_relationships()
+        self.create_concentrations()
+        self.create_concentration_user_relationships()
 
     def create_users(self):
         """
@@ -55,12 +60,75 @@ class TestModelRelationships(TestCase):
         self.eku = College.objects.create(name='Eastern Kentucky University', location='Richmond, KY')
         self.uk = College.objects.create(name='University of Kentucky', location='Lexington, KY')
 
-    def test_college_student_relationship(self):
+    def create_college_user_relationships(self):
+        """
+        Create relationships between colleges and users.
+        """
+
         self.eku.students.add(self.student_john)
         self.eku.students.add(self.student_jane)
         self.eku.students.add(self.student_william)
         self.uk.students.add(self.student_william)
 
+    def create_majors(self):
+        """
+        Create dummy majors.
+        """
+
+        self.computer_science = Major.objects.create(
+            name='Computer Science',
+            college=self.eku
+        )
+        self.forensic_science = Major.objects.create(
+            name='Forensic Science',
+            college=self.eku
+        )
+        self.physics = Major.objects.create(
+            name='Physics',
+            college=self.eku
+        )
+
+    def create_major_user_relationships(self):
+        self.student_william.majors.add(self.computer_science)
+        self.student_john.majors.add(self.computer_science)
+        self.physics.students.add(self.student_jane)
+
+    def create_concentrations(self):
+        """
+        Create dummy concentrations.
+        """
+
+        self.cs_general = Concentration.objects.create(
+            name='General',
+            major=self.computer_science
+        )
+        self.cs_computer_technology = Concentration.objects.create(
+            name='Computer Technology',
+            major=self.computer_science
+        )
+        self.cs_multimedia = Concentration.objects.create(
+            name='Interactive Multimedia',
+            major=self.computer_science
+        )
+        self.cs_ai_in_data_science = Concentration.objects.create(
+            name='Artificial Intelligence in Data Science',
+            major=self.computer_science
+        )
+        self.phy_general = Concentration.objects.create(
+            name='General',
+            major=self.physics
+        )
+        self.fs_general = Concentration.objects.create(
+            name='General',
+            major=self.forensic_science
+        )
+
+    def create_concentration_user_relationships(self):
+        self.student_william.concentrations.add(self.cs_general)
+        self.student_john.concentrations.add(self.cs_ai_in_data_science)
+        self.fs_general.students.add(self.student_jane)
+
+    def test_college_student_relationships(self):
         self.assertCountEqual(
             list(self.eku.students.all()),
             [
@@ -81,4 +149,56 @@ class TestModelRelationships(TestCase):
         self.assertCountEqual(
             list(self.student_william.colleges.all()),
             [self.eku, self.uk]
+        )
+
+    def test_major_user_relationships(self):
+        self.assertCountEqual(
+            list(self.computer_science.students.all()),
+            [
+                self.student_william,
+                self.student_john
+            ]
+        )
+        self.assertCountEqual(
+            list(self.student_jane.majors.all()),
+            [self.physics]
+        )
+
+    def test_college_major_relationships(self):
+        self.assertCountEqual(
+            list(self.eku.majors.all()),
+            [
+                self.computer_science,
+                self.forensic_science,
+                self.physics
+            ]
+        )
+        self.assertEqual(
+            self.computer_science.college,
+            self.eku
+        )
+
+    def test_concentration_user_relationships(self):
+        self.assertCountEqual(
+            list(self.cs_general.students.all()),
+            [self.student_william]
+        )
+        self.assertCountEqual(
+            list(self.student_john.concentrations.all()),
+            [self.cs_ai_in_data_science]
+        )
+
+    def test_major_concentration_relationships(self):
+        self.assertCountEqual(
+            list(self.computer_science.concentrations.all()),
+            [
+                self.cs_general,
+                self.cs_computer_technology,
+                self.cs_multimedia,
+                self.cs_ai_in_data_science
+            ]
+        )
+        self.assertEqual(
+            self.fs_general.major,
+            self.forensic_science
         )
