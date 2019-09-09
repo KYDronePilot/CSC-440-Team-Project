@@ -4,7 +4,7 @@ from .common import Common
 
 class College(Common):
     """
-    A college with which everything (majors, concentrations, courses, etc.) are associated with.
+    A college.
 
     Attributes:
         name: Name of the college

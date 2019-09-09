@@ -45,4 +45,4 @@ class CategoryScoreRequirement(Common):
     )
 
     def __str__(self) -> str:
-        return f'Requirement on {", ".join(self.categories.all())} of course {self.course_instance}'
+        return f'Requirement on {self.categories.all().count()} categories of course: {self.course_instance}'
