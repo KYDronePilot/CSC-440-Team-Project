@@ -72,3 +72,30 @@ schedule.
  - In charge: James
  - Estimated time: 1 week
  - Status: not started
+
+### Implement basic version of UI
+ - Purpose: Once the wireframes have been created, we need to implement them in a basic form with React.js. That way we
+   can have a working version of the product that we can iterate on.
+ - Input: wireframes
+ - Output: Basic implementation of UI
+ - In charge: Michael and James
+ - Estimated time: 2 weeks
+ - Status: not started
+
+### Create basic REST API
+ - Purpose: The frontend needs a way to communicate with the backend. To do this, we have chosen to use a REST API. This
+   API will only be a basic version to support the basic version of the UI.
+ - Input: Database models
+ - Output: Basic REST API
+ - In charge: Michael
+ - Estimated time: 1 week
+ - Status: not started
+
+### Create basic form of Requirement Specification Report
+ - Purpose: Since we are using an Agile process model, we cannot make the entire report ahead of time. As a result, we
+   will make a basic form and slowly iterate on it as the project progresses.
+ - Input: Ideas
+ - Output: Basic form of Requirement Specification Report
+ - In charge: Michael and James
+ - Estimated time: 1 week
+ - Status: not started
