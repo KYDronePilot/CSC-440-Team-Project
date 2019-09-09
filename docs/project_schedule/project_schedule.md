@@ -48,7 +48,7 @@ schedule.
  - Purpose: To build a Javascript frontend, their needs to be a state management system to keep track of things in the
    browser. Redux is a state management system commonly used with React.js, our frontend framework. Redux needs a lot of
    boilerplate setup to get it working.
- - Input: Frontend skeleton
+ - Input: React.js boilerplate
  - Output: Redux boilerplate
  - In charge: Michael
  - Estimated time: 2 weeks
@@ -57,7 +57,7 @@ schedule.
 ### Create abstract form components for frontend
  - Purpose: To make creating forms easy in the frontend, we need to have some abstract components that can be used
    across the project to make quick forms.
- - Input: Frontend skeleton
+ - Input: React.js boilerplate
  - Output: Abstract form components
  - In charge: Michael
  - Estimated time: 1 week
@@ -99,3 +99,11 @@ schedule.
  - In charge: Michael and James
  - Estimated time: 1 week
  - Status: not started
+ 
+### Create React.js boilerplate
+ - Purpose: We need to instantiate the React.js project and add it to git so we can start using it.
+ - Input: Nothing
+ - Output: React.js boilerplate
+ - In charge: Michael
+ - Estimated time: 1 day
+ - Status: completed, 8/26/19
