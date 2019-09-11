@@ -1,13 +1,22 @@
 # Project Schedule
+### Michael Galliers and James Miller
+### Due Date: 9/12/19
 The main schedule will be created using Microsoft Project. This doc is for brainstorming and coming up with idea for the
 schedule.
 
 
 ## Milestones
-### M1 - Simple Web Form Working and Communicating with Backend
-### M2 - Progress Review
+### Iteration 1: Simple Web Form Working and Communicating with Backend
+ - Deadline: 9/27/19
 
-## Tasks
+### M2 - Progress Review
+ - Deadline: 10/3/19
+ - Will present work completed in iteration 1, along with any progress made in iteration 2 to Dr. Chang.
+
+### Iteration 2: Medium-grade UI with Application Continuously Deploying to Development Environment
+ - Deadline: TBD
+
+## Tasks (Iteration 1)
 ### Create database ERD
  - Purpose: The database system needs an ERD to visualize relationships/attributes to make model creation simpler.
  - Input: Ideas
