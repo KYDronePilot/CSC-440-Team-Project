@@ -85,7 +85,7 @@ schedule.
 ### Implement basic version of UI
  - Purpose: Once the wireframes have been created, we need to implement them in a basic form with React.js. That way we
    can have a working version of the product that we can iterate on.
- - Input: wireframes
+ - Input: wireframes, Redux boilerplate, abstract components
  - Output: Basic implementation of UI
  - In charge: Michael and James
  - Estimated time: 2 weeks
@@ -116,3 +116,12 @@ schedule.
  - In charge: Michael
  - Estimated time: 1 day
  - Status: completed, 8/26/19
+
+### Connect UI to backend
+ - Purpose: Once we have a basic implementation of the backend and frontend, we need to connect them in the form of a
+   simple UI form/page. This will conclude the first iteration of our project.
+ - Input: Basic REST API and basic version of UI
+ - Output: Simple UI form/page that is functional
+ - In charge: Michael
+ - Estimated time: 4 days
+ - Status: not started
