@@ -5,6 +5,7 @@ import {Provider} from 'react-redux';
 import Text from './components/form/Items/Text';
 import store from './store';
 import NewSemesterForm from './components/form/NewSemesterForm';
+import GradeEntries from './components/views/GradeEntries/GradeEntries';
 
 function App() {
     return (
@@ -25,7 +26,8 @@ function App() {
                 {/*  </a>*/}
                 {/*</header>*/}
                 {/*<Text label={'Some Label'}/>*/}
-                <NewSemesterForm/>
+                {/*<NewSemesterForm/>*/}
+                <GradeEntries/>
             </div>
         </Provider>
     );

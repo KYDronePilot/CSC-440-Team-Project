@@ -1,6 +1,6 @@
-from grades.models import Course, CourseInstance
+from grades.models import Course, CourseInstance, GradeEntry
 from rest_framework import viewsets, permissions
-from grades.serializers import CourseSerializer, CourseInstanceSerializer
+from grades.serializers import CourseSerializer, CourseInstanceSerializer, GradeEntrySerializer
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -17,3 +17,11 @@ class CourseInstanceViewSet(viewsets.ModelViewSet):
         permissions.AllowAny
     ]
     serializer_class = CourseInstanceSerializer
+
+
+class GradeEntryViewSet(viewsets.ModelViewSet):
+    queryset = GradeEntry.objects.all()
+    permission_classes = [
+        permissions.AllowAny
+    ]
+    serializer_class = GradeEntrySerializer
