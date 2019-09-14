@@ -54,6 +54,7 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_ALLOW_ALL = True
 
+
 ROOT_URLCONF = 'csc_440_project_backend.urls'
 
 TEMPLATES = [
