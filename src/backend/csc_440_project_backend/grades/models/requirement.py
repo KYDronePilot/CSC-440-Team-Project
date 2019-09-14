@@ -13,6 +13,7 @@ class Requirement(Common):
         super_requirement: A larger requirement which this requirement is a part of
         sub_requirement_count: Number of sub-requirements that must be completed
         sub_requirement_course_count: Number of courses in directly related sub-requirements that must be completed
+            in addition to courses in sub-requirements that must be fulfilled
         is_required: Whether this requirement is absolutely required
             Used when the requirement is one of many related to a super requirement which only needs a set number of the
             sub-requirements to be completed.
@@ -49,7 +50,7 @@ class Requirement(Common):
         null=True,
         verbose_name='Sub Requirement Course Count',
         help_text='Number of courses in directly related sub-requirements that must be completed to fulfill the '
-                  'requirement'
+                  'requirement (in addition to courses in sub-requirements that must be fulfilled)'
     )
     is_required = models.BooleanField(
         null=False,

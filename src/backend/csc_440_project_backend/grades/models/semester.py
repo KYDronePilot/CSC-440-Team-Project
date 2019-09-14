@@ -47,13 +47,7 @@ class Semester(Common):
         choices=SEASON_CHOICES,
         validators=[validate_season]
     )
-    college = models.ForeignKey(
-        to='College',
-        on_delete=models.CASCADE,
-        related_name='semesters',
-        null=False,
-        verbose_name='College'
-    )
+    colleges = models.ManyToManyField(to='College', related_name='semesters')
 
     def __str__(self) -> str:
         return f'{self.season}, {self.year}'
