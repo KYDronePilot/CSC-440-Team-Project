@@ -15,7 +15,6 @@ class GradeEntries extends Component {
         super(props);
     }
 
-
     componentWillMount() {
         this.props.fetchGradeEntries();
     }
@@ -25,7 +24,7 @@ class GradeEntries extends Component {
             <div>
                 <MDBContainer>
                     <MDBListGroup>
-                        {this.props.gradeEntries.map(item => <GradeEntry gradeEntry={item}/>)}
+                        {this.props.gradeEntries.map(item => <GradeEntry key={item.id} gradeEntry={item}/>)}
                     </MDBListGroup>
                 </MDBContainer>
             </div>
