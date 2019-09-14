@@ -20,8 +20,13 @@ class CourseInstanceViewSet(viewsets.ModelViewSet):
 
 
 class GradeEntryViewSet(viewsets.ModelViewSet):
-    queryset = GradeEntry.objects.all()
     permission_classes = [
-        permissions.AllowAny
+        permissions.IsAuthenticated
     ]
     serializer_class = GradeEntrySerializer
+
+    def get_queryset(self):
+        return self.request.user.grade_entries.all()
+
+    def perform_create(self, serializer):
+        serializer.save(student=self.request.user)
