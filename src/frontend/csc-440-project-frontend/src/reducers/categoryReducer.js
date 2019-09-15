@@ -1,16 +1,16 @@
-import {FETCH_GRADE_ENTRIES, ADD_GRADE_ENTRY} from '../actions/types';
+import {FETCH_CATEGORIES} from '../actions/types';
 
 const initialState = {
-    activeGradeEntries: [],
-    activeGradeEntry: {}
+    activeCategories: [],
+    activeCategory: {id: 1, name: '5 Assignments'}
 };
 
 export default function (state = initialState, action) {
     switch (action.type) {
-        case FETCH_GRADE_ENTRIES:
+        case FETCH_CATEGORIES:
             return {
                 ...state,
-                activeGradeEntries: action.payload
+                activeCategory: action.payload[0]
             };
         default:
             return state;
