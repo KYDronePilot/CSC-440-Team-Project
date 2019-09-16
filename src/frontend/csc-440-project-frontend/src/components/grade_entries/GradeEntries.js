@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import {MDBBtn, MDBContainer, MDBListGroup} from 'mdbreact';
 import PropTypes from 'prop-types';
 import GradeEntry from './GradeEntry';
-import NewGradeEntry from './GradeEntryForm';
+import GradeEntryForm from './GradeEntryForm';
 import {connect} from 'react-redux';
-import {openGradeEntryForm, closeGradeEntryForm} from '../../actions/gradeEntryActions';
+import {closeGradeEntryForm, openGradeEntryForm, openCreateGradeEntryForm} from '../../actions/gradeEntryActions';
 
 
 function mapStateToProps(state) {
@@ -22,18 +22,19 @@ class GradeEntries extends Component {
         gradeEntryFormVisible: PropTypes.bool.isRequired,
         openGradeEntryForm: PropTypes.func.isRequired,
         closeGradeEntryForm: PropTypes.func.isRequired,
+        openCreateGradeEntryForm: PropTypes.func.isRequired
     };
 
     render() {
         return (
             <div>
-                <NewGradeEntry/>
+                <GradeEntryForm/>
                 <MDBContainer>
                     <MDBListGroup>
                         {this.props.gradeEntries.map(item => <GradeEntry key={item.id} gradeEntry={item}/>)}
                     </MDBListGroup>
                     <div className={'d-flex w-100'}>
-                        <MDBBtn color={'secondary'} onClick={this.props.openGradeEntryForm} className={'ml-auto'}>
+                        <MDBBtn color={'secondary'} onClick={this.props.openCreateGradeEntryForm} className={'ml-auto'}>
                             Add Grade Entry
                         </MDBBtn>
                     </div>
@@ -47,6 +48,7 @@ export default connect(
     mapStateToProps,
     {
         openGradeEntryForm,
-        closeGradeEntryForm
+        closeGradeEntryForm,
+        openCreateGradeEntryForm
     }
 )(GradeEntries);

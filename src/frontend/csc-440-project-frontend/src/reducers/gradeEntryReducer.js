@@ -1,11 +1,18 @@
 import {
     APPEND_GRADE_ENTRY,
-    FETCH_GRADE_ENTRIES, GRADE_ENTRY_FORM_CLEAR,
+    FETCH_GRADE_ENTRIES,
+    GRADE_ENTRY_FORM_CLEAR,
     GRADE_ENTRY_FORM_CLOSE,
+    GRADE_ENTRY_FORM_CREATE_MODE,
+    GRADE_ENTRY_FORM_LOAD_DATA,
     GRADE_ENTRY_FORM_ERROR,
     GRADE_ENTRY_FORM_OPEN,
     GRADE_ENTRY_FORM_SUBMITTED,
-    GRADE_ENTRY_FORM_SUCCESS, GRADE_ENTRY_FORM_UPDATE_FIELD, GRADE_ENTRY_FORM_UPDATE_STATE
+    GRADE_ENTRY_FORM_SUCCESS,
+    GRADE_ENTRY_FORM_UPDATE_FIELD,
+    GRADE_ENTRY_FORM_UPDATE_STATE,
+    GRADE_ENTRY_FORM_EDIT_MODE,
+    GRADE_ENTRY_FORM_ENABLE_EDIT_MODE, SET_ACTIVE_GRADE_ENTRY, GRADE_ENTRY_FORM_ENABLE_CREATE_MODE, REPLACE_GRADE_ENTRY
 } from '../actions/types';
 
 // Default state for form fields
@@ -37,7 +44,8 @@ const initialState = {
         fields: defaultFormFieldState,
         isLoading: false,
         isOpen: false,
-        displayValidation: false
+        displayValidation: false,
+        mode: GRADE_ENTRY_FORM_CREATE_MODE
     }
 };
 
@@ -144,6 +152,65 @@ export default function (state = initialState, action) {
                     displayValidation: false,
                     fields: defaultFormFieldState
                 }
+            };
+        case GRADE_ENTRY_FORM_LOAD_DATA:
+            return {
+                ...state,
+                form: {
+                    ...state.form,
+                    fields: {
+                        ...state.form.fields,
+                        name: {
+                            value: action.payload.name,
+                            valid: true,
+                            invalidFeedback: '',
+                            validFeedback: null
+                        },
+                        points: {
+                            value: action.payload.points,
+                            valid: true,
+                            invalidFeedback: '',
+                            validFeedback: null
+                        },
+                        max_points: {
+                            value: action.payload.max_points,
+                            valid: true,
+                            invalidFeedback: '',
+                            validFeedback: null
+                        }
+                    }
+                }
+            };
+        case GRADE_ENTRY_FORM_ENABLE_EDIT_MODE:
+            return {
+                ...state,
+                form: {
+                    ...state.form,
+                    mode: GRADE_ENTRY_FORM_EDIT_MODE
+                }
+            };
+        case GRADE_ENTRY_FORM_ENABLE_CREATE_MODE:
+            return {
+                ...state,
+                form: {
+                    ...state.form,
+                    mode: GRADE_ENTRY_FORM_CREATE_MODE
+                }
+            };
+        case SET_ACTIVE_GRADE_ENTRY:
+            return {
+                ...state,
+                activeGradeEntry: action.payload
+            };
+        case REPLACE_GRADE_ENTRY:
+            const entryIndex = state.activeGradeEntries.map(entry => entry.id).indexOf(action.payload.id);
+            return {
+                ...state,
+                activeGradeEntries: [
+                    ...state.activeGradeEntries.slice(0, entryIndex),
+                    action.payload,
+                    ...state.activeGradeEntries.slice(entryIndex + 1)
+                ]
             };
         default:
             return state;

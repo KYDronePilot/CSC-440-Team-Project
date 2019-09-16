@@ -1,25 +1,41 @@
 import React, {Component} from 'react';
-import { MDBListGroup, MDBListGroupItem, MDBContainer } from 'mdbreact';
+import {MDBListGroupItem} from 'mdbreact';
 import PropTypes from 'prop-types';
-import TimeAgo from 'react-timeago'
+import TimeAgo from 'react-timeago';
+import {editGradeEntry} from '../../actions/gradeEntryActions';
+import {connect} from 'react-redux';
+
+function mapStateToProps(state) {
+    return {};
+}
 
 class GradeEntry extends Component {
+    static propTypes = {
+        gradeEntry: PropTypes.object,
+        editGradeEntry: PropTypes.func.isRequired
+    };
+
     constructor(props) {
         super(props);
         this.getPercentCorrect = this.getPercentCorrect.bind(this);
+        this.editGradeEntryEH = this.editGradeEntryEH.bind(this);
     }
-
-
-    static propTypes = {
-        gradeEntry: PropTypes.object
-    };
 
     /**
      * Format the percentage of answers that are correct.
      * @return {string} Formatted percentage of points obtained
      */
     getPercentCorrect() {
-        return `${((this.props.gradeEntry.points / this.props.gradeEntry.max_points) * 100).toFixed(1)}%`
+        return `${((this.props.gradeEntry.points / this.props.gradeEntry.max_points) * 100).toFixed(1)}%`;
+    }
+
+    /**
+     * Event handler wrapper for the grade entry edit link.
+     * @param e {Event} - Event from click
+     */
+    editGradeEntryEH(e) {
+        e.preventDefault();
+        this.props.editGradeEntry(this.props.gradeEntry);
     }
 
     render() {
@@ -31,12 +47,18 @@ class GradeEntry extends Component {
                         <TimeAgo date={this.props.gradeEntry.last_updated}/>
                     </small>
                 </div>
-                <p className={'mb-1'}>
-                    {this.props.gradeEntry.points} / {this.props.gradeEntry.max_points} = {this.getPercentCorrect()}
-                </p>
+                <div className="d-flex w-100 justify-content-between">
+                    <h6 className={'font-weight-bold'}>
+                        {this.props.gradeEntry.points} / {this.props.gradeEntry.max_points} = {this.getPercentCorrect()}
+                    </h6>
+                    <a onClick={this.editGradeEntryEH}>Edit</a>
+                </div>
             </MDBListGroupItem>
         );
     }
 }
 
-export default GradeEntry;
+export default connect(
+    mapStateToProps,
+    {editGradeEntry}
+)(GradeEntry);

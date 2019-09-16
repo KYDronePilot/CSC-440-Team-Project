@@ -4,15 +4,24 @@ import {MDBBtn, MDBContainer, MDBModal, MDBModalBody, MDBModalFooter, MDBModalHe
 import TextInput from '../form/Items/TextInput';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {createGradeEntry, toggleForm, updateFormField, updateFormState} from '../../actions/gradeEntryActions';
+import {
+    createGradeEntry,
+    toggleForm,
+    updateFormField,
+    updateFormState,
+    updateGradeEntry
+} from '../../actions/gradeEntryActions';
 import validator from 'validator';
+import {GRADE_ENTRY_FORM_CREATE_MODE, GRADE_ENTRY_FORM_EDIT_MODE} from '../../actions/types';
 
 function mapStateToProps(state) {
     return {
         activeCategory: state.category.activeCategory,
+        activeGradeEntry: state.gradeEntry.activeGradeEntry,
         visible: state.gradeEntry.form.isOpen,
         displayValidation: state.gradeEntry.form.displayValidation,
-        fields: state.gradeEntry.form.fields
+        fields: state.gradeEntry.form.fields,
+        mode: state.gradeEntry.form.mode
     };
 }
 
@@ -20,12 +29,15 @@ class GradeEntryForm extends BaseForm {
     static propTypes = {
         createGradeEntry: PropTypes.func.isRequired,
         activeCategory: PropTypes.object.isRequired,
+        activeGradeEntry: PropTypes.object.isRequired,
         visible: PropTypes.bool.isRequired,
         displayValidation: PropTypes.bool.isRequired,
         fields: PropTypes.object.isRequired,
         updateFormField: PropTypes.func.isRequired,
         updateFormState: PropTypes.func.isRequired,
-        toggleForm: PropTypes.func.isRequired
+        toggleForm: PropTypes.func.isRequired,
+        mode: PropTypes.oneOf([GRADE_ENTRY_FORM_CREATE_MODE, GRADE_ENTRY_FORM_EDIT_MODE]),
+        updateGradeEntry: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -33,6 +45,7 @@ class GradeEntryForm extends BaseForm {
 
         this.handleChange = this.handleChange.bind(this);
         this.submitHandler = this.submitHandler.bind(this);
+        this.isEdited = this.isEdited.bind(this);
 
         /**
          * Validation functions for inputs.
@@ -103,21 +116,53 @@ class GradeEntryForm extends BaseForm {
     }
 
     /**
+     * Check if the edit form was changed with respect to the active grade entry.
+     *  - Returns true if not in edit mode.
+     * @return {boolean} Whether the edit form has been changed
+     */
+    isEdited() {
+        if (!(this.props.mode === GRADE_ENTRY_FORM_EDIT_MODE))
+            return true;
+        return (!(
+            this.props.fields.name.value === this.props.activeGradeEntry.name
+            && this.props.fields.points.value === this.props.activeGradeEntry.points
+            && this.props.fields.max_points.value === this.props.activeGradeEntry.max_points
+        ));
+    }
+
+    /**
      * Validate and submit the form.
      *  - If invalid, validation feedback is enabled
      * @param e {Event} - Form submit event
      */
     submitHandler(e) {
         e.preventDefault();
-        if (this.props.fields.name.valid && this.props.fields.points.valid && this.props.fields.max_points.valid) {
+
+        // Ensure fields are valid
+        if (!(this.props.fields.name.valid && this.props.fields.points.valid && this.props.fields.max_points.valid))
+            this.props.updateFormState({displayValidation: true});
+
+        // Create new entry if in create mode
+        if (this.props.mode === GRADE_ENTRY_FORM_CREATE_MODE) {
             this.props.createGradeEntry(
                 this.props.fields.name.value,
                 this.props.fields.points.value,
                 this.props.fields.max_points.value,
                 this.props.activeCategory.id
             );
+        } else if (this.props.mode === GRADE_ENTRY_FORM_EDIT_MODE && this.isEdited()) {
+            // Update the entry if in edit mode and the form was edited
+            const entry = {
+                ...this.props.activeGradeEntry,
+                name: this.props.fields.name.value,
+                points: this.props.fields.points.value,
+                max_points: this.props.fields.max_points.value
+            };
+
+            this.props.updateGradeEntry(entry);
         } else {
-            this.props.updateFormState({displayValidation: true});
+            // Close the form if they didn't edit it
+            this.props.toggleForm();
         }
     }
 
@@ -154,7 +199,7 @@ class GradeEntryForm extends BaseForm {
                             </MDBContainer>
                         </MDBModalBody>
                         <MDBModalFooter>
-                            <MDBBtn color={'primary'} type={'submit'}>Submit</MDBBtn>
+                            <MDBBtn color={'primary'} type={'submit'}>Save</MDBBtn>
                         </MDBModalFooter>
                     </form>
                 </MDBModal>
@@ -169,6 +214,7 @@ export default connect(
         createGradeEntry,
         updateFormField,
         updateFormState,
-        toggleForm
+        toggleForm,
+        updateGradeEntry
     }
 )(GradeEntryForm);
