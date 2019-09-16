@@ -19,8 +19,14 @@ import {MDBInput, MDBInputGroup} from 'mdbreact';
 
 class TextInput extends Component {
     static propTypes = {
-        invalidFeedback: PropTypes.string,
-        validFeedback: PropTypes.string,
+        invalidFeedback: PropTypes.oneOfType([
+            PropTypes.array,
+            PropTypes.string
+        ]),
+        validFeedback: PropTypes.oneOfType([
+            PropTypes.array,
+            PropTypes.string
+        ]),
         valid: PropTypes.bool,
         displayFeedback: PropTypes.bool,
         name: PropTypes.string,
@@ -35,6 +41,7 @@ class TextInput extends Component {
         super(props);
 
         this.feedbackClass = this.feedbackClass.bind(this);
+        this.formatFeedback = this.formatFeedback.bind(this);
     }
 
     /**
@@ -46,6 +53,18 @@ class TextInput extends Component {
         return this.props.valid ? 'is-valid' : 'is-invalid';
     }
 
+    /**
+     * Ensure feedback is always wrapped in an array.
+     * @param feedback {Any} - Feedback to wrap
+     * @return {*[]|*} Wrapped feedback
+     */
+    formatFeedback(feedback) {
+        if (typeof feedback !== typeof [] || feedback === null)
+            return [feedback];
+        console.log(typeof feedback !== typeof []);
+        return feedback;
+    }
+
     render() {
         return (
             <MDBInput
@@ -54,13 +73,16 @@ class TextInput extends Component {
                 className={`form-control ${this.feedbackClass()}`}
                 value={this.props.value} hint={this.props.hint}
             >
-                {this.props.invalidFeedback &&
-                <div className={'invalid-feedback text-left'}>
-                    {this.props.invalidFeedback}
-                </div>}
-                <div className={'valid-feedback text-left'}>
-                    {this.props.validFeedback}
-                </div>
+                {this.formatFeedback(this.props.invalidFeedback).map((feedback, i) => (
+                    <div key={i} className={'invalid-feedback text-left'}>
+                        {feedback}
+                    </div>
+                ))}
+                {this.formatFeedback(this.props.validFeedback).map((feedback, i) => (
+                    <div key={i} className={'valid-feedback text-left'}>
+                        {feedback}
+                    </div>
+                ))}
             </MDBInput>
         );
     }

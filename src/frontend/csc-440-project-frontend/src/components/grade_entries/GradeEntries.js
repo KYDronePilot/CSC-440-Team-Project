@@ -2,45 +2,38 @@ import React, {Component} from 'react';
 import {MDBBtn, MDBContainer, MDBListGroup} from 'mdbreact';
 import PropTypes from 'prop-types';
 import GradeEntry from './GradeEntry';
-import NewGradeEntry from './newGradeEntry';
+import NewGradeEntry from './GradeEntryForm';
+import {connect} from 'react-redux';
+import {openGradeEntryForm, closeGradeEntryForm} from '../../actions/gradeEntryActions';
 
+
+function mapStateToProps(state) {
+    return {
+        gradeEntryFormVisible: state.gradeEntry.form.isOpen
+    };
+}
 
 /**
  * List view for grade entries.
  */
 class GradeEntries extends Component {
     static propTypes = {
-        gradeEntries: PropTypes.arrayOf(PropTypes.object)
+        gradeEntries: PropTypes.arrayOf(PropTypes.object),
+        gradeEntryFormVisible: PropTypes.bool.isRequired,
+        openGradeEntryForm: PropTypes.func.isRequired,
+        closeGradeEntryForm: PropTypes.func.isRequired,
     };
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            addGradeEntryVisible: false
-        };
-        this.toggleAddGradeEntryVisible = this.toggleAddGradeEntryVisible.bind(this);
-    }
-
-    /**
-     * Toggle visibility of add grade entry form.
-     */
-    toggleAddGradeEntryVisible() {
-        this.setState(state => ({addGradeEntryVisible: !state.addGradeEntryVisible}));
-    }
 
     render() {
         return (
             <div>
-                <NewGradeEntry
-                    visible={this.state.addGradeEntryVisible}
-                    toggleVisible={this.toggleAddGradeEntryVisible}
-                />
+                <NewGradeEntry/>
                 <MDBContainer>
                     <MDBListGroup>
                         {this.props.gradeEntries.map(item => <GradeEntry key={item.id} gradeEntry={item}/>)}
                     </MDBListGroup>
                     <div className={'d-flex w-100'}>
-                        <MDBBtn color={'secondary'} onClick={this.toggleAddGradeEntryVisible} className={'ml-auto'}>
+                        <MDBBtn color={'secondary'} onClick={this.props.openGradeEntryForm} className={'ml-auto'}>
                             Add Grade Entry
                         </MDBBtn>
                     </div>
@@ -50,4 +43,10 @@ class GradeEntries extends Component {
     }
 }
 
-export default GradeEntries;
+export default connect(
+    mapStateToProps,
+    {
+        openGradeEntryForm,
+        closeGradeEntryForm
+    }
+)(GradeEntries);
