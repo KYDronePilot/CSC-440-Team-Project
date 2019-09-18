@@ -8,17 +8,50 @@
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{tocloft}
 
 % Document configuration
 
 % Section numbering
 \renewcommand \thesection{\Roman{section}}
 \renewcommand \thesubsection{\arabic{section}.\arabic{subsection}}
+
+% Environment config for requirements
+%  - Configures formatting of the section heading and numbered, nested lists
+\newenvironment{requirement}[1]
+{
+    % Format requirement sections (R1. ...)
+    \renewcommand{\thesubsubsection}{R\arabic{subsubsection}.}
+    % Format nested, numbered lists (1.1, 1.1.1, 1.1.1.1, ...)
+    \renewcommand{\labelenumi}{
+        \arabic{subsubsection}.\arabic{enumi}
+    }
+    \renewcommand{\labelenumii}{
+        \arabic{subsubsection}.\arabic{enumi}.\arabic{enumii}
+    }
+    \renewcommand{\labelenumiii}{
+        \arabic{subsubsection}.\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}
+    }
+    \renewcommand{\labelenumiv}{
+        \arabic{subsubsection}.\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.\arabic{enumiv}
+    }
+    % Create the subsubsection for the requirement
+    \subsubsection{#1}
+}
+{}
+
+
+% Set path to all graphics
+\graphicspath{{figures/}}
+
 % Do paragraph indenting after section tags
 \usepackage{indentfirst}
 
+% Adjust space between numbers and headings in table of contents
+\addtolength{\cftsecnumwidth}{12pt}
+\addtolength{\cftsubsubsecnumwidth}{-10pt}
 
-\usepackage[usenames, dvipsnames]{color}
+
 \author{Michael Galliers and James Miller}
 \title{CSC 440 - Requirements Specification Report}
 
@@ -42,6 +75,51 @@
 
 \section{System Requirements}
 \subsection{Functional Requirements}
+\begin{requirement}{The system shall..1}
+
+
+\begin{enumerate}
+    \item Test item 1
+    \item Test item 2
+    \begin{enumerate}
+        \item Test item 1.1
+        \item Test item 1.2
+        \begin{enumerate}
+            \item Test item 1.1.1
+            \item Test item 1.1.2
+            \begin{enumerate}
+                \item Test item 1.1.1.1
+                \item Test item 1.1.1.2
+            \end{enumerate}
+        \end{enumerate}
+    \end{enumerate}
+\end{enumerate}
+
+
+\end{requirement}
+
+\begin{requirement}{The system shall..2}
+
+
+\begin{enumerate}
+    \item Test item 1
+    \item Test item 2
+    \begin{enumerate}
+        \item Test item 1.1
+        \item Test item 1.2
+        \begin{enumerate}
+            \item Test item 1.1.1
+            \item Test item 1.1.2
+            \begin{enumerate}
+                \item Test item 1.1.1.1
+                \item Test item 1.1.1.2
+            \end{enumerate}
+        \end{enumerate}
+    \end{enumerate}
+\end{enumerate}
+
+
+\end{requirement}
 
 \subsection{Non-functional Requirements}
 
@@ -49,7 +127,26 @@
 
 \section{Use-case Diagram}
 
-\section{Domain Diagram}
+\section{Class Diagram}
+
+\section{Sequence Diagrams}
+
+\section{State Diagram}
+
+\section{Activity Diagrams}
+
+\section{Database Design}
+
+\begin{figure}[p!]
+  \subsection{ER Schema}
+  \centering
+  \includegraphics[width=\linewidth]{database_erd.pdf}
+  \caption{Database ERD}
+\end{figure}
+
+\clearpage
+
+\subsection{Table Schema}
 
 \section{Conclusion}
 
