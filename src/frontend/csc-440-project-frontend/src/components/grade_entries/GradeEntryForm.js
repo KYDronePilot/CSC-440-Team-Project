@@ -1,11 +1,12 @@
 import React from 'react';
 import BaseForm from '../form/BaseForm';
-import {MDBBtn, MDBContainer, MDBModal, MDBModalBody, MDBModalFooter, MDBModalHeader} from 'mdbreact';
+import {MDBBtn, MDBContainer, MDBModal, MDBModalBody, MDBModalFooter, MDBModalHeader, MDBPopover} from 'mdbreact';
 import TextInput from '../form/Items/TextInput';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {
     createGradeEntry,
+    deleteGradeEntry,
     toggleForm,
     updateFormField,
     updateFormState,
@@ -37,7 +38,8 @@ class GradeEntryForm extends BaseForm {
         updateFormState: PropTypes.func.isRequired,
         toggleForm: PropTypes.func.isRequired,
         mode: PropTypes.oneOf([GRADE_ENTRY_FORM_CREATE_MODE, GRADE_ENTRY_FORM_EDIT_MODE]),
-        updateGradeEntry: PropTypes.func.isRequired
+        updateGradeEntry: PropTypes.func.isRequired,
+        deleteGradeEntry: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -46,6 +48,7 @@ class GradeEntryForm extends BaseForm {
         this.handleChange = this.handleChange.bind(this);
         this.submitHandler = this.submitHandler.bind(this);
         this.isEdited = this.isEdited.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
 
         /**
          * Validation functions for inputs.
@@ -166,6 +169,13 @@ class GradeEntryForm extends BaseForm {
         }
     }
 
+    /**
+     * Handle delete confirmation button.
+     */
+    handleDelete() {
+        this.props.deleteGradeEntry(this.props.activeGradeEntry);
+    }
+
     render() {
         return (
             <MDBContainer>
@@ -199,6 +209,22 @@ class GradeEntryForm extends BaseForm {
                             </MDBContainer>
                         </MDBModalBody>
                         <MDBModalFooter>
+                            {this.props.mode === GRADE_ENTRY_FORM_EDIT_MODE &&
+                            <MDBPopover clickable>
+                                <MDBBtn color={'danger'} type={'button'}>
+                                    Delete
+                                </MDBBtn>
+                                <div>
+                                    <p>Are you sure?</p>
+                                    <MDBBtn
+                                        color={'danger'} type={'button'}
+                                        size={'md'} onClick={this.handleDelete}
+                                    >
+                                        Confirm
+                                    </MDBBtn>
+                                </div>
+                            </MDBPopover>
+                            }
                             <MDBBtn color={'primary'} type={'submit'}>Save</MDBBtn>
                         </MDBModalFooter>
                     </form>
@@ -215,6 +241,7 @@ export default connect(
         updateFormField,
         updateFormState,
         toggleForm,
-        updateGradeEntry
+        updateGradeEntry,
+        deleteGradeEntry
     }
 )(GradeEntryForm);

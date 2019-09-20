@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {MDBInput, MDBInputGroup} from 'mdbreact';
+import {MDBInput} from 'mdbreact';
 
 // /**
 //  * Filter by the keys of an object.
@@ -32,7 +32,10 @@ class TextInput extends Component {
         name: PropTypes.string,
         label: PropTypes.string,
         onChange: PropTypes.func,
-        value: PropTypes.string,
+        value: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number
+        ]),
         hint: PropTypes.string
     };
     static type = 'text';

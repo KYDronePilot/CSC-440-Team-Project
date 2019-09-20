@@ -1,19 +1,21 @@
 import axios from 'axios';
 import {
     APPEND_GRADE_ENTRY,
+    DELETE_GRADE_ENTRY,
     FETCH_GRADE_ENTRIES,
     GRADE_ENTRY_FORM_CLEAR,
     GRADE_ENTRY_FORM_CLOSE,
-    GRADE_ENTRY_FORM_LOAD_DATA,
+    GRADE_ENTRY_FORM_ENABLE_CREATE_MODE,
+    GRADE_ENTRY_FORM_ENABLE_EDIT_MODE,
     GRADE_ENTRY_FORM_ERROR,
+    GRADE_ENTRY_FORM_LOAD_DATA,
     GRADE_ENTRY_FORM_OPEN,
     GRADE_ENTRY_FORM_SUBMITTED,
     GRADE_ENTRY_FORM_SUCCESS,
     GRADE_ENTRY_FORM_UPDATE_FIELD,
     GRADE_ENTRY_FORM_UPDATE_STATE,
-    GRADE_ENTRY_FORM_ENABLE_EDIT_MODE,
-    SET_ACTIVE_GRADE_ENTRY,
-    GRADE_ENTRY_FORM_ENABLE_CREATE_MODE, REPLACE_GRADE_ENTRY
+    REPLACE_GRADE_ENTRY,
+    SET_ACTIVE_GRADE_ENTRY
 } from './types';
 import {tokenConfig} from './auth';
 
@@ -187,4 +189,33 @@ export const updateGradeEntry = gradeEntry => (dispatch, getState) =>  {
                 payload: err.response
             });
         })
+};
+
+/**
+ * Delete a grade entry.
+ * @param gradeEntry {Object} - Grade entry to delete
+ */
+export const deleteGradeEntry = gradeEntry => (dispatch, getState) => {
+    dispatch({
+        type: GRADE_ENTRY_FORM_SUBMITTED
+    });
+
+    axios.delete(`http://localhost:8000/api/grade-entries/${gradeEntry.id}/`, tokenConfig(getState))
+        .then(res => {
+            dispatch({
+                type: GRADE_ENTRY_FORM_SUCCESS
+            });
+            dispatch({
+                type: DELETE_GRADE_ENTRY,
+                payload: gradeEntry
+            });
+        })
+        .catch(err => {
+            console.log(`Error occurred when updating a grade entry:`);
+            console.log(err.response);
+            dispatch({
+                type: GRADE_ENTRY_FORM_ERROR,
+                payload: err.response
+            });
+        });
 };

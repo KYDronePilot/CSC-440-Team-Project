@@ -1,19 +1,33 @@
 import {
     APPEND_GRADE_ENTRY,
+    DELETE_GRADE_ENTRY,
     FETCH_GRADE_ENTRIES,
     GRADE_ENTRY_FORM_CLEAR,
     GRADE_ENTRY_FORM_CLOSE,
     GRADE_ENTRY_FORM_CREATE_MODE,
-    GRADE_ENTRY_FORM_LOAD_DATA,
+    GRADE_ENTRY_FORM_EDIT_MODE,
+    GRADE_ENTRY_FORM_ENABLE_CREATE_MODE,
+    GRADE_ENTRY_FORM_ENABLE_EDIT_MODE,
     GRADE_ENTRY_FORM_ERROR,
+    GRADE_ENTRY_FORM_LOAD_DATA,
     GRADE_ENTRY_FORM_OPEN,
     GRADE_ENTRY_FORM_SUBMITTED,
     GRADE_ENTRY_FORM_SUCCESS,
     GRADE_ENTRY_FORM_UPDATE_FIELD,
     GRADE_ENTRY_FORM_UPDATE_STATE,
-    GRADE_ENTRY_FORM_EDIT_MODE,
-    GRADE_ENTRY_FORM_ENABLE_EDIT_MODE, SET_ACTIVE_GRADE_ENTRY, GRADE_ENTRY_FORM_ENABLE_CREATE_MODE, REPLACE_GRADE_ENTRY
+    REPLACE_GRADE_ENTRY,
+    SET_ACTIVE_GRADE_ENTRY
 } from '../actions/types';
+
+/**
+ * Get index of item in list of items based on `id` key.
+ * @param item - Item being searched for
+ * @param items - Items to search through
+ * @return {number} Index of item in items
+ */
+function itemIDIndex(item, items) {
+    return items.map(anItem => anItem.id).indexOf(item.id);
+}
 
 // Default state for form fields
 const defaultFormFieldState = {
@@ -203,13 +217,22 @@ export default function (state = initialState, action) {
                 activeGradeEntry: action.payload
             };
         case REPLACE_GRADE_ENTRY:
-            const entryIndex = state.activeGradeEntries.map(entry => entry.id).indexOf(action.payload.id);
+            const editEntryIndex = itemIDIndex(action.payload, state.activeGradeEntries);
             return {
                 ...state,
                 activeGradeEntries: [
-                    ...state.activeGradeEntries.slice(0, entryIndex),
+                    ...state.activeGradeEntries.slice(0, editEntryIndex),
                     action.payload,
-                    ...state.activeGradeEntries.slice(entryIndex + 1)
+                    ...state.activeGradeEntries.slice(editEntryIndex + 1)
+                ]
+            };
+        case DELETE_GRADE_ENTRY:
+            const deleteEntryIndex = itemIDIndex(action.payload, state.activeGradeEntries);
+            return {
+                ...state,
+                activeGradeEntries: [
+                    ...state.activeGradeEntries.slice(0, deleteEntryIndex),
+                    ...state.activeGradeEntries.slice(deleteEntryIndex + 1)
                 ]
             };
         default:
