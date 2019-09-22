@@ -1,15 +1,16 @@
-import {FETCH_COURSE_INSTANCES} from '../actions/types';
+import {FETCH_COURSE_INSTANCES, GRADE_ENTRY_FORM_CREATE_MODE} from '../actions/types';
 
-const initialState = {
-    items: []
+const initialRootState = {
+    courseInstances: [],
+    activeCourseInstance: {}
 };
 
-export default function (state = initialState, action) {
+export default function (state = initialRootState, action) {
     switch (action.type) {
         case FETCH_COURSE_INSTANCES:
             return {
                 ...state,
-                items: action.payload
+                courseInstances: action.payload
             };
         default:
             return state;

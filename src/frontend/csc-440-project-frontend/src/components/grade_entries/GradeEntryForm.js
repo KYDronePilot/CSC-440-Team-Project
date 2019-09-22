@@ -142,8 +142,10 @@ class GradeEntryForm extends BaseForm {
         e.preventDefault();
 
         // Ensure fields are valid
-        if (!(this.props.fields.name.valid && this.props.fields.points.valid && this.props.fields.max_points.valid))
+        if (!(this.props.fields.name.valid && this.props.fields.points.valid && this.props.fields.max_points.valid)) {
             this.props.updateFormState({displayValidation: true});
+            return;
+        }
 
         // Create new entry if in create mode
         if (this.props.mode === GRADE_ENTRY_FORM_CREATE_MODE) {

@@ -12,11 +12,13 @@ class CourseViewSet(viewsets.ModelViewSet):
 
 
 class CourseInstanceViewSet(viewsets.ModelViewSet):
-    queryset = CourseInstance.objects.all()
     permission_classes = [
-        permissions.AllowAny
+        permissions.IsAuthenticated
     ]
     serializer_class = CourseInstanceSerializer
+
+    def get_queryset(self):
+        self.request.user.course_instances.all()
 
 
 class GradeEntryViewSet(viewsets.ModelViewSet):
