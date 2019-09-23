@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from grades.models import Course, CourseInstance, GradeEntry, Category
+from grades.models import Course, CourseInstance, GradeEntry, Category, College, CategoryScoreRequirement, Semester
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -23,4 +23,22 @@ class GradeEntrySerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
+        fields = '__all__'
+
+
+class CollegeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = College
+        fields = '__all__'
+
+
+class CategoryScoreRequirementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CategoryScoreRequirement
+        fields = '__all__'
+
+
+class SemesterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Semester
         fields = '__all__'

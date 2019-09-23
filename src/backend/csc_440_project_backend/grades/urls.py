@@ -1,10 +1,14 @@
 from rest_framework import routers
-from grades.api import CourseViewSet, CourseInstanceViewSet, GradeEntryViewSet, CategoryViewSet
+from grades.api import CourseViewSet, CourseInstanceViewSet, GradeEntryViewSet, CategoryViewSet, CollegeViewSet, \
+    CategoryScoreRequirementViewSet, SemesterViewSet
 
 router = routers.DefaultRouter()
 router.register('api/courses', CourseViewSet, 'courses')
-router.register('api/courses-instances', CourseInstanceViewSet, 'courses_instances')
+router.register('api/course-instances', CourseInstanceViewSet, 'courses_instances')
 router.register('api/grade-entries', GradeEntryViewSet, 'grade_entries')
 router.register('api/categories', CategoryViewSet, 'categories')
+router.register('api/colleges', CollegeViewSet, 'colleges')
+router.register('api/category-score-requirements', CategoryScoreRequirementViewSet, 'category_score_requirements')
+router.register('api/semesters', SemesterViewSet, 'semesters')
 
 urlpatterns = router.urls

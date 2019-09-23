@@ -1,8 +1,9 @@
-import {FETCH_SEMESTERS, NEW_SEMESTER} from '../actions/types';
+import {FETCH_SEMESTERS} from '../actions/types';
+import {objectify} from '../actions/utils';
 
 const initialState = {
-    semesters: [],
-    newSemester: {}
+    semesters: {},
+    activeSemester: {}
 };
 
 export default function (state = initialState, action) {
@@ -10,9 +11,8 @@ export default function (state = initialState, action) {
         case FETCH_SEMESTERS:
             return {
                 ...state,
-                semesters: action.payload
+                semesters: objectify(action.payload)
             };
-
         default:
             return state;
     }

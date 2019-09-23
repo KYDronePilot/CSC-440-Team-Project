@@ -6,7 +6,7 @@ import categoryReducer from './categoryReducer';
 import auth from './auth';
 
 export default combineReducers({
-    semesters: semesterReducer,
+    semester: semesterReducer,
     courseInstances: courseInstanceReducer,
     gradeEntry: gradeEntryReducer,
     category: categoryReducer,
