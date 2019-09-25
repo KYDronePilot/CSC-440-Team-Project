@@ -94,24 +94,63 @@ Information provided through the grade tracking feature, coupled with course req
 will allow students to view their progress across multiple majors and concentrations.
 
 \section{System Description}
-The system shall have a user account management system to keep track of students, including the
+The system shall have a user account management component to keep track of students, including the
 ability to register, login, edit account, and logout. When a student logs into the system, the
-student shall see a dashboard containing the most used information and navigation links. From there,
-the student will also be able to access the system menu, allowing them to navigate to either the
-grade tracking component or the progress tracking component.
+student shall see a dashboard containing the most relevant information and navigation links. From
+there, the student will also be able to access the system menu, allowing them to navigate to either
+the grade tracking component or the progress tracking component.
 
 \subsection{Grade Tracking Component}
+\noindent
 The grade tracking component shall have views for the following items:
 
 \begin{enumerate}
     \item All semesters (root grade tracking view)
     \item Courses in a semester
     \item Details of a course (including categories and grade entries)
-\begin{enumerate}
+\end{enumerate}
 
-The \textit{Semesters} level will allow the student to navigate to a particular semester
+The \textit{All Semesters} view shall allow the student to navigate to a particular semester,
+add/remove a semester in which they are enrolled, and view statistics about his/her grades in that
+semester.
+
+The \textit{Courses} view shall display the courses that are in a particular semester. The student
+shall be able to add/remove/edit courses, view statistics for grades in each course, and navigate
+to any of the courses.
+
+The \textit{Course Detail} view shall display all remaining details for a particular course. This
+includes the statistics of a student's grades in the course, the grading categories of the course,
+and the grade entries themselves. The student shall also have the ability to add/remove/edit
+categories and grade entries.
 
 \subsection{Progress Tracking Component}
+\noindent
+The progress tracking component shall allow students to track their progress across major
+concentrations. This component shall have the following hierarchical views:
+
+\begin{enumerate}
+    \item Colleges (root progress tracking view)
+    \item Majors
+    \item Concentrations
+    \item Concentration progress
+\end{enumerate}
+
+The \textit{Colleges} view shall display the colleges in which the student is enrolled and allow
+him/her to navigate to the \textit{Majors} view for that college. The student shall also have the
+ability to add/remove colleges which he/she is enrolled in.
+
+The \textit{Majors} view shall display the majors of the college which was navigated from that the
+student is enrolled in. The student shall be able to add/remove majors which he/she is enrolled in
+and also navigate to the \textit{Concentrations} view for a particular major.
+
+The \textit{Concentrations} view shall display \textbf{all} the concentrations of the major which
+was navigated from, broken up into 2 sections: one for the concentration(s) the student in enrolled
+in and one for all other concentrations. The student shall be able to add/remove concentrations
+which they are enrolled in and navigate to the \textit{Concentration progress} view.
+
+The \textit{Concentration progress} view shall display visuals for the student's progress in the
+concentration, including overall progress and individual courses completed. This view shall be based
+on courses the student has entered through the grade tracking component.
 
 \section{System Requirements}
 \subsection{Functional Requirements}
