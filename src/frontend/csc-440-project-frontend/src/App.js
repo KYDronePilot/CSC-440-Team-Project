@@ -5,11 +5,14 @@ import store from './store';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Login from './components/accounts/Login';
 import Register from './components/accounts/Register';
-import PrivateRoute from './components/common/PrivateRoute';
+import PrivateRoute from './components/routes/PrivateRoute';
 import {loadUser} from './actions/auth';
 import Header from './components/layout/Header';
 import CategoryView from './components/views/CategoryView';
 import Semesters from './components/semesters/Semesters';
+import CourseInstances from './components/course_instance/CourseInstances';
+import CourseInstanceView from './components/course_instance/CourseInstanceView';
+import GradeTrackerRoute from './components/routes/GradeTrackerRoute';
 
 class App extends Component {
     componentDidMount() {
@@ -25,31 +28,17 @@ class App extends Component {
                             <Header/>
                             <div>
                                 <Switch>
-                                    <PrivateRoute exact path={'/'} component={CategoryView}/>
-                                    <PrivateRoute exact path={'/semesters'} component={Semesters}/>
+                                    {/*<PrivateRoute exact path={'/'} component={CategoryView}/>*/}
+                                    <GradeTrackerRoute exact path={'/'} component={Semesters}/>
+                                    {/*<PrivateRoute path={'/courses'} component={CourseInstances}/>*/}
+                                    <GradeTrackerRoute path={'/semester/:semesterId'} component={CourseInstances}/>
+                                    <GradeTrackerRoute path={'/course/:courseId'} component={CourseInstanceView}/>
                                     <Route exact path={'/register'} component={Register}/>
                                     <Route exact path={'/login'} component={Login}/>
                                 </Switch>
                             </div>
                         </Fragment>
                     </Router>
-                    {/*<header className="App-header">*/}
-                    {/*  <img src={logo} className="App-logo" alt="logo" />*/}
-                    {/*  <p>*/}
-                    {/*    Edit <code>src/App.js</code> and save to reload.*/}
-                    {/*  </p>*/}
-                    {/*  <a*/}
-                    {/*    className="App-link"*/}
-                    {/*    href="https://reactjs.org"*/}
-                    {/*    target="_blank"*/}
-                    {/*    rel="noopener noreferrer"*/}
-                    {/*  >*/}
-                    {/*    Learn React*/}
-                    {/*  </a>*/}
-                    {/*</header>*/}
-                    {/*<Text label={'Some Label'}/>*/}
-                    {/*<NewSemesterForm/>*/}
-                    {/*<Register/>*/}
                 </div>
             </Provider>
         );

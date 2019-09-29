@@ -1,8 +1,8 @@
 import {FETCH_CATEGORIES} from '../actions/types';
+import {objectify} from '../actions/utils';
 
 const initialState = {
-    activeCategories: [],
-    activeCategory: {id: 1, name: '5 Assignments'}
+    categories: {}
 };
 
 export default function (state = initialState, action) {
@@ -10,7 +10,7 @@ export default function (state = initialState, action) {
         case FETCH_CATEGORIES:
             return {
                 ...state,
-                activeCategory: action.payload[0]
+                categories: objectify(action.payload)
             };
         default:
             return state;

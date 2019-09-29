@@ -15,17 +15,17 @@ import {
     GRADE_ENTRY_FORM_UPDATE_FIELD,
     GRADE_ENTRY_FORM_UPDATE_STATE,
     REPLACE_GRADE_ENTRY,
-    SET_ACTIVE_GRADE_ENTRY
+    SET_EDITED_GRADE_ENTRY
 } from './types';
 import {tokenConfig} from './auth';
 
 export const fetchGradeEntries = category_id => (dispatch, getState) =>  {
     const config = tokenConfig(getState);
-    config.params = {
-        category_id
-    };
+    // config.params = {
+    //     category_id
+    // };
 
-    axios.get('http://localhost:8000/api/grade-entries/', config)
+    return axios.get('http://localhost:8000/api/grade-entries/', config)
         .then(res =>
             dispatch({
                 type: FETCH_GRADE_ENTRIES,
@@ -50,12 +50,11 @@ export const createGradeEntry = (name, points, max_points, category_id) => (disp
 
     axios.post('http://localhost:8000/api/grade-entries/', body, config)
         .then(res => {
-            // dispatch({
-            //     type: ADD_GRADE_ENTRY,
-            //     payload: res.data
-            // });
             dispatch({
                 type: GRADE_ENTRY_FORM_SUCCESS
+            });
+            dispatch({
+                type: GRADE_ENTRY_FORM_CLEAR
             });
             dispatch({
                 type: APPEND_GRADE_ENTRY,
@@ -129,7 +128,7 @@ export const editGradeEntry = gradeEntry => dispatch => {
 
     // Set grade entry as active
     dispatch({
-        type: SET_ACTIVE_GRADE_ENTRY,
+        type: SET_EDITED_GRADE_ENTRY,
         payload: gradeEntry
     });
 
@@ -204,6 +203,9 @@ export const deleteGradeEntry = gradeEntry => (dispatch, getState) => {
         .then(res => {
             dispatch({
                 type: GRADE_ENTRY_FORM_SUCCESS
+            });
+            dispatch({
+                type: GRADE_ENTRY_FORM_CLEAR
             });
             dispatch({
                 type: DELETE_GRADE_ENTRY,

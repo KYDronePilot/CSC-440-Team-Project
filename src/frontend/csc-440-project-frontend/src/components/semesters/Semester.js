@@ -3,6 +3,9 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {MDBListGroupItem} from 'mdbreact';
 import TimeAgo from 'react-timeago';
+// import {setActiveSemester} from '../../actions/semesterActions';
+import {withRouter} from 'react-router';
+import {Link} from 'react-router-dom';
 
 // Semester constants
 const FALL = 'fall';
@@ -22,7 +25,8 @@ function mapStateToProps(state) {
 
 class Semester extends Component {
     static propTypes = {
-        semester: PropTypes.object
+        semester: PropTypes.object,
+        // setActiveSemester: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -30,7 +34,7 @@ class Semester extends Component {
         this.state = {};
 
         this.name = this.name.bind(this);
-        this.handleSemesterSelect = this.handleSemesterSelect.bind(this);
+        // this.handleSemesterSelect = this.handleSemesterSelect.bind(this);
     }
 
     /**
@@ -40,20 +44,13 @@ class Semester extends Component {
         return `${seasonNames[this.props.semester.season]}, ${this.props.semester.year}`;
     }
 
-    /**
-     * Handle selection of a semester.
-     */
-    handleSemesterSelect(e) {
-        e.preventDefault();
-        console.log('You clicked a semester link!');
-    }
-
     render() {
         return (
             <MDBListGroupItem>
                 <div className={'d-flex w-100 justify-content-between'}>
                     <h5 className={'mb-1'}>
-                        <a onClick={this.handleSemesterSelect}>{this.name()}</a>
+                        <Link to={`/semester/${this.props.semester.id}`}>{this.name()}</Link>
+                        {/*<a onClick={this.handleSemesterSelect}>{this.name()}</a>*/}
                     </h5>
                     <small>
                         <TimeAgo date={this.props.semester.last_updated}/>
@@ -69,4 +66,4 @@ class Semester extends Component {
 
 export default connect(
     mapStateToProps
-)(Semester);
+)(withRouter(Semester));

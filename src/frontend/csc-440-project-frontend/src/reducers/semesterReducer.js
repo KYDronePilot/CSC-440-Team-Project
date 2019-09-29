@@ -1,9 +1,9 @@
-import {FETCH_SEMESTERS} from '../actions/types';
+import {FETCH_SEMESTERS, SET_ACTIVE_SEMESTER} from '../actions/types';
 import {objectify} from '../actions/utils';
 
 const initialState = {
     semesters: {},
-    activeSemester: {}
+    // activeSemesterID: -1
 };
 
 export default function (state = initialState, action) {
@@ -13,6 +13,11 @@ export default function (state = initialState, action) {
                 ...state,
                 semesters: objectify(action.payload)
             };
+        // case SET_ACTIVE_SEMESTER:
+        //     return {
+        //         ...state,
+        //         activeSemesterID: action.payload.id
+        //     };
         default:
             return state;
     }

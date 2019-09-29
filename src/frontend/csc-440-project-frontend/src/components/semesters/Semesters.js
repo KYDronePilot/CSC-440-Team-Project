@@ -5,6 +5,10 @@ import {fetchSemesters} from '../../actions/semesterActions';
 import {MDBContainer, MDBListGroup} from 'mdbreact';
 import {indexInstances} from '../../actions/utils';
 import Semester from './Semester';
+import {fetchCourses} from '../../actions/courseActions';
+import {fetchCourseInstances} from '../../actions/courseInstanceActions';
+import {fetchGradeEntries} from '../../actions/gradeEntryActions';
+import {fetchCategories} from '../../actions/categoryActions';
 
 function mapStateToProps(state) {
     return {
@@ -17,7 +21,11 @@ class Semesters extends Component {
     static propTypes = {
         fetchSemesters: PropTypes.func.isRequired,
         semesters: PropTypes.object,
-        userSemesterIDs: PropTypes.arrayOf(PropTypes.number)
+        userSemesterIDs: PropTypes.arrayOf(PropTypes.number),
+        fetchCourses: PropTypes.func.isRequired,
+        fetchCourseInstances: PropTypes.func.isRequired,
+        fetchGradeEntries: PropTypes.func.isRequired,
+        fetchCategories: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -30,6 +38,10 @@ class Semesters extends Component {
     componentDidMount() {
         // TEMP: load in everything
         this.props.fetchSemesters();
+        this.props.fetchCourses();
+        this.props.fetchCourseInstances();
+        this.props.fetchGradeEntries();
+        this.props.fetchCategories();
     }
 
     /**
@@ -55,5 +67,11 @@ class Semesters extends Component {
 
 export default connect(
     mapStateToProps,
-    {fetchSemesters}
+    {
+        fetchSemesters,
+        fetchCourses,
+        fetchCourseInstances,
+        fetchGradeEntries,
+        fetchCategories
+    }
 )(Semesters);

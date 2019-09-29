@@ -1,11 +1,10 @@
-import {FETCH_SEMESTERS, GET_SEMESTERS} from '../actions/types';
+import {FETCH_SEMESTERS, GET_SEMESTERS, SET_ACTIVE_SEMESTER} from '../actions/types';
 import {tokenConfig} from './auth';
 import axios from 'axios';
 
 export const fetchSemesters = () => (dispatch, getState) => {
-    axios.get('http://localhost:8000/api/semesters/', tokenConfig(getState))
+    return axios.get('http://localhost:8000/api/semesters/', tokenConfig(getState))
         .then(res => {
-            console.log(res);
             dispatch({
                 type: FETCH_SEMESTERS,
                 payload: res.data
@@ -15,3 +14,10 @@ export const fetchSemesters = () => (dispatch, getState) => {
             console.log(`Error while fetching semesters: ${err}`);
         });
 };
+
+// export const setActiveSemester = semester => dispatch => {
+//     dispatch({
+//         type: SET_ACTIVE_SEMESTER,
+//         payload: semester
+//     })
+// };

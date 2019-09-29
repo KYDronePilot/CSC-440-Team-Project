@@ -16,8 +16,10 @@ import {
     GRADE_ENTRY_FORM_UPDATE_FIELD,
     GRADE_ENTRY_FORM_UPDATE_STATE,
     REPLACE_GRADE_ENTRY,
-    SET_ACTIVE_GRADE_ENTRY
+    SET_EDITED_GRADE_ENTRY
 } from '../actions/types';
+import {appendInstance, objectify, removeInstance, replaceInstance} from '../actions/utils';
+import produce from 'immer';
 
 /**
  * Get index of item in list of items based on `id` key.
@@ -53,7 +55,8 @@ const defaultFormFieldState = {
 
 const initialState = {
     activeGradeEntries: [],
-    activeGradeEntry: {},
+    editedGradeEntry: {},
+    gradeEntries: {},
     form: {
         fields: defaultFormFieldState,
         isLoading: false,
@@ -63,17 +66,12 @@ const initialState = {
     }
 };
 
-export default function (state = initialState, action) {
+export default (state = initialState, action) => produce(state, draft => {
     switch (action.type) {
         case FETCH_GRADE_ENTRIES:
             return {
                 ...state,
-                activeGradeEntries: action.payload
-            };
-        case APPEND_GRADE_ENTRY:
-            return {
-                ...state,
-                activeGradeEntries: [...state.activeGradeEntries, action.payload]
+                gradeEntries: objectify(action.payload)
             };
         case GRADE_ENTRY_FORM_ERROR:
             const updatedFields = {
@@ -119,14 +117,9 @@ export default function (state = initialState, action) {
                 }
             };
         case GRADE_ENTRY_FORM_CLOSE:
-            return {
-                ...state,
-                form: {
-                    ...state.form,
-                    isOpen: false,
-                    isLoading: false
-                }
-            };
+            draft.form.isOpen = false;
+            draft.form.isLoading = false;
+            break;
         case GRADE_ENTRY_FORM_SUBMITTED:
             return {
                 ...state,
@@ -159,14 +152,9 @@ export default function (state = initialState, action) {
                 }
             };
         case GRADE_ENTRY_FORM_CLEAR:
-            return {
-                ...state,
-                form: {
-                    ...state.form,
-                    displayValidation: false,
-                    fields: defaultFormFieldState
-                }
-            };
+            draft.form.displayValidation = false;
+            draft.form.fields = defaultFormFieldState;
+            break;
         case GRADE_ENTRY_FORM_LOAD_DATA:
             return {
                 ...state,
@@ -211,31 +199,21 @@ export default function (state = initialState, action) {
                     mode: GRADE_ENTRY_FORM_CREATE_MODE
                 }
             };
-        case SET_ACTIVE_GRADE_ENTRY:
+        case SET_EDITED_GRADE_ENTRY:
             return {
                 ...state,
-                activeGradeEntry: action.payload
+                editedGradeEntry: action.payload
             };
+        case APPEND_GRADE_ENTRY:
+            appendInstance(draft.gradeEntries, action.payload);
+            break;
         case REPLACE_GRADE_ENTRY:
-            const editEntryIndex = itemIDIndex(action.payload, state.activeGradeEntries);
-            return {
-                ...state,
-                activeGradeEntries: [
-                    ...state.activeGradeEntries.slice(0, editEntryIndex),
-                    action.payload,
-                    ...state.activeGradeEntries.slice(editEntryIndex + 1)
-                ]
-            };
+            replaceInstance(draft.gradeEntries, action.payload);
+            break;
         case DELETE_GRADE_ENTRY:
-            const deleteEntryIndex = itemIDIndex(action.payload, state.activeGradeEntries);
-            return {
-                ...state,
-                activeGradeEntries: [
-                    ...state.activeGradeEntries.slice(0, deleteEntryIndex),
-                    ...state.activeGradeEntries.slice(deleteEntryIndex + 1)
-                ]
-            };
+            removeInstance(draft.gradeEntries, action.payload);
+            break;
         default:
             return state;
     }
-}
+});

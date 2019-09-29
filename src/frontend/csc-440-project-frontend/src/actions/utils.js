@@ -6,16 +6,12 @@
  * @return {Object} Objectified array of instances
  */
 export function objectify(instances) {
-    console.log(`instances from objectify: ${instances}`);
-    console.log(instances);
     // Create ID indexed object
     const obj = {};
     instances.reduce((objBuilder, instance) => {
         objBuilder[instance.id] = instance;
         return objBuilder;
     }, obj);
-    console.log('object created: ');
-    console.log(obj);
 
     // Add ids in original order
     obj.ids = instances.map(instance => instance.id);
@@ -51,5 +47,44 @@ export function indexInstances(objectifiedInstances, ids) {
  * @param objectifiedInstances {Object} - Objectified instances
  */
 export function allInstances(objectifiedInstances) {
+    if (objectifiedInstances.ids === undefined)
+        return [];
     return objectifiedInstances.ids.map(id => objectifiedInstances[id]);
+}
+
+/**
+ * Append instance to objectified instances.
+ * @param objectifiedInstances {Object} - Objectified instances
+ * @param newInstance {Object} - New instance to append
+ * @return {Object} Objectified instances with new one appended
+ */
+export function appendInstance(objectifiedInstances, newInstance) {
+    objectifiedInstances[newInstance.id] = newInstance;
+    objectifiedInstances.ids.push(newInstance.id);
+    return objectifiedInstances;
+}
+
+/**
+ * Replace instance in objectified instances.
+ *  - Relies on fact that IDs are same when replacing.
+ * @param objectifiedInstances {Object} - Objectified instances
+ * @param newInstance {Object} - New instance to replace with
+ * @return {Object} Objectified instances with replacement
+ */
+export function replaceInstance(objectifiedInstances, newInstance) {
+    objectifiedInstances[newInstance.id] = newInstance;
+    return objectifiedInstances;
+}
+
+/**
+ * Remove instance from objectified instances.
+ * @param objectifiedInstances {Object} - Objectified instances
+ * @param removedInstance {Object} - Instance to remove
+ * @return {Object} Objectified instances with instance removed
+ */
+export function removeInstance(objectifiedInstances, removedInstance) {
+    delete objectifiedInstances[removedInstance.id];
+    const i = objectifiedInstances.ids.indexOf(removedInstance.id);
+    objectifiedInstances.ids.splice(i, 1);
+    return objectifiedInstances;
 }

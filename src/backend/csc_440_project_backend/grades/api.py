@@ -5,21 +5,23 @@ from grades.serializers import CourseSerializer, CourseInstanceSerializer, Grade
 
 
 class CourseViewSet(viewsets.ModelViewSet):
-    queryset = Course.objects.all()
     permission_classes = [
         permissions.IsAuthenticated
     ]
     serializer_class = CourseSerializer
 
+    def get_queryset(self):
+        return Course.objects.filter(course_instances__students=self.request.user)
+
 
 class CourseInstanceViewSet(viewsets.ModelViewSet):
     permission_classes = [
-        permissions.AllowAny
+        permissions.IsAuthenticated
     ]
     serializer_class = CourseInstanceSerializer
 
     def get_queryset(self):
-        return CourseInstance.objects.all()
+        return self.request.user.course_instances.all()
 
 
 class GradeEntryViewSet(viewsets.ModelViewSet):

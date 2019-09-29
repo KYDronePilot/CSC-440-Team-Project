@@ -1,10 +1,10 @@
-import {FETCH_COURSE_INSTANCES} from './types';
+import {FETCH_COURSE_INSTANCES, SET_ACTIVE_COURSE_INSTANCE} from './types';
 import {tokenConfig} from './auth';
 import axios from 'axios';
 
 
-export const fetchCourseInstances = category_id => (dispatch, getState) => {
-    axios.get('http://localhost:8000/api/grade-entries/', tokenConfig(getState))
+export const fetchCourseInstances = () => (dispatch, getState) => {
+    return axios.get('http://localhost:8000/api/course-instances/', tokenConfig(getState))
         .then(res =>
             dispatch({
                 type: FETCH_COURSE_INSTANCES,
@@ -15,3 +15,10 @@ export const fetchCourseInstances = category_id => (dispatch, getState) => {
             console.log('Failed to fetch course instances');
         });
 };
+
+// export const setActiveCourseInstance = courseInstance => dispatch => {
+//     dispatch({
+//         type: SET_ACTIVE_COURSE_INSTANCE,
+//         payload: courseInstance
+//     });
+// };

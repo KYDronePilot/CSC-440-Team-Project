@@ -17,20 +17,17 @@ import {GRADE_ENTRY_FORM_CREATE_MODE, GRADE_ENTRY_FORM_EDIT_MODE} from '../../ac
 
 function mapStateToProps(state) {
     return {
-        activeCategory: state.category.activeCategory,
-        activeGradeEntry: state.gradeEntry.activeGradeEntry,
         visible: state.gradeEntry.form.isOpen,
         displayValidation: state.gradeEntry.form.displayValidation,
         fields: state.gradeEntry.form.fields,
-        mode: state.gradeEntry.form.mode
+        mode: state.gradeEntry.form.mode,
+        editedGradeEntry: state.gradeEntry.editedGradeEntry
     };
 }
 
 class GradeEntryForm extends BaseForm {
     static propTypes = {
         createGradeEntry: PropTypes.func.isRequired,
-        activeCategory: PropTypes.object.isRequired,
-        activeGradeEntry: PropTypes.object.isRequired,
         visible: PropTypes.bool.isRequired,
         displayValidation: PropTypes.bool.isRequired,
         fields: PropTypes.object.isRequired,
@@ -39,7 +36,9 @@ class GradeEntryForm extends BaseForm {
         toggleForm: PropTypes.func.isRequired,
         mode: PropTypes.oneOf([GRADE_ENTRY_FORM_CREATE_MODE, GRADE_ENTRY_FORM_EDIT_MODE]),
         updateGradeEntry: PropTypes.func.isRequired,
-        deleteGradeEntry: PropTypes.func.isRequired
+        deleteGradeEntry: PropTypes.func.isRequired,
+        category: PropTypes.object.isRequired,
+        editedGradeEntry: PropTypes.object.isRequired
     };
 
     constructor(props) {
@@ -127,9 +126,9 @@ class GradeEntryForm extends BaseForm {
         if (!(this.props.mode === GRADE_ENTRY_FORM_EDIT_MODE))
             return true;
         return (!(
-            this.props.fields.name.value === this.props.activeGradeEntry.name
-            && this.props.fields.points.value === this.props.activeGradeEntry.points
-            && this.props.fields.max_points.value === this.props.activeGradeEntry.max_points
+            this.props.fields.name.value === this.props.editedGradeEntry.name
+            && this.props.fields.points.value === this.props.editedGradeEntry.points
+            && this.props.fields.max_points.value === this.props.editedGradeEntry.max_points
         ));
     }
 
@@ -153,12 +152,12 @@ class GradeEntryForm extends BaseForm {
                 this.props.fields.name.value,
                 this.props.fields.points.value,
                 this.props.fields.max_points.value,
-                this.props.activeCategory.id
+                this.props.category.id
             );
         } else if (this.props.mode === GRADE_ENTRY_FORM_EDIT_MODE && this.isEdited()) {
             // Update the entry if in edit mode and the form was edited
             const entry = {
-                ...this.props.activeGradeEntry,
+                ...this.props.editedGradeEntry,
                 name: this.props.fields.name.value,
                 points: this.props.fields.points.value,
                 max_points: this.props.fields.max_points.value
@@ -175,7 +174,7 @@ class GradeEntryForm extends BaseForm {
      * Handle delete confirmation button.
      */
     handleDelete() {
-        this.props.deleteGradeEntry(this.props.activeGradeEntry);
+        this.props.deleteGradeEntry(this.props.editedGradeEntry);
     }
 
     render() {
