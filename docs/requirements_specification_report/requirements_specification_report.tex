@@ -336,59 +336,22 @@ on courses the student has entered through the grade tracking component.
   \caption{Use-case Diagram}
 \end{figure}
 
-\clearpage
+\section{Data Flow Diagrams}
 
 \begin{figure}[p!]
-  \section{Class Diagram}
+  \subsection{Level 0 DFD}
   \centering
-  \includegraphics[width=0.90\linewidth]{class_diagram.pdf}
-  \caption{Class Diagram}
+  \includegraphics[width=0.7\linewidth]{level_0_dfd.pdf}
+  \caption{Level 0 DFD}
 \end{figure}
 
 \clearpage
 
-\begin{figure}[p!]
-  \section{Sequence Diagrams}
-  \subsection{Register Sequence Diagram}
-  \centering
-  \includegraphics[width=\linewidth]{register_sequence_diagram.pdf}
-  \caption{Register Sequence Diagram}
-\end{figure}
+% \section{Sequence Diagrams}
 
-\begin{figure}[p!]
-  \subsection{Login Sequence Diagram}
-  \centering
-  \includegraphics[width=\linewidth]{login_sequence_diagram.pdf}
-  \caption{Login Sequence Diagram}
-\end{figure}
+% \section{State Diagram}
 
-\begin{figure}[p!]
-  \subsection{Logout Sequence Diagram}
-  \centering
-  \includegraphics[width=\linewidth]{logout_sequence_diagram.pdf}
-  \caption{Logout Sequence Diagram}
-\end{figure}
-
-\begin{figure}[p!]
-  \subsection{Concentration Progress Sequence Diagram}
-  \centering
-  \includegraphics[width=\linewidth]{concentration_progress_sequence_diagram.pdf}
-  \caption{Concentration Progress Sequence Diagram}
-\end{figure}
-
-\begin{figure}[p!]
-  \subsection{View Semesters Sequence Diagram}
-  \centering
-  \includegraphics[width=\linewidth]{view_semesters_sequence_diagram.pdf}
-  \caption{View Semesters Sequence Diagram}
-\end{figure}
-
-\begin{figure}[p!]
-  \subsection{Add/Remove Semesters Sequence Diagram}
-  \centering
-  \includegraphics[width=\linewidth]{add_remove_semesters_sequence_diagram.pdf}
-  \caption{Add/Remove Semesters Sequence Diagram}
-\end{figure}
+% \section{Activity Diagrams}
 
 \begin{figure}[p!]
   \subsection{View Courses Sequence Diagram}
@@ -525,10 +488,17 @@ organizations to quickly set it up and use it.
     particular course (e.g. Homework, Tests, etc.).
     \dictitem{Grade Entry} A graded piece of material associated with a particular section 
     (e.g. Homework 2, Exam 1, etc.).
-    \dictitem{User} A new user of the software system who does not yet have an account.
-    \dictitem{Student} A user of the software system who has an account and is a college student.
-    \dictitem{Requirement Structure} A recursive structure defining the required courses to complete
-    a concentration.
-\end{dict}
+    \item \textbf{studentName} (string): Name of a student
+    \item \textbf{studentEmail} (string): Email of a student
+    \item \textbf{studentUsername} (string): Username of a student
+    \item \textbf{studentPassword} (string): Password of a student
+    \item \textbf{student} (Student): Student object, composed of studentName, studentEmail,
+          studentUsername, studentPassword
+    \item \textbf{semester} (Semester): Semester object
+    \item \textbf{course} (Course): Course object
+    \item \textbf{category} (Category): Category object
+    \item \textbf{gradeEntry} (GradeEntry): GradeEntry object
+    \item \textbf{gradeEntry} (GradeEntry): GradeEntry object
+\end{itemize}
 
 \end{document}
