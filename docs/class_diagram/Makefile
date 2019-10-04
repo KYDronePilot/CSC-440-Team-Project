@@ -8,7 +8,7 @@ DRAWIO_BUILDER_IMAGE=kydronepilot19/draw.io-builder
 DIAGRAM_DIR=${CURDIR}
 
 # Database ERD diagram info
-DIAGRAM_FILE=class_diagram.xml
+DIAGRAM_FILE=class_diagram.drawio
 DIAGRAM_FILE_OUT=class_diagram
 DIAGRAM_FILE_FORMAT=pdf
 
