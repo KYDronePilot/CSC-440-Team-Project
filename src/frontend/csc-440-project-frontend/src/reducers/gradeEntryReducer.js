@@ -14,7 +14,7 @@ import {
     GRADE_ENTRY_FORM_SUBMITTED,
     GRADE_ENTRY_FORM_SUCCESS,
     GRADE_ENTRY_FORM_UPDATE_FIELD,
-    GRADE_ENTRY_FORM_UPDATE_STATE,
+    GRADE_ENTRY_FORM_UPDATE_STATE, GRADE_ENTRY_SET_ACTIVE_CATEGORY_ID,
     REPLACE_GRADE_ENTRY,
     SET_EDITED_GRADE_ENTRY
 } from '../actions/types';
@@ -62,7 +62,8 @@ const initialState = {
         isLoading: false,
         isOpen: false,
         displayValidation: false,
-        mode: GRADE_ENTRY_FORM_CREATE_MODE
+        mode: GRADE_ENTRY_FORM_CREATE_MODE,
+        activeCategoryId: -1
     }
 };
 
@@ -212,6 +213,9 @@ export default (state = initialState, action) => produce(state, draft => {
             break;
         case DELETE_GRADE_ENTRY:
             removeInstance(draft.gradeEntries, action.payload);
+            break;
+        case GRADE_ENTRY_SET_ACTIVE_CATEGORY_ID:
+            draft.form.activeCategoryId = action.payload;
             break;
         default:
             return state;

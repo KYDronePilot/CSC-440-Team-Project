@@ -8,6 +8,7 @@ import {fetchCourses} from '../../actions/courseActions';
 import {fetchCourseInstances} from '../../actions/courseInstanceActions';
 import {fetchGradeEntries} from '../../actions/gradeEntryActions';
 import {fetchCategories} from '../../actions/categoryActions';
+import {fetchCSRs} from '../../actions/csrActions';
 
 function mapStateToProps(state) {
     return {
@@ -26,7 +27,8 @@ class GradeTrackerRoute extends Component {
         fetchCourses: PropTypes.func.isRequired,
         fetchCourseInstances: PropTypes.func.isRequired,
         fetchGradeEntries: PropTypes.func.isRequired,
-        fetchCategories: PropTypes.func.isRequired
+        fetchCategories: PropTypes.func.isRequired,
+        fetchCSRs: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -43,7 +45,8 @@ class GradeTrackerRoute extends Component {
             this.props.fetchCourses(),
             this.props.fetchCourseInstances(),
             this.props.fetchGradeEntries(),
-            this.props.fetchCategories()
+            this.props.fetchCategories(),
+            this.props.fetchCSRs()
         ]);
     }
 
@@ -86,6 +89,7 @@ export default connect(
         fetchCourses,
         fetchCourseInstances,
         fetchGradeEntries,
-        fetchCategories
+        fetchCategories,
+        fetchCSRs
     }
 )(GradeTrackerRoute);

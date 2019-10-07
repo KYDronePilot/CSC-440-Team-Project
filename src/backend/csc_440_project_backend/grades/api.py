@@ -49,9 +49,9 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Category.objects.filter(course_instance__students=self.request.user)
-
-    def perform_create(self, serializer):
-        serializer.save(student=self.request.user)
+    #
+    # def perform_create(self, serializer):
+    #     serializer.save(student=self.request.user)
 
 
 class CollegeViewSet(viewsets.ModelViewSet):

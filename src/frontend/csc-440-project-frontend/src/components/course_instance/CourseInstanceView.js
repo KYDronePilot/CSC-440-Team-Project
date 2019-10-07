@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import GradeEntries from '../grade_entries/GradeEntries';
 import {allInstances} from '../../actions/utils';
 import CategoryView from '../categories/CategoryView';
+import GradeEntryForm from '../grade_entries/GradeEntryForm';
+import CategoryForm from '../categories/CategoryForm';
+import {openCreateCategoryForm} from '../../actions/categoryActions';
+import {MDBBtn} from 'mdbreact';
 
 function mapStateToProps(state) {
     return {
@@ -19,7 +22,8 @@ class CourseInstanceView extends Component {
         // courseInstanceID: PropTypes.number.isRequired,
         courseInstances: PropTypes.object.isRequired,
         courses: PropTypes.object.isRequired,
-        categories: PropTypes.object.isRequired
+        categories: PropTypes.object.isRequired,
+        openCreateCategoryForm: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -30,6 +34,7 @@ class CourseInstanceView extends Component {
         this.courseInstance = this.courseInstance.bind(this);
         this.course = this.course.bind(this);
         this.categories = this.categories.bind(this);
+        this.openCreateCategoryForm = this.openCreateCategoryForm.bind(this);
     }
 
     /**
@@ -61,13 +66,26 @@ class CourseInstanceView extends Component {
         return categories.filter(category => category.course_instance === this.courseInstanceId());
     }
 
+    /**
+     * Open form for creating new category.
+     */
+    openCreateCategoryForm(e) {
+        e.preventDefault();
+        this.props.openCreateCategoryForm(this.courseInstanceId());
+    }
+
     render() {
         const courseInstance = this.courseInstance();
         const course = this.course();
 
         return (
             <div>
+                <GradeEntryForm/>
+                <CategoryForm/>
                 <h1>{course.name}</h1>
+                <MDBBtn color={'secondary'} onClick={this.openCreateCategoryForm}>
+                    Add Category
+                </MDBBtn>
                 {this.categories().map(category => <CategoryView key={category.id} category={category}/>)}
             </div>
         );
@@ -75,5 +93,6 @@ class CourseInstanceView extends Component {
 }
 
 export default connect(
-    mapStateToProps
+    mapStateToProps,
+    {openCreateCategoryForm}
 )(CourseInstanceView);

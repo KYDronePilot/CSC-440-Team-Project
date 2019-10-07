@@ -6,6 +6,7 @@ import categoryReducer from './categoryReducer';
 import auth from './auth';
 import courseReducer from './courseReducer';
 import commonReducer from './commonReducer';
+import csrReducer from './csrReducer';
 
 export default combineReducers({
     semester: semesterReducer,
@@ -14,5 +15,6 @@ export default combineReducers({
     category: categoryReducer,
     auth,
     course: courseReducer,
-    common: commonReducer
+    common: commonReducer,
+    csr: csrReducer
 });

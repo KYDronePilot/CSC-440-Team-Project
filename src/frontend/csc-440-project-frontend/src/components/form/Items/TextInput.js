@@ -45,6 +45,7 @@ class TextInput extends Component {
 
         this.feedbackClass = this.feedbackClass.bind(this);
         this.formatFeedback = this.formatFeedback.bind(this);
+        this.cleanValue = this.cleanValue.bind(this);
     }
 
     /**
@@ -64,8 +65,15 @@ class TextInput extends Component {
     formatFeedback(feedback) {
         if (typeof feedback !== typeof [] || feedback === null)
             return [feedback];
-        console.log(typeof feedback !== typeof []);
         return feedback;
+    }
+
+    /**
+     * Clean the value prop.
+     *  - Ensure it is a blank string instead of null.
+     */
+    cleanValue() {
+        return this.props.value === null ? '' : this.props.value;
     }
 
     render() {
@@ -74,7 +82,7 @@ class TextInput extends Component {
                 name={this.props.name} label={this.props.label}
                 onChange={this.props.onChange} type={TextInput.type}
                 className={`form-control ${this.feedbackClass()}`}
-                value={this.props.value} hint={this.props.hint}
+                value={this.cleanValue()} hint={this.props.hint}
             >
                 {this.formatFeedback(this.props.invalidFeedback).map((feedback, i) => (
                     <div key={i} className={'invalid-feedback text-left'}>

@@ -3,6 +3,7 @@ import {MDBListGroupItem} from 'mdbreact';
 import PropTypes from 'prop-types';
 import TimeAgo from 'react-timeago';
 import {connect} from 'react-redux';
+import {editGradeEntry} from '../../actions/gradeEntryActions';
 
 function mapStateToProps(state) {
     return {};
@@ -11,7 +12,7 @@ function mapStateToProps(state) {
 class GradeEntry extends Component {
     static propTypes = {
         gradeEntry: PropTypes.object,
-        editHandler: PropTypes.func.isRequired
+        editGradeEntry: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -34,7 +35,7 @@ class GradeEntry extends Component {
      */
     editGradeEntryEH(e) {
         e.preventDefault();
-        this.props.editHandler(this.props.gradeEntry);
+        this.props.editGradeEntry(this.props.gradeEntry, this.props.gradeEntry.category);
     }
 
     render() {
@@ -58,5 +59,6 @@ class GradeEntry extends Component {
 }
 
 export default connect(
-    mapStateToProps
+    mapStateToProps,
+    {editGradeEntry}
 )(GradeEntry);

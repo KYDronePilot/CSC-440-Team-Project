@@ -2,14 +2,8 @@ import React, {Component} from 'react';
 import {MDBBtn, MDBContainer, MDBListGroup} from 'mdbreact';
 import PropTypes from 'prop-types';
 import GradeEntry from './GradeEntry';
-import GradeEntryForm from './GradeEntryForm';
 import {connect} from 'react-redux';
-import {
-    closeGradeEntryForm,
-    editGradeEntry,
-    openCreateGradeEntryForm,
-    openGradeEntryForm
-} from '../../actions/gradeEntryActions';
+import {closeGradeEntryForm, openCreateGradeEntryForm, openGradeEntryForm} from '../../actions/gradeEntryActions';
 
 
 function mapStateToProps(state) {
@@ -28,35 +22,33 @@ class GradeEntries extends Component {
         openGradeEntryForm: PropTypes.func.isRequired,
         closeGradeEntryForm: PropTypes.func.isRequired,
         openCreateGradeEntryForm: PropTypes.func.isRequired,
-        category: PropTypes.object.isRequired,
-        editGradeEntry: PropTypes.func.isRequired
+        category: PropTypes.object.isRequired
     };
 
     constructor(props) {
         super(props);
-        this.editGradeEntryHandler = this.editGradeEntryHandler.bind(this);
+        this.openCreateForm = this.openCreateForm.bind(this);
     }
 
     /**
-     * Event handler when edit link on grade entry is clicked.
-     * @param gradeEntry {Object} - Grade entry to edit
+     * Open form for creating new grade entry.
      */
-    editGradeEntryHandler(gradeEntry) {
-        this.props.editGradeEntry(gradeEntry);
+    openCreateForm(e) {
+        e.preventDefault();
+        this.props.openCreateGradeEntryForm(this.props.category.id);
     }
 
     render() {
         return (
             <div>
-                <GradeEntryForm category={this.props.category}/>
                 <MDBContainer>
                     <MDBListGroup>
                         {this.props.gradeEntries.map(item => (
-                            <GradeEntry key={item.id} editHandler={this.editGradeEntryHandler} gradeEntry={item}/>
+                            <GradeEntry key={item.id} gradeEntry={item}/>
                         ))}
                     </MDBListGroup>
                     <div className={'d-flex w-100'}>
-                        <MDBBtn color={'secondary'} onClick={this.props.openCreateGradeEntryForm} className={'ml-auto'}>
+                        <MDBBtn color={'secondary'} onClick={this.openCreateForm} className={'ml-auto'}>
                             Add Grade Entry
                         </MDBBtn>
                     </div>
@@ -71,7 +63,6 @@ export default connect(
     {
         openGradeEntryForm,
         closeGradeEntryForm,
-        openCreateGradeEntryForm,
-        editGradeEntry
+        openCreateGradeEntryForm
     }
 )(GradeEntries);

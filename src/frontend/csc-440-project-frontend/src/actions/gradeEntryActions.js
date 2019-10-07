@@ -14,12 +14,13 @@ import {
     GRADE_ENTRY_FORM_SUCCESS,
     GRADE_ENTRY_FORM_UPDATE_FIELD,
     GRADE_ENTRY_FORM_UPDATE_STATE,
+    GRADE_ENTRY_SET_ACTIVE_CATEGORY_ID,
     REPLACE_GRADE_ENTRY,
     SET_EDITED_GRADE_ENTRY
 } from './types';
 import {tokenConfig} from './auth';
 
-export const fetchGradeEntries = category_id => (dispatch, getState) =>  {
+export const fetchGradeEntries = category_id => (dispatch, getState) => {
     const config = tokenConfig(getState);
     // config.params = {
     //     category_id
@@ -68,33 +69,33 @@ export const createGradeEntry = (name, points, max_points, category_id) => (disp
                 type: GRADE_ENTRY_FORM_ERROR,
                 payload: err.response
             });
-        })
+        });
 };
 
 export const openGradeEntryForm = () => dispatch => {
     dispatch({
         type: GRADE_ENTRY_FORM_OPEN
-    })
+    });
 };
 
 export const closeGradeEntryForm = () => dispatch => {
     dispatch({
         type: GRADE_ENTRY_FORM_CLOSE
-    })
+    });
 };
 
 export const updateFormField = (field, newValues) => dispatch => {
     dispatch({
         type: GRADE_ENTRY_FORM_UPDATE_FIELD,
         payload: {field, newValues}
-    })
+    });
 };
 
 export const updateFormState = newState => dispatch => {
     dispatch({
         type: GRADE_ENTRY_FORM_UPDATE_STATE,
         payload: newState
-    })
+    });
 };
 
 export const clearForm = () => dispatch => {
@@ -111,15 +112,14 @@ export const toggleForm = () => (dispatch, getState) => {
         dispatch({
             type: GRADE_ENTRY_FORM_CLEAR
         });
-    }
-    else {
+    } else {
         dispatch({
             type: GRADE_ENTRY_FORM_OPEN
         });
     }
 };
 
-export const editGradeEntry = gradeEntry => dispatch => {
+export const editGradeEntry = (gradeEntry, categoryId) => dispatch => {
     // Load data to edit in the form
     dispatch({
         type: GRADE_ENTRY_FORM_LOAD_DATA,
@@ -132,6 +132,12 @@ export const editGradeEntry = gradeEntry => dispatch => {
         payload: gradeEntry
     });
 
+    // Set the active category
+    dispatch({
+        type: GRADE_ENTRY_SET_ACTIVE_CATEGORY_ID,
+        payload: categoryId
+    });
+
     // Enable editing mode
     dispatch({
         type: GRADE_ENTRY_FORM_ENABLE_EDIT_MODE
@@ -140,13 +146,19 @@ export const editGradeEntry = gradeEntry => dispatch => {
     // Open the form
     dispatch({
         type: GRADE_ENTRY_FORM_OPEN
-    })
+    });
 };
 
-export const openCreateGradeEntryForm = () => dispatch => {
+export const openCreateGradeEntryForm = categoryId => dispatch => {
     // Enable create mode
     dispatch({
         type: GRADE_ENTRY_FORM_ENABLE_CREATE_MODE
+    });
+
+    // Set the category ID
+    dispatch({
+        type: GRADE_ENTRY_SET_ACTIVE_CATEGORY_ID,
+        payload: categoryId
     });
 
     // Open the form
@@ -155,7 +167,7 @@ export const openCreateGradeEntryForm = () => dispatch => {
     });
 };
 
-export const updateGradeEntry = gradeEntry => (dispatch, getState) =>  {
+export const updateGradeEntry = gradeEntry => (dispatch, getState) => {
     dispatch({
         type: GRADE_ENTRY_FORM_SUBMITTED
     });
@@ -176,6 +188,9 @@ export const updateGradeEntry = gradeEntry => (dispatch, getState) =>  {
                 type: GRADE_ENTRY_FORM_SUCCESS
             });
             dispatch({
+                type: GRADE_ENTRY_FORM_CLEAR
+            });
+            dispatch({
                 type: REPLACE_GRADE_ENTRY,
                 payload: res.data
             });
@@ -187,7 +202,7 @@ export const updateGradeEntry = gradeEntry => (dispatch, getState) =>  {
                 type: GRADE_ENTRY_FORM_ERROR,
                 payload: err.response
             });
-        })
+        });
 };
 
 /**
@@ -213,7 +228,7 @@ export const deleteGradeEntry = gradeEntry => (dispatch, getState) => {
             });
         })
         .catch(err => {
-            console.log(`Error occurred when updating a grade entry:`);
+            console.log(`Error occurred when deleting a grade entry:`);
             console.log(err.response);
             dispatch({
                 type: GRADE_ENTRY_FORM_ERROR,

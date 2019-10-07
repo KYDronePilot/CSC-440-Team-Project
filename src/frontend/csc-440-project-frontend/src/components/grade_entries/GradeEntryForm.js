@@ -1,6 +1,6 @@
 import React from 'react';
 import BaseForm from '../form/BaseForm';
-import {MDBBtn, MDBContainer, MDBModal, MDBModalBody, MDBModalFooter, MDBModalHeader, MDBPopover} from 'mdbreact';
+import {MDBBtn, MDBContainer, MDBModal, MDBModalBody, MDBModalFooter, MDBModalHeader} from 'mdbreact';
 import TextInput from '../form/Items/TextInput';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
@@ -14,6 +14,7 @@ import {
 } from '../../actions/gradeEntryActions';
 import validator from 'validator';
 import {GRADE_ENTRY_FORM_CREATE_MODE, GRADE_ENTRY_FORM_EDIT_MODE} from '../../actions/types';
+import {DeleteButtonWithConfirmation} from '../common/forms';
 
 function mapStateToProps(state) {
     return {
@@ -21,7 +22,8 @@ function mapStateToProps(state) {
         displayValidation: state.gradeEntry.form.displayValidation,
         fields: state.gradeEntry.form.fields,
         mode: state.gradeEntry.form.mode,
-        editedGradeEntry: state.gradeEntry.editedGradeEntry
+        editedGradeEntry: state.gradeEntry.editedGradeEntry,
+        categoryId: state.gradeEntry.form.activeCategoryId
     };
 }
 
@@ -37,7 +39,7 @@ class GradeEntryForm extends BaseForm {
         mode: PropTypes.oneOf([GRADE_ENTRY_FORM_CREATE_MODE, GRADE_ENTRY_FORM_EDIT_MODE]),
         updateGradeEntry: PropTypes.func.isRequired,
         deleteGradeEntry: PropTypes.func.isRequired,
-        category: PropTypes.object.isRequired,
+        categoryId: PropTypes.number.isRequired,
         editedGradeEntry: PropTypes.object.isRequired
     };
 
@@ -152,7 +154,7 @@ class GradeEntryForm extends BaseForm {
                 this.props.fields.name.value,
                 this.props.fields.points.value,
                 this.props.fields.max_points.value,
-                this.props.category.id
+                this.props.categoryId
             );
         } else if (this.props.mode === GRADE_ENTRY_FORM_EDIT_MODE && this.isEdited()) {
             // Update the entry if in edit mode and the form was edited
@@ -211,20 +213,7 @@ class GradeEntryForm extends BaseForm {
                         </MDBModalBody>
                         <MDBModalFooter>
                             {this.props.mode === GRADE_ENTRY_FORM_EDIT_MODE &&
-                            <MDBPopover clickable>
-                                <MDBBtn color={'danger'} type={'button'}>
-                                    Delete
-                                </MDBBtn>
-                                <div>
-                                    <p>Are you sure?</p>
-                                    <MDBBtn
-                                        color={'danger'} type={'button'}
-                                        size={'md'} onClick={this.handleDelete}
-                                    >
-                                        Confirm
-                                    </MDBBtn>
-                                </div>
-                            </MDBPopover>
+                            <DeleteButtonWithConfirmation handleDelete={this.handleDelete}/>
                             }
                             <MDBBtn color={'primary'} type={'submit'}>Save</MDBBtn>
                         </MDBModalFooter>
