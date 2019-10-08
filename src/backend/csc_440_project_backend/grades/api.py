@@ -1,5 +1,8 @@
 from grades.models import Course, CourseInstance, GradeEntry, Category, College, CategoryScoreRequirement, Semester
 from rest_framework import viewsets, permissions
+from django.db.models import Q, IntegerField
+from typing import Optional
+from django.db.models.functions import Cast
 from grades.serializers import CourseSerializer, CourseInstanceSerializer, GradeEntrySerializer, CategorySerializer, \
     CollegeSerializer, CategoryScoreRequirementSerializer, SemesterSerializer
 
@@ -81,8 +84,15 @@ class SemesterViewSet(viewsets.ModelViewSet):
     serializer_class = SemesterSerializer
 
     def get_queryset(self):
-        queryset = self.request.user.semesters.all()
-        if 'user_id' in self.request.query_params:
-            queryset.filter(category_id=self.request.query_params['category_id'])
+        queryset = Semester.objects.all()
+        if 'search' in self.request.query_params:
+            query_string = self.request.query_params['search']
+            queryset = queryset.annotate(year_str=Cast('year', IntegerField()))
+            queryset = queryset.filter(Q(year_str__icontains=query_string) | Q(season__icontains=query_string))
+            queryset = queryset.order_by('-last_updated')[:20]
+        if 'student_id' in self.request.query_params:
+            queryset = queryset.filter(students=self.request.query_params['student_id'])
+        if 'exclude_student_id' in self.request.query_params:
+            queryset = queryset.filter(~Q(students=self.request.query_params['exclude_student_id']))
 
         return queryset

@@ -88,3 +88,7 @@ export function removeInstance(objectifiedInstances, removedInstance) {
     objectifiedInstances.ids.splice(i, 1);
     return objectifiedInstances;
 }
+
+export function objectIsEmpty(obj) {
+    return Object.entries(obj).length === 0 && obj.constructor === Object;
+}

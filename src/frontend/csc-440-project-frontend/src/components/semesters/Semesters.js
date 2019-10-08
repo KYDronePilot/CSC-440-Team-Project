@@ -2,13 +2,14 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {fetchSemesters} from '../../actions/semesterActions';
-import {MDBContainer, MDBListGroup} from 'mdbreact';
+import {MDBBtn, MDBContainer, MDBListGroup} from 'mdbreact';
 import {indexInstances} from '../../actions/utils';
 import Semester from './Semester';
 import {fetchCourses} from '../../actions/courseActions';
 import {fetchCourseInstances} from '../../actions/courseInstanceActions';
 import {fetchGradeEntries} from '../../actions/gradeEntryActions';
 import {fetchCategories} from '../../actions/categoryActions';
+import AddSemesterForm from './AddSemesterForm';
 
 function mapStateToProps(state) {
     return {
@@ -30,9 +31,14 @@ class Semesters extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            addFormVisible: false,
+
+        };
 
         this.userEnrolledSemesters = this.userEnrolledSemesters.bind(this);
+        this.toggleAddFormVisible = this.toggleAddFormVisible.bind(this);
+        this.openAddForm = this.openAddForm.bind(this);
     }
 
     componentDidMount() {
@@ -52,14 +58,29 @@ class Semesters extends Component {
         return indexInstances(this.props.semesters, this.props.userSemesterIDs);
     }
 
+    toggleAddFormVisible() {
+        this.setState(state => ({
+            addFormVisible: !state.addFormVisible
+        }))
+    }
+
+    openAddForm() {
+        this.setState({addFormVisible: true});
+    }
+
     render() {
         return (
             <div>
+                <AddSemesterForm
+                    visible={this.state.addFormVisible}
+                    toggleVisible={this.toggleAddFormVisible}
+                />
                 <MDBContainer>
                     <MDBListGroup>
                         {this.userEnrolledSemesters().map(item => <Semester key={item.id} semester={item}/>)}
                     </MDBListGroup>
                 </MDBContainer>
+                <MDBBtn onClick={this.openAddForm} className={'primary'}/>
             </div>
         );
     }

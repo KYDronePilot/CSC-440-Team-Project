@@ -51,4 +51,4 @@ class CategoryScoreRequirementSerializer(serializers.ModelSerializer):
 class SemesterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Semester
-        fields = '__all__'
+        fields = ('colleges', 'id', 'last_updated', 'notes', 'season', 'year', 'students')

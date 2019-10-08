@@ -1,24 +1,21 @@
-import {FETCH_SEMESTERS, SET_ACTIVE_SEMESTER} from '../actions/types';
-import {objectify} from '../actions/utils';
+import {APPEND_SEMESTER, FETCH_SEMESTERS, SET_ACTIVE_SEMESTER} from '../actions/types';
+import {appendInstance, objectify} from '../actions/utils';
+import produce from 'immer';
 
 const initialState = {
     semesters: {},
     // activeSemesterID: -1
 };
 
-export default function (state = initialState, action) {
+export default (state = initialState, action) => produce(state, draft => {
     switch (action.type) {
         case FETCH_SEMESTERS:
-            return {
-                ...state,
-                semesters: objectify(action.payload)
-            };
-        // case SET_ACTIVE_SEMESTER:
-        //     return {
-        //         ...state,
-        //         activeSemesterID: action.payload.id
-        //     };
+            draft.semesters = objectify(action.payload);
+            break;
+        case APPEND_SEMESTER:
+            appendInstance(draft.semesters, action.payload);
+            break;
         default:
-            return state;
+            break;
     }
-}
+});
