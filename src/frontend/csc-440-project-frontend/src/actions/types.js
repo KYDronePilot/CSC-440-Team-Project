@@ -2,6 +2,7 @@ export const FETCH_SEMESTERS = 'FETCH_SEMESTERS';
 export const NEW_SEMESTER = 'NEW_SEMESTER';
 export const SET_ACTIVE_SEMESTER = 'SET_ACTIVE_SEMESTER';
 export const APPEND_SEMESTER = 'APPEND_SEMESTER';
+export const DELETE_SEMESTER = 'DELETE_SEMESTER';
 
 
 export const FETCH_GRADE_ENTRIES = 'FETCH_GRADE_ENTRIES';
@@ -56,6 +57,7 @@ export const FETCH_CATEGORIES = 'FETCH_CATEGORIES';
 
 // Common actions
 export const DATA_LOADED = 'DATA_LOADED';
+export const DATA_NOT_LOADED = 'DATA_NOT_LOADED';
 
 export const CATEGORY_FORM_CREATE_MODE = 'CATEGORY_FORM_CREATE_MODE';
 export const CATEGORY_FORM_EDIT_MODE = 'CATEGORY_FORM_EDIT_MODE';
@@ -76,3 +78,7 @@ export const DELETE_CATEGORY = 'DELETE_CATEGORY';
 
 // Category score requirement actions
 export const FETCH_CSRS = 'FETCH_CSRS';
+
+// User specific actions
+export const ADD_SEMESTER_TO_STUDENT = 'ADD_SEMESTER_TO_STUDENT';
+export const REMOVE_SEMESTER_FROM_STUDENT = 'REMOVE_SEMESTER_FROM_STUDENT';

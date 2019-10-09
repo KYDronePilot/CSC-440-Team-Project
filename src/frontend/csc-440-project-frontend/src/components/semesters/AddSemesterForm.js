@@ -2,17 +2,11 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {MDBBtn, MDBContainer, MDBModal, MDBModalBody, MDBModalFooter, MDBModalHeader} from 'mdbreact';
-import TextInput from '../form/Items/TextInput';
-import Select from 'react-select';
-import {CATEGORY_FORM_EDIT_MODE} from '../../actions/types';
-import {DeleteButtonWithConfirmation} from '../common/forms';
-import auth from '../../reducers/auth';
 import {tokenConfig} from '../../actions/auth';
 import AsyncSelect from 'react-select/async';
 import axios from 'axios';
-import {semesterToString} from '../../actions/semesterActions';
+import {addStudentSemesterRelationship, semesterToString} from '../../actions/semesterActions';
 import {objectIsEmpty} from '../../actions/utils';
-import {addStudentSemesterRelationship} from '../../actions/semesterActions';
 
 function mapStateToProps(state) {
     return {
@@ -49,7 +43,7 @@ class AddSemesterForm extends Component {
         const config = tokenConfig(() => this.props.state);
         config.params = {
             search: inputValue,
-            exclude_student_id: this.props.student.id
+            exclude_student_id: ''
         };
         axios.get('http://localhost:8000/api/semesters/', config)
             .then(res => {
@@ -68,7 +62,12 @@ class AddSemesterForm extends Component {
      */
     handleFormSubmit(e) {
         e.preventDefault();
-        this.props.addStudentSemesterRelationship(this.state.semester, this.props.toggleVisible);
+
+        // Add student to semester
+        const semester = this.state.semester;
+        semester.students.push(this.props.student.id);
+
+        this.props.addStudentSemesterRelationship(semester, this.props.toggleVisible);
     }
 
     onSemesterSelectChange(option) {

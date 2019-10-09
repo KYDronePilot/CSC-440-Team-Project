@@ -36,7 +36,6 @@ class GradeTrackerRoute extends Component {
         this.loadData = this.loadData.bind(this);
     }
 
-
     async loadData() {
         if (this.props.dataLoaded)
             return;

@@ -1,5 +1,5 @@
-import {APPEND_SEMESTER, FETCH_SEMESTERS, SET_ACTIVE_SEMESTER} from '../actions/types';
-import {appendInstance, objectify} from '../actions/utils';
+import {APPEND_SEMESTER, DELETE_SEMESTER, FETCH_SEMESTERS, SET_ACTIVE_SEMESTER} from '../actions/types';
+import {appendInstance, objectify, removeInstance} from '../actions/utils';
 import produce from 'immer';
 
 const initialState = {
@@ -14,6 +14,9 @@ export default (state = initialState, action) => produce(state, draft => {
             break;
         case APPEND_SEMESTER:
             appendInstance(draft.semesters, action.payload);
+            break;
+        case DELETE_SEMESTER:
+            removeInstance(draft.semesters, action.payload);
             break;
         default:
             break;

@@ -1,4 +1,5 @@
 import {
+    ADD_SEMESTER_TO_STUDENT,
     APPEND_SEMESTER,
     CATEGORY_FORM_CLEAR,
     CATEGORY_FORM_CLOSE, CATEGORY_FORM_ERROR,
@@ -42,12 +43,11 @@ export const fetchSemesters = () => (dispatch, getState) => {
     const config = {
         ...tokenConfig(getState),
         params: {
-            student_id: getState().auth.user.id
+            student_id: ''
         }
     };
     return axios.get('http://localhost:8000/api/semesters/', config)
         .then(res => {
-            console.log(res.data);
             dispatch({
                 type: FETCH_SEMESTERS,
                 payload: res.data
@@ -86,14 +86,38 @@ export const addStudentSemesterRelationship = (semester, callback = () => null) 
 
     axios.patch(`http://localhost:8000/api/semesters/${semester.id}/`, semester, config)
         .then(res => {
+            // Add semester to state
             dispatch({
                 type: APPEND_SEMESTER,
                 payload: res.data
+            });
+
+            // Add relationship to student
+            dispatch({
+                type: ADD_SEMESTER_TO_STUDENT,
+                payload: res.data.id
             });
             callback();
         })
         .catch(err => {
             console.log(`Error occurred when adding student-semester relationship:`);
+            console.log(err.response);
+        });
+};
+
+export const removeStudentSemesterRelationship = (semester, callback = () => null) => (dispatch, getState) => {
+    const config = tokenConfig(getState);
+    config.params = {
+        student_relationship: ''
+    };
+
+    axios.delete(`http://localhost:8000/api/semesters/${semester.id}/`, config)
+        .then(res => {
+            // Trigger entire state reload
+            callback();
+        })
+        .catch(err => {
+            console.log(`Error occurred when removing student semester relationship:`);
             console.log(err.response);
         });
 };

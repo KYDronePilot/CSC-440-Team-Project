@@ -1,7 +1,10 @@
-from grades.models import Course, CourseInstance, GradeEntry, Category, College, CategoryScoreRequirement, Semester
+from grades.models import Course, CourseInstance, GradeEntry, Category, College, CategoryScoreRequirement, Semester, \
+    User
 from rest_framework import viewsets, permissions
 from django.db.models import Q, IntegerField
 from typing import Optional
+from rest_framework.response import Response
+from rest_framework.mixins import status
 from django.db.models.functions import Cast
 from grades.serializers import CourseSerializer, CourseInstanceSerializer, GradeEntrySerializer, CategorySerializer, \
     CollegeSerializer, CategoryScoreRequirementSerializer, SemesterSerializer
@@ -85,14 +88,44 @@ class SemesterViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = Semester.objects.all()
+        if 'student_id' in self.request.query_params:
+            queryset = queryset.filter(students=self.request.user.id)
+        elif 'exclude_student_id' in self.request.query_params:
+            queryset = queryset.filter(~Q(students=self.request.user.id))
         if 'search' in self.request.query_params:
             query_string = self.request.query_params['search']
             queryset = queryset.annotate(year_str=Cast('year', IntegerField()))
             queryset = queryset.filter(Q(year_str__icontains=query_string) | Q(season__icontains=query_string))
             queryset = queryset.order_by('-last_updated')[:20]
-        if 'student_id' in self.request.query_params:
-            queryset = queryset.filter(students=self.request.query_params['student_id'])
-        if 'exclude_student_id' in self.request.query_params:
-            queryset = queryset.filter(~Q(students=self.request.query_params['exclude_student_id']))
 
         return queryset
+
+    def destroy_student_relationship(self) -> Response:
+        """
+        Destroy relationship between student and semester, including all
+        course instances and grade entries.
+
+        Returns:
+            Success response
+        """
+        semester = self.get_object()
+        student = self.request.user
+
+        # Delete grade entries
+        GradeEntry.objects.filter(Q(student=student) & Q(category__course_instance__semester=semester)).delete()
+
+        # Delete course instance relationships
+        course_instances = CourseInstance.objects.filter(Q(semester=semester) & Q(students=student))
+        student.course_instances.remove(*course_instances)
+
+        # Delete semester relationship
+        student.semesters.remove(semester)
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def destroy(self, request, *args, **kwargs):
+        if 'student_relationship' in self.request.query_params:
+            return self.destroy_student_relationship()
+
+        # No one can delete a semester via the API
+        return status.HTTP_403_FORBIDDEN

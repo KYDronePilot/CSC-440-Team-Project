@@ -33,7 +33,6 @@ class Semesters extends Component {
         super(props);
         this.state = {
             addFormVisible: false,
-
         };
 
         this.userEnrolledSemesters = this.userEnrolledSemesters.bind(this);
@@ -80,7 +79,7 @@ class Semesters extends Component {
                         {this.userEnrolledSemesters().map(item => <Semester key={item.id} semester={item}/>)}
                     </MDBListGroup>
                 </MDBContainer>
-                <MDBBtn onClick={this.openAddForm} className={'primary'}/>
+                <MDBBtn onClick={this.openAddForm} className={'primary'}>Add Semester</MDBBtn>
             </div>
         );
     }
