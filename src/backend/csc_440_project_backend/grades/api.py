@@ -4,6 +4,7 @@ from rest_framework import viewsets, permissions
 from django.db.models import Q, IntegerField
 from typing import Optional
 from rest_framework.response import Response
+from rest_framework import filters
 from rest_framework.mixins import status
 from django.db.models.functions import Cast
 from grades.serializers import CourseSerializer, CourseInstanceSerializer, GradeEntrySerializer, CategorySerializer, \
@@ -25,8 +26,13 @@ class CourseInstanceViewSet(viewsets.ModelViewSet):
         permissions.IsAuthenticated
     ]
     serializer_class = CourseInstanceSerializer
+    filter_backends = filters.SearchFilter
+    search_fields = []
 
     def get_queryset(self):
+        CourseInstance.objects.filter(course__name=)
+        CourseInstance.objects.filter(course__code=)
+        CourseInstance.objects.filter(college)
         return self.request.user.course_instances.all()
 
 
