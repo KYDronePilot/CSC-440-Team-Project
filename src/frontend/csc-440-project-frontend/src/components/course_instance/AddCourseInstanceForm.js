@@ -33,7 +33,7 @@ class AddCourseInstanceForm extends Component {
      * @returns {*}
      */
     loadCourseInstances(inputValue, callback) {
-        
+
     }
 
     render() {

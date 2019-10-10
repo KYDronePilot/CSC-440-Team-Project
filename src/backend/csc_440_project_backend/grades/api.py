@@ -1,14 +1,14 @@
 from grades.models import Course, CourseInstance, GradeEntry, Category, College, CategoryScoreRequirement, Semester, \
     User
 from rest_framework import viewsets, permissions
-from django.db.models import Q, IntegerField
+from django.db.models import Q, IntegerField, CharField
 from typing import Optional
 from rest_framework.response import Response
 from rest_framework import filters
 from rest_framework.mixins import status
 from django.db.models.functions import Cast
 from grades.serializers import CourseSerializer, CourseInstanceSerializer, GradeEntrySerializer, CategorySerializer, \
-    CollegeSerializer, CategoryScoreRequirementSerializer, SemesterSerializer
+    CollegeSerializer, CategoryScoreRequirementSerializer, SemesterSerializer, CourseInstanceAddSearchSerializer
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -26,14 +26,25 @@ class CourseInstanceViewSet(viewsets.ModelViewSet):
         permissions.IsAuthenticated
     ]
     serializer_class = CourseInstanceSerializer
-    filter_backends = filters.SearchFilter
-    search_fields = []
 
     def get_queryset(self):
-        CourseInstance.objects.filter(course__name=)
-        CourseInstance.objects.filter(course__code=)
-        CourseInstance.objects.filter(college)
+        # CourseInstance.objects.filter(course__name=)
+        # CourseInstance.objects.filter(course__code=)
+        # CourseInstance.objects.filter(college)
         return self.request.user.course_instances.all()
+
+
+class CourseInstanceAddSearchViewSet(CourseInstanceViewSet):
+    """
+    For searching for a particular semester.
+    """
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('id', 'section_str', 'course__name', 'course__code')
+    serializer_class = CourseInstanceAddSearchSerializer
+
+    def get_queryset(self):
+        queryset = CourseInstance.objects.all()
+        return queryset.annotate(section_str=Cast('section', CharField()))
 
 
 class GradeEntryViewSet(viewsets.ModelViewSet):

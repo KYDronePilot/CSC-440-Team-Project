@@ -14,6 +14,12 @@ class CourseInstanceSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class CourseInstanceAddSearchSerializer(CourseInstanceSerializer):
+    class Meta:
+        model = CourseInstance
+        fields = ('id', 'section', 'course__name', 'course__code')
+
+
 class GradeEntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = GradeEntry
