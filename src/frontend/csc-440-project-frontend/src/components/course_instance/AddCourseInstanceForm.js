@@ -9,6 +9,7 @@ import {tokenConfig} from '../../actions/auth';
 import axios from 'axios';
 import {loadData} from '../../actions/common';
 import {setDataLoaded, setDataNotLoaded} from '../../actions/commonActions';
+import {reloadState} from '../../actions/courseInstanceActions';
 
 function mapStateToProps(state) {
     return {
@@ -25,7 +26,8 @@ class AddCourseInstanceForm extends Component {
         student: PropTypes.object.isRequired,
         semesterId: PropTypes.number.isRequired,
         setDataLoaded: PropTypes.func.isRequired,
-        setDataNotLoaded: PropTypes.func.isRequired
+        setDataNotLoaded: PropTypes.func.isRequired,
+        reloadState: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -40,7 +42,6 @@ class AddCourseInstanceForm extends Component {
         this.onCourseInstanceSelectChange = this.onCourseInstanceSelectChange.bind(this);
         this.getCourseInstance = this.getCourseInstance.bind(this);
         this.updateCourseInstance = this.updateCourseInstance.bind(this);
-        this.reloadState = this.reloadState.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
     }
 
@@ -109,14 +110,6 @@ class AddCourseInstanceForm extends Component {
     }
 
     /**
-     * Reload all state.
-     */
-    reloadState() {
-        this.props.setDataNotLoaded();
-        loadData().then(() => this.props.setDataLoaded());
-    }
-
-    /**
      * Handle submission of the form.
      * @param e {Event} - Submission event
      */
@@ -128,7 +121,7 @@ class AddCourseInstanceForm extends Component {
             courseInstance.students.push(this.props.student.id);
             this.updateCourseInstance(courseInstance, () => {
                 this.props.toggleVisible();
-                this.reloadState();
+                this.props.reloadState();
             });
         });
     }
@@ -178,6 +171,7 @@ export default connect(
     mapStateToProps,
     {
         setDataLoaded,
-        setDataNotLoaded
+        setDataNotLoaded,
+        reloadState
     }
 )(AddCourseInstanceForm);
