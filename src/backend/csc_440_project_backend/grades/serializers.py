@@ -14,10 +14,26 @@ class CourseInstanceSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class CourseInstanceAddSearchSerializer(CourseInstanceSerializer):
+class CourseInstanceSearchCourseSerializer(CourseSerializer):
+    """
+    Serialize courses for use when searching course instances.
+    """
+
+    class Meta:
+        model = Course
+        fields = ('id', 'code', 'name')
+
+
+class CourseInstanceSearchSerializer(CourseInstanceSerializer):
+    """
+    Serialize common information needed when searching for a course instance.
+    """
+
+    course = CourseInstanceSearchCourseSerializer()
+
     class Meta:
         model = CourseInstance
-        fields = ('id', 'section', 'course__name', 'course__code')
+        fields = ('id', 'section', 'course')
 
 
 class GradeEntrySerializer(serializers.ModelSerializer):

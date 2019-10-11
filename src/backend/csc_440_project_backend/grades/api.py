@@ -8,7 +8,7 @@ from rest_framework import filters
 from rest_framework.mixins import status
 from django.db.models.functions import Cast
 from grades.serializers import CourseSerializer, CourseInstanceSerializer, GradeEntrySerializer, CategorySerializer, \
-    CollegeSerializer, CategoryScoreRequirementSerializer, SemesterSerializer, CourseInstanceAddSearchSerializer
+    CollegeSerializer, CategoryScoreRequirementSerializer, SemesterSerializer, CourseInstanceSearchSerializer
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -18,6 +18,8 @@ class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
 
     def get_queryset(self):
+        if 'pk' in self.kwargs:
+            return Course.objects.filter(id=self.kwargs['pk'])
         return Course.objects.filter(course_instances__students=self.request.user)
 
 
@@ -28,9 +30,8 @@ class CourseInstanceViewSet(viewsets.ModelViewSet):
     serializer_class = CourseInstanceSerializer
 
     def get_queryset(self):
-        # CourseInstance.objects.filter(course__name=)
-        # CourseInstance.objects.filter(course__code=)
-        # CourseInstance.objects.filter(college)
+        if 'pk' in self.kwargs:
+            return CourseInstance.objects.filter(id=self.kwargs['pk'])
         return self.request.user.course_instances.all()
 
 
@@ -39,12 +40,16 @@ class CourseInstanceAddSearchViewSet(CourseInstanceViewSet):
     For searching for a particular semester.
     """
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('id', 'section_str', 'course__name', 'course__code')
-    serializer_class = CourseInstanceAddSearchSerializer
+    search_fields = ('id', 'section', 'course__name', 'course__code', 'course__id')
+    serializer_class = CourseInstanceSearchSerializer
 
     def get_queryset(self):
-        queryset = CourseInstance.objects.all()
-        return queryset.annotate(section_str=Cast('section', CharField()))
+        queryset = CourseInstance.objects.select_related('course').all()
+        if 'exclude_self' in self.request.query_params:
+            queryset = queryset.filter(~Q(students=self.request.user))
+        if 'semester_id' in self.request.query_params:
+            queryset = queryset.filter(Q(semester_id=int(self.request.query_params['semester_id'])))
+        return queryset
 
 
 class GradeEntryViewSet(viewsets.ModelViewSet):

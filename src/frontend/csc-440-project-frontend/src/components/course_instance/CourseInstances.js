@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {allInstances} from '../../actions/utils';
-import {MDBContainer, MDBListGroup} from 'mdbreact';
+import {MDBBtn, MDBContainer, MDBListGroup} from 'mdbreact';
 import CourseInstance from './CourseInstance';
+import AddCourseInstanceForm from './AddCourseInstanceForm';
 
 function mapStateToProps(state) {
     return {
@@ -20,10 +21,13 @@ class CourseInstances extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            addFormVisible: false
+        };
 
         this.activeCourseInstances = this.activeCourseInstances.bind(this);
         this.semesterId = this.semesterId.bind(this);
+        this.toggleAddFormVisible = this.toggleAddFormVisible.bind(this);
     }
 
     /**
@@ -41,9 +45,20 @@ class CourseInstances extends Component {
         return instances.filter(instance => instance.semester === this.semesterId());
     }
 
+    toggleAddFormVisible() {
+        this.setState(state => ({
+            addFormVisible: !state.addFormVisible
+        }));
+    }
+
     render() {
         return (
             <div>
+                <AddCourseInstanceForm
+                    visible={this.state.addFormVisible}
+                    toggleVisible={this.toggleAddFormVisible}
+                    semesterId={this.semesterId()}
+                />
                 <MDBContainer>
                     <MDBListGroup>
                         {this.activeCourseInstances().map(item => (
@@ -51,6 +66,7 @@ class CourseInstances extends Component {
                         ))}
                     </MDBListGroup>
                 </MDBContainer>
+                <MDBBtn onClick={this.toggleAddFormVisible} className={'primary'}>Add Course Instance</MDBBtn>
             </div>
         );
     }
