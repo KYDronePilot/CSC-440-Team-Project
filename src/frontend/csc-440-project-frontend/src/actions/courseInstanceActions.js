@@ -1,7 +1,7 @@
-import {DATA_LOADED, DATA_NOT_LOADED, FETCH_COURSE_INSTANCES, SET_ACTIVE_COURSE_INSTANCE} from './types';
+import {DATA_NOT_LOADED, FETCH_COURSE_INSTANCES} from './types';
 import {tokenConfig} from './auth';
 import axios from 'axios';
-import {loadData} from './common';
+// import {loadData} from './common';
 
 
 export const fetchCourseInstances = () => (dispatch, getState) => {
@@ -17,21 +17,21 @@ export const fetchCourseInstances = () => (dispatch, getState) => {
         });
 };
 
-export const reloadState = () => (dispatch, getState) => {
-    dispatch({
-        type: DATA_NOT_LOADED
-    });
+export const removeStudentCourseInstanceRelationship = (courseInstance) => (dispatch, getState) => {
+    const config = tokenConfig(getState);
+    config.params = {
+        student_relationship: ''
+    };
 
-    loadData().then( res => dispatch({
-            type: DATA_LOADED
+    axios.delete(`http://localhost:8000/api/course-instances/${courseInstance.id}/`, config)
+        .then(res => {
+            // Trigger state reload
+            dispatch({
+                type: DATA_NOT_LOADED
+            });
         })
-    );
+        .catch(err => {
+            console.log(`Error occurred when removing student semester relationship:`);
+            console.log(err.response);
+        });
 };
-
-
-// export const setActiveCourseInstance = courseInstance => dispatch => {
-//     dispatch({
-//         type: SET_ACTIVE_COURSE_INSTANCE,
-//         payload: courseInstance
-//     });
-// };

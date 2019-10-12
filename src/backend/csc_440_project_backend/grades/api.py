@@ -29,10 +29,36 @@ class CourseInstanceViewSet(viewsets.ModelViewSet):
     ]
     serializer_class = CourseInstanceSerializer
 
+    def destroy_student_relationship(self) -> Response:
+        """
+        Destroy relationship between student and course instance, including
+        all grade entries.
+
+        Returns:
+            Success response
+        """
+        course_instance = self.get_object()
+        student = self.request.user
+
+        # Delete grade entries
+        GradeEntry.objects.filter(Q(student=student) & Q(category__course_instance=course_instance)).delete()
+
+        # Delete student relationship
+        student.course_instances.remove(course_instance)
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
     def get_queryset(self):
         if 'pk' in self.kwargs:
             return CourseInstance.objects.filter(id=self.kwargs['pk'])
         return self.request.user.course_instances.all()
+
+    def destroy(self, request, *args, **kwargs):
+        if 'student_relationship' in self.request.query_params:
+            return self.destroy_student_relationship()
+
+        # No one can delete a semester via the API
+        return status.HTTP_403_FORBIDDEN
 
 
 class CourseInstanceAddSearchViewSet(CourseInstanceViewSet):

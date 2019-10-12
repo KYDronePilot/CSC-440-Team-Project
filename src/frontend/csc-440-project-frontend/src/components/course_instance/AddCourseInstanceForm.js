@@ -7,9 +7,7 @@ import AsyncSelect from 'react-select/async';
 import {objectIsEmpty} from '../../actions/utils';
 import {tokenConfig} from '../../actions/auth';
 import axios from 'axios';
-import {loadData} from '../../actions/common';
-import {setDataLoaded, setDataNotLoaded} from '../../actions/commonActions';
-import {reloadState} from '../../actions/courseInstanceActions';
+import {setDataNotLoaded} from '../../actions/commonActions';
 
 function mapStateToProps(state) {
     return {
@@ -25,9 +23,7 @@ class AddCourseInstanceForm extends Component {
         state: PropTypes.object.isRequired,
         student: PropTypes.object.isRequired,
         semesterId: PropTypes.number.isRequired,
-        setDataLoaded: PropTypes.func.isRequired,
-        setDataNotLoaded: PropTypes.func.isRequired,
-        reloadState: PropTypes.func.isRequired
+        setDataNotLoaded: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -79,31 +75,25 @@ class AddCourseInstanceForm extends Component {
     /**
      * Get course instance from ID.
      * @param courseInstanceId {number} - ID of course instance
-     * @param callback {Function} - Callback when the response is received
      */
-    getCourseInstance(courseInstanceId, callback) {
-        axios.get(
+    async getCourseInstance(courseInstanceId) {
+        return axios.get(
             `http://localhost:8000/api/course-instances/${courseInstanceId}/`,
             tokenConfig(() => this.props.state))
-            .then(res => callback(res.data))
-            .catch(err => {
-                console.log('Failed to fetch course instance');
-            });
+            .catch(err => console.log(err))
     }
 
     /**
      * Update a course instance.
      * @param courseInstance {Object} - Course instance to update
-     * @param callback {Function} - Callback when the response is received
      */
-    updateCourseInstance(courseInstance, callback) {
+    async updateCourseInstance(courseInstance) {
         const config = tokenConfig(() => this.props.state);
         const body = {
             id: courseInstance.id,
             students: courseInstance.students
         };
-        axios.patch(`http://localhost:8000/api/course-instances/${courseInstance.id}/`, body, config)
-            .then(res => callback(res.data))
+        return axios.patch(`http://localhost:8000/api/course-instances/${courseInstance.id}/`, body, config)
             .catch(err => {
                 console.log('Failed to update course instance');
             });
@@ -116,14 +106,16 @@ class AddCourseInstanceForm extends Component {
     handleFormSubmit(e) {
         e.preventDefault();
 
-        // Get and update the course instance
-        this.getCourseInstance(this.state.courseInstanceId, courseInstance => {
-            courseInstance.students.push(this.props.student.id);
-            this.updateCourseInstance(courseInstance, () => {
-                this.props.toggleVisible();
-                this.props.reloadState();
+        this.getCourseInstance(this.state.courseInstanceId)
+            .then(res => res.data)
+            .then(courseInstance => {
+                courseInstance.students.push(this.props.student.id);
+                this.updateCourseInstance(courseInstance)
+                    .then(() => {
+                        // Reload data
+                        this.props.setDataNotLoaded();
+                    });
             });
-        });
     }
 
     onCourseInstanceSelectChange(option) {
@@ -170,8 +162,6 @@ class AddCourseInstanceForm extends Component {
 export default connect(
     mapStateToProps,
     {
-        setDataLoaded,
-        setDataNotLoaded,
-        reloadState
+        setDataNotLoaded
     }
 )(AddCourseInstanceForm);

@@ -9,7 +9,6 @@ import {Link, Redirect} from 'react-router-dom';
 import DeleteWarning from '../common/DeleteWarning';
 import {removeStudentSemesterRelationship} from '../../actions/semesterActions';
 import {setDataNotLoaded} from '../../actions/commonActions';
-import {loadData} from '../../actions/common';
 import {setDataLoaded} from '../../actions/commonActions';
 
 // Semester constants
@@ -65,10 +64,10 @@ class Semester extends Component {
 
     deleteSemester() {
         this.props.removeStudentSemesterRelationship(this.props.semester, () => {
-            // this.setState({redirectSemester: true})
-            this.props.setDataNotLoaded();
-            // TODO: This shouldn't be done here
-            loadData().then(() => this.props.setDataLoaded());
+            // // this.setState({redirectSemester: true})
+            // this.props.setDataNotLoaded();
+            // // TODO: This shouldn't be done here
+            // loadData().then(() => this.props.setDataLoaded());
         });
     }
 

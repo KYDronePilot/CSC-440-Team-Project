@@ -49,7 +49,7 @@ class GradeTrackerRoute extends Component {
         ]);
     }
 
-    componentDidMount() {
+    componentDidUpdate(prevProps, prevState, snapshot) {
         if (!this.props.dataLoaded) {
             this.loadData()
                 .then(() => {
