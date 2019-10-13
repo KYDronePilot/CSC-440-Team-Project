@@ -5,6 +5,7 @@ import {allInstances} from '../../actions/utils';
 import {MDBBtn, MDBContainer, MDBListGroup} from 'mdbreact';
 import CourseInstance from './CourseInstance';
 import AddCourseInstanceForm from './AddCourseInstanceForm';
+import {SemesterBreadcrumb} from '../layout/breadcrumbs';
 
 function mapStateToProps(state) {
     return {
@@ -59,6 +60,7 @@ class CourseInstances extends Component {
                     toggleVisible={this.toggleAddFormVisible}
                     semesterId={this.semesterId()}
                 />
+                <SemesterBreadcrumb semesterId={this.semesterId()}/>
                 <MDBContainer>
                     <MDBListGroup>
                         {this.activeCourseInstances().map(item => (

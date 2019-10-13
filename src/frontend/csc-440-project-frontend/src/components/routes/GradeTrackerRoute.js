@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Redirect, Route} from 'react-router';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import {setDataLoaded} from '../../actions/commonActions';
 import {fetchSemesters} from '../../actions/semesterActions';
 import {fetchCourses} from '../../actions/courseActions';
@@ -9,11 +9,13 @@ import {fetchCourseInstances} from '../../actions/courseInstanceActions';
 import {fetchGradeEntries} from '../../actions/gradeEntryActions';
 import {fetchCategories} from '../../actions/categoryActions';
 import {fetchCSRs} from '../../actions/csrActions';
+import {forceDataReload, forceDataReloadReset} from '../../actions/commonActions';
 
 function mapStateToProps(state) {
     return {
         auth: state.auth,
-        dataLoaded: state.common.dataLoaded
+        dataLoaded: state.common.dataLoaded,
+        forceDataReloadState: state.common.forceDataReload
     };
 }
 
@@ -28,7 +30,10 @@ class GradeTrackerRoute extends Component {
         fetchCourseInstances: PropTypes.func.isRequired,
         fetchGradeEntries: PropTypes.func.isRequired,
         fetchCategories: PropTypes.func.isRequired,
-        fetchCSRs: PropTypes.func.isRequired
+        fetchCSRs: PropTypes.func.isRequired,
+        forceDataReloadState: PropTypes.bool.isRequired,
+        forceDataReload: PropTypes.func.isRequired,
+        forceDataReloadReset: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -54,6 +59,7 @@ class GradeTrackerRoute extends Component {
             this.loadData()
                 .then(() => {
                     this.props.setDataLoaded();
+                    this.props.forceDataReloadReset();
                 })
                 .catch(err => console.log(`Error while loading data: ${err}`));
         }
@@ -69,7 +75,7 @@ class GradeTrackerRoute extends Component {
                         return <h2>Loading...</h2>;
                     } else if (!auth.isAuthenticated) {
                         return <Redirect to={'/login'}/>;
-                    } else if (!this.props.dataLoaded) {
+                    } else if (!this.props.dataLoaded || this.props.forceDataReloadState) {
                         return <h2>Data loading</h2>;
                     } else {
                         return <TheComponent {...props}/>;
@@ -89,6 +95,8 @@ export default connect(
         fetchCourseInstances,
         fetchGradeEntries,
         fetchCategories,
-        fetchCSRs
+        fetchCSRs,
+        forceDataReload,
+        forceDataReloadReset
     }
 )(GradeTrackerRoute);

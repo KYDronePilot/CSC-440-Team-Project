@@ -7,6 +7,7 @@ import GradeEntryForm from '../grade_entries/GradeEntryForm';
 import CategoryForm from '../categories/CategoryForm';
 import {openCreateCategoryForm} from '../../actions/categoryActions';
 import {MDBBtn} from 'mdbreact';
+import {CourseInstanceBreadcrumb} from '../layout/breadcrumbs';
 
 function mapStateToProps(state) {
     return {
@@ -82,6 +83,10 @@ class CourseInstanceView extends Component {
             <div>
                 <GradeEntryForm/>
                 <CategoryForm/>
+                <CourseInstanceBreadcrumb
+                    semesterId={this.courseInstance().semester}
+                    courseInstanceId={this.courseInstanceId()}
+                />
                 <h1>{course.name}</h1>
                 <MDBBtn color={'secondary'} onClick={this.openCreateCategoryForm}>
                     Add Category

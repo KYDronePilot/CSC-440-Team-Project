@@ -7,7 +7,7 @@ import {
     LOGIN_FAIL,
     LOGOUT_SUCCESS,
     REGISTER_SUCCESS,
-    REGISTER_FAIL
+    REGISTER_FAIL, DATA_NOT_LOADED, FORCE_DATA_RELOAD
 } from './types';
 
 
@@ -51,7 +51,12 @@ export const login = (username, password) => dispatch => {
             dispatch({
                 type: LOGIN_SUCCESS,
                 payload: res.data
-            })
+            });
+
+            // Force state reload
+            dispatch({
+                type: FORCE_DATA_RELOAD
+            });
         })
         .catch(err => {
             console.log('Auth error: CHANGE THIS MESSAGE!!!');

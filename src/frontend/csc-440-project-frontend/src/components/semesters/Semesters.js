@@ -10,6 +10,7 @@ import {fetchCourseInstances} from '../../actions/courseInstanceActions';
 import {fetchGradeEntries} from '../../actions/gradeEntryActions';
 import {fetchCategories} from '../../actions/categoryActions';
 import AddSemesterForm from './AddSemesterForm';
+import {GradeTrackerBreadcrumb, HomeBreadcrumb} from '../layout/breadcrumbs';
 
 function mapStateToProps(state) {
     return {
@@ -40,15 +41,6 @@ class Semesters extends Component {
         this.openAddForm = this.openAddForm.bind(this);
     }
 
-    componentDidMount() {
-        // TEMP: load in everything
-        this.props.fetchSemesters();
-        this.props.fetchCourses();
-        this.props.fetchCourseInstances();
-        this.props.fetchGradeEntries();
-        this.props.fetchCategories();
-    }
-
     /**
      * Semesters in which the user is enrolled in.
      * @return {Array} Semesters the user is enrolled in
@@ -74,6 +66,7 @@ class Semesters extends Component {
                     visible={this.state.addFormVisible}
                     toggleVisible={this.toggleAddFormVisible}
                 />
+                <GradeTrackerBreadcrumb/>
                 <MDBContainer>
                     <MDBListGroup>
                         {this.userEnrolledSemesters().map(item => <Semester key={item.id} semester={item}/>)}
