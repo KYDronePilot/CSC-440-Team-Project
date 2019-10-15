@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import {allInstances} from '../utils/objectification_utils';
 import {MDBBtn, MDBContainer, MDBListGroup} from 'mdbreact';
 import CourseInstance from '../components/CourseInstanceListItem';
@@ -9,14 +9,13 @@ import {SemesterBreadcrumb} from '../components/layout/breadcrumbs';
 
 function mapStateToProps(state) {
     return {
-        courseInstances: state.courseInstance.courseInstances,
-        // activeSemesterID: state.semester.activeSemesterID
+        courseInstances: state.courseInstance.courseInstances
     };
 }
 
 class SemesterView extends Component {
     static propTypes = {
-        courseInstances: PropTypes.object.isRequired,
+        courseInstances: PropTypes.object.isRequired
         // activeSemesterID: PropTypes.number
     };
 

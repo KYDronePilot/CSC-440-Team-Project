@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import TimeAgo from 'react-timeago';
 import {MDBBtn, MDBListGroupItem} from 'mdbreact';
 import {withRouter} from 'react-router';

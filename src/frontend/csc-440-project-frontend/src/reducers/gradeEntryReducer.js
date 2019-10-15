@@ -14,22 +14,13 @@ import {
     GRADE_ENTRY_FORM_SUBMITTED,
     GRADE_ENTRY_FORM_SUCCESS,
     GRADE_ENTRY_FORM_UPDATE_FIELD,
-    GRADE_ENTRY_FORM_UPDATE_STATE, GRADE_ENTRY_SET_ACTIVE_CATEGORY_ID,
+    GRADE_ENTRY_FORM_UPDATE_STATE,
+    GRADE_ENTRY_SET_ACTIVE_CATEGORY_ID,
     REPLACE_GRADE_ENTRY,
     SET_EDITED_GRADE_ENTRY
 } from '../actions/types';
 import {appendInstance, objectify, removeInstance, replaceInstance} from '../utils/objectification_utils';
 import produce from 'immer';
-
-/**
- * Get index of item in list of items based on `id` key.
- * @param item - Item being searched for
- * @param items - Items to search through
- * @return {number} Index of item in items
- */
-function itemIDIndex(item, items) {
-    return items.map(anItem => anItem.id).indexOf(item.id);
-}
 
 // Default state for form fields
 const defaultFormFieldState = {

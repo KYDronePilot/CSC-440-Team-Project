@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {Link, Redirect} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import {register} from '../actions/auth';
 
 function mapStateToProps(state) {
@@ -11,13 +11,10 @@ function mapStateToProps(state) {
 }
 
 class RegisterView extends Component {
-    constructor(props) {
-        super(props);
-
-        this.onSubmit = this.onSubmit.bind(this);
-        this.onChange = this.onChange.bind(this);
-    }
-
+    static propTypes = {
+        register: PropTypes.func.isRequired,
+        isAuthenticated: PropTypes.bool
+    };
 
     state = {
         username: '',
@@ -26,10 +23,12 @@ class RegisterView extends Component {
         password2: ''
     };
 
-    static propTypes = {
-        register: PropTypes.func.isRequired,
-        isAuthenticated: PropTypes.bool
-    };
+    constructor(props) {
+        super(props);
+
+        this.onSubmit = this.onSubmit.bind(this);
+        this.onChange = this.onChange.bind(this);
+    }
 
     onSubmit(e) {
         e.preventDefault();
@@ -52,7 +51,7 @@ class RegisterView extends Component {
 
     render() {
         if (this.props.isAuthenticated) {
-            return <Redirect to={'/'}/>
+            return <Redirect to={'/'}/>;
         }
         const {username, email, password, password2} = this.state;
         return (

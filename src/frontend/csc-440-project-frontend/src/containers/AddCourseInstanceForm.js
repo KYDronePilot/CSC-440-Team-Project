@@ -7,7 +7,6 @@ import AsyncSelect from 'react-select/async';
 import {tokenConfig} from '../actions/auth';
 import axios from 'axios';
 import {setDataNotLoaded} from '../actions/commonActions';
-import {objectIsEmpty} from '../utils';
 
 function mapStateToProps(state) {
     return {
@@ -80,7 +79,7 @@ class AddCourseInstanceForm extends Component {
         return axios.get(
             `http://localhost:8000/api/course-instances/${courseInstanceId}/`,
             tokenConfig(() => this.props.state))
-            .catch(err => console.log(err))
+            .catch(err => console.log(err));
     }
 
     /**

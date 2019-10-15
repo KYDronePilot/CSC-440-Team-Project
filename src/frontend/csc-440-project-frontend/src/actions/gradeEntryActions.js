@@ -22,9 +22,6 @@ import {tokenConfig} from './auth';
 
 export const fetchGradeEntries = category_id => (dispatch, getState) => {
     const config = tokenConfig(getState);
-    // config.params = {
-    //     category_id
-    // };
 
     return axios.get('http://localhost:8000/api/grade-entries/', config)
         .then(res =>

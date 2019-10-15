@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {Link, Redirect} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import {login} from '../actions/auth';
 
 function mapStateToProps(state) {
@@ -11,22 +11,21 @@ function mapStateToProps(state) {
 }
 
 class LoginView extends Component {
+    static propTypes = {
+        login: PropTypes.func.isRequired,
+        isAuthenticated: PropTypes.bool
+    };
+
+    state = {
+        username: '',
+        password: ''
+    };
+
     constructor(props) {
         super(props);
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
-
-
-    state = {
-        username: '',
-        password: '',
-    };
-
-    static propTypes = {
-        login: PropTypes.func.isRequired,
-        isAuthenticated: PropTypes.bool
-    };
 
     onSubmit(e) {
         e.preventDefault();
@@ -39,7 +38,7 @@ class LoginView extends Component {
 
     render() {
         if (this.props.isAuthenticated) {
-            return <Redirect to={'/'}/>
+            return <Redirect to={'/'}/>;
         }
         const {username, password} = this.state;
         return (

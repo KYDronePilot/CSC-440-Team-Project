@@ -1,12 +1,9 @@
 import {
     ADD_SEMESTER_TO_STUDENT,
     APPEND_SEMESTER,
-    CATEGORY_FORM_CLEAR,
-    CATEGORY_FORM_CLOSE, CATEGORY_FORM_ERROR,
-    CATEGORY_FORM_SUBMITTED,
+    CATEGORY_FORM_ERROR,
     FETCH_SEMESTERS,
-    GET_SEMESTERS, REPLACE_CATEGORY,
-    SET_ACTIVE_SEMESTER
+    REPLACE_CATEGORY
 } from '../actions/types';
 import {tokenConfig} from './auth';
 import axios from 'axios';
@@ -30,14 +27,6 @@ const SEASON_LABELS = {
 export function semesterToString(semester) {
     return `${SEASON_LABELS[semester.season]}, ${semester.year}`;
 }
-
-// export const fetchSemesters = () => _fetchSemesters({student_id: });
-
-const _fetchSemestersRequest = (config, onFulfilled, onCatch) => {
-    return axios.get('http://localhost:8000/api/semesters/', config)
-        .then(onFulfilled)
-        .catch(onCatch);
-};
 
 export const fetchSemesters = () => (dispatch, getState) => {
     const config = {
@@ -121,11 +110,3 @@ export const removeStudentSemesterRelationship = (semester, callback = () => nul
             console.log(err.response);
         });
 };
-
-
-// export const setActiveSemester = semester => dispatch => {
-//     dispatch({
-//         type: SET_ACTIVE_SEMESTER,
-//         payload: semester
-//     })
-// };

@@ -5,7 +5,6 @@ import store from './store';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Login from './views/LoginView';
 import Register from './views/RegisterView';
-import PrivateRoute from './routes/PrivateRoute';
 import {loadUser} from './actions/auth';
 import Header from './components/layout/Header';
 import SemestersView from './views/SemestersView';

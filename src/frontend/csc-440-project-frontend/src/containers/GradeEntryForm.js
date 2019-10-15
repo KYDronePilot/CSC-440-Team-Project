@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {MDBBtn, MDBContainer, MDBModal, MDBModalBody, MDBModalFooter, MDBModalHeader} from 'mdbreact';
 import TextInput from '../components/TextInput';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {
     createGradeEntry,

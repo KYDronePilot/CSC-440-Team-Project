@@ -19,7 +19,6 @@ export function objectify(instances) {
     return obj;
 }
 
-
 /**
  * Get instances by IDs from objectified instances.
  *  - Preserves original order of instances.
@@ -33,7 +32,7 @@ export function indexInstances(objectifiedInstances, ids) {
     // Get correct order for IDs
     const idSet = ids.reduce((objBuilder, id) => {
         objBuilder[id] = null;
-        return objBuilder
+        return objBuilder;
     }, {});
     const orderedIDs = objectifiedInstances.ids.filter(id => id in idSet);
 

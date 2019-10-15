@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import {MDBContainer} from 'mdbreact';
 import GradeEntries from '../containers/GradeEntryList';
 import {allInstances} from '../utils/objectification_utils';

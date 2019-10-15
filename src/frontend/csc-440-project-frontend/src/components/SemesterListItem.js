@@ -1,15 +1,13 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import {MDBBtn, MDBListGroupItem} from 'mdbreact';
 import TimeAgo from 'react-timeago';
-// import {setActiveSemester} from '../../actions/semesterActions';
 import {withRouter} from 'react-router';
 import {Link, Redirect} from 'react-router-dom';
 import DeleteWarning from './DeleteWarning';
 import {removeStudentSemesterRelationship} from '../actions/semesterActions';
-import {setDataNotLoaded} from '../actions/commonActions';
-import {setDataLoaded} from '../actions/commonActions';
+import {setDataLoaded, setDataNotLoaded} from '../actions/commonActions';
 
 // Semester constants
 const FALL = 'fall';

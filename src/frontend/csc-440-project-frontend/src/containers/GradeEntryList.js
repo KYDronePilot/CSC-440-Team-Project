@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {MDBBtn, MDBContainer, MDBListGroup} from 'mdbreact';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import GradeEntry from '../components/GradeEntryListItem';
 import {connect} from 'react-redux';
 import {closeGradeEntryForm, openCreateGradeEntryForm, openGradeEntryForm} from '../actions/gradeEntryActions';

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {MDBListGroupItem} from 'mdbreact';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import TimeAgo from 'react-timeago';
 import {connect} from 'react-redux';
 import {editGradeEntry} from '../actions/gradeEntryActions';

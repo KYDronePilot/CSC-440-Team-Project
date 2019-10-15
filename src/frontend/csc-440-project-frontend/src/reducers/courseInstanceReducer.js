@@ -1,9 +1,8 @@
-import {FETCH_COURSE_INSTANCES, GRADE_ENTRY_FORM_CREATE_MODE, SET_ACTIVE_COURSE_INSTANCE} from '../actions/types';
+import {FETCH_COURSE_INSTANCES} from '../actions/types';
 import {objectify} from '../utils/objectification_utils';
 
 const initialRootState = {
-    courseInstances: {},
-    // activeCourseInstanceID: -1
+    courseInstances: {}
 };
 
 export default function (state = initialRootState, action) {
@@ -13,11 +12,6 @@ export default function (state = initialRootState, action) {
                 ...state,
                 courseInstances: objectify(action.payload)
             };
-        // case SET_ACTIVE_COURSE_INSTANCE:
-        //     return {
-        //         ...state,
-        //         activeCourseInstanceID: action.payload.id
-        //     };
         default:
             return state;
     }

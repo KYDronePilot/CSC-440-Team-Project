@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import {allInstances} from '../utils/objectification_utils';
 import CategoryView from './CategoryView';
 import GradeEntryForm from '../containers/GradeEntryForm';
@@ -76,7 +76,6 @@ class CourseInstanceView extends Component {
     }
 
     render() {
-        const courseInstance = this.courseInstance();
         const course = this.course();
 
         return (

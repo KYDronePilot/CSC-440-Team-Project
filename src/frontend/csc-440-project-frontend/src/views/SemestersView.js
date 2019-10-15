@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import {fetchSemesters} from '../actions/semesterActions';
 import {MDBBtn, MDBContainer, MDBListGroup} from 'mdbreact';
 import {indexInstances} from '../utils/objectification_utils';
@@ -10,7 +10,7 @@ import {fetchCourseInstances} from '../actions/courseInstanceActions';
 import {fetchGradeEntries} from '../actions/gradeEntryActions';
 import {fetchCategories} from '../actions/categoryActions';
 import AddSemesterForm from '../containers/AddSemesterForm';
-import {GradeTrackerBreadcrumb, HomeBreadcrumb} from '../components/layout/breadcrumbs';
+import {GradeTrackerBreadcrumb} from '../components/layout/breadcrumbs';
 
 function mapStateToProps(state) {
     return {
@@ -33,7 +33,7 @@ class SemestersView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            addFormVisible: false,
+            addFormVisible: false
         };
 
         this.userEnrolledSemesters = this.userEnrolledSemesters.bind(this);
@@ -52,7 +52,7 @@ class SemestersView extends Component {
     toggleAddFormVisible() {
         this.setState(state => ({
             addFormVisible: !state.addFormVisible
-        }))
+        }));
     }
 
     openAddForm() {

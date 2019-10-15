@@ -1,15 +1,15 @@
 import axios from 'axios';
 import {
-    USER_LOADED,
-    USER_LOADING,
     AUTH_ERROR,
-    LOGIN_SUCCESS,
+    FORCE_DATA_RELOAD,
     LOGIN_FAIL,
+    LOGIN_SUCCESS,
     LOGOUT_SUCCESS,
+    REGISTER_FAIL,
     REGISTER_SUCCESS,
-    REGISTER_FAIL, DATA_NOT_LOADED, FORCE_DATA_RELOAD
+    USER_LOADED,
+    USER_LOADING
 } from './types';
-
 
 /**
  * Check token and load user
@@ -19,17 +19,18 @@ export const loadUser = () => (dispatch, getState) => {
 
     axios.get('http://localhost:8000/api/auth/user', tokenConfig(getState))
         .then(res => {
-            dispatch({type: USER_LOADED,
-            payload: res.data})
+            dispatch({
+                type: USER_LOADED,
+                payload: res.data
+            });
         })
         .catch(err => {
             console.log('Auth error: CHANGE THIS MESSAGE!!!');
             dispatch({
                 type: AUTH_ERROR
-            })
-        })
+            });
+        });
 };
-
 
 /**
  * Login user
@@ -62,8 +63,8 @@ export const login = (username, password) => dispatch => {
             console.log('Auth error: CHANGE THIS MESSAGE!!!');
             dispatch({
                 type: LOGIN_FAIL
-            })
-        })
+            });
+        });
 };
 
 /**
@@ -88,16 +89,15 @@ export const register = ({username, email, password}) => dispatch => {
             dispatch({
                 type: REGISTER_SUCCESS,
                 payload: res.data
-            })
+            });
         })
         .catch(err => {
             console.log('Register fail: CHANGE THIS MESSAGE!!!');
             dispatch({
                 type: REGISTER_FAIL
-            })
-        })
+            });
+        });
 };
-
 
 /**
  * Logout user
@@ -107,13 +107,12 @@ export const logout = () => (dispatch, getState) => {
         .then(res => {
             dispatch({
                 type: LOGOUT_SUCCESS
-            })
+            });
         })
         .catch(err => {
             console.log('Auth error: CHANGE THIS MESSAGE!!!');
-        })
+        });
 };
-
 
 /**
  * Setup config with token

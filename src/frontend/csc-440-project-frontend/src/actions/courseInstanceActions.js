@@ -1,8 +1,6 @@
 import {DATA_NOT_LOADED, FETCH_COURSE_INSTANCES} from './types';
 import {tokenConfig} from './auth';
 import axios from 'axios';
-// import {loadData} from './common';
-
 
 export const fetchCourseInstances = () => (dispatch, getState) => {
     return axios.get('http://localhost:8000/api/course-instances/', tokenConfig(getState))

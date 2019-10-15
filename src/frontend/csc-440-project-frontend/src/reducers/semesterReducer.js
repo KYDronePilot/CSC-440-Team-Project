@@ -1,10 +1,9 @@
-import {APPEND_SEMESTER, DELETE_SEMESTER, FETCH_SEMESTERS, SET_ACTIVE_SEMESTER} from '../actions/types';
+import {APPEND_SEMESTER, DELETE_SEMESTER, FETCH_SEMESTERS} from '../actions/types';
 import {appendInstance, objectify, removeInstance} from '../utils/objectification_utils';
 import produce from 'immer';
 
 const initialState = {
-    semesters: {},
-    // activeSemesterID: -1
+    semesters: {}
 };
 
 export default (state = initialState, action) => produce(state, draft => {
