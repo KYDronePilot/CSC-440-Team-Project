@@ -2,14 +2,14 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Redirect, Route} from 'react-router';
 import * as PropTypes from 'prop-types';
-import {setDataLoaded} from '../../actions/commonActions';
-import {fetchSemesters} from '../../actions/semesterActions';
-import {fetchCourses} from '../../actions/courseActions';
-import {fetchCourseInstances} from '../../actions/courseInstanceActions';
-import {fetchGradeEntries} from '../../actions/gradeEntryActions';
-import {fetchCategories} from '../../actions/categoryActions';
-import {fetchCSRs} from '../../actions/csrActions';
-import {forceDataReload, forceDataReloadReset} from '../../actions/commonActions';
+import {setDataLoaded} from '../actions/commonActions';
+import {fetchSemesters} from '../actions/semesterActions';
+import {fetchCourses} from '../actions/courseActions';
+import {fetchCourseInstances} from '../actions/courseInstanceActions';
+import {fetchGradeEntries} from '../actions/gradeEntryActions';
+import {fetchCategories} from '../actions/categoryActions';
+import {fetchCSRs} from '../actions/csrActions';
+import {forceDataReload, forceDataReloadReset} from '../actions/commonActions';
 
 function mapStateToProps(state) {
     return {

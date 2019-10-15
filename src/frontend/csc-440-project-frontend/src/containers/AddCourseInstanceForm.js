@@ -4,10 +4,10 @@ import {connect} from 'react-redux';
 import * as PropTypes from 'prop-types';
 import {MDBBtn, MDBContainer, MDBModal, MDBModalBody, MDBModalFooter, MDBModalHeader} from 'mdbreact';
 import AsyncSelect from 'react-select/async';
-import {objectIsEmpty} from '../../actions/utils';
-import {tokenConfig} from '../../actions/auth';
+import {tokenConfig} from '../actions/auth';
 import axios from 'axios';
-import {setDataNotLoaded} from '../../actions/commonActions';
+import {setDataNotLoaded} from '../actions/commonActions';
+import {objectIsEmpty} from '../utils';
 
 function mapStateToProps(state) {
     return {

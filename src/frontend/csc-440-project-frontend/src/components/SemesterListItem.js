@@ -6,10 +6,10 @@ import TimeAgo from 'react-timeago';
 // import {setActiveSemester} from '../../actions/semesterActions';
 import {withRouter} from 'react-router';
 import {Link, Redirect} from 'react-router-dom';
-import DeleteWarning from '../common/DeleteWarning';
-import {removeStudentSemesterRelationship} from '../../actions/semesterActions';
-import {setDataNotLoaded} from '../../actions/commonActions';
-import {setDataLoaded} from '../../actions/commonActions';
+import DeleteWarning from './DeleteWarning';
+import {removeStudentSemesterRelationship} from '../actions/semesterActions';
+import {setDataNotLoaded} from '../actions/commonActions';
+import {setDataLoaded} from '../actions/commonActions';
 
 // Semester constants
 const FALL = 'fall';
@@ -29,7 +29,7 @@ function mapStateToProps(state) {
     };
 }
 
-class Semester extends Component {
+class SemesterListItem extends Component {
     static propTypes = {
         semester: PropTypes.object,
         removeStudentSemesterRelationship: PropTypes.func.isRequired,
@@ -109,4 +109,4 @@ export default connect(
         setDataNotLoaded,
         setDataLoaded
     }
-)(withRouter(Semester));
+)(withRouter(SemesterListItem));

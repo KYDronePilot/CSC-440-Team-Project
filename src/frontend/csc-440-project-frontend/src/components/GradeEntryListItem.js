@@ -3,13 +3,13 @@ import {MDBListGroupItem} from 'mdbreact';
 import PropTypes from 'prop-types';
 import TimeAgo from 'react-timeago';
 import {connect} from 'react-redux';
-import {editGradeEntry} from '../../actions/gradeEntryActions';
+import {editGradeEntry} from '../actions/gradeEntryActions';
 
 function mapStateToProps(state) {
     return {};
 }
 
-class GradeEntry extends Component {
+class GradeEntryListItem extends Component {
     static propTypes = {
         gradeEntry: PropTypes.object,
         editGradeEntry: PropTypes.func.isRequired
@@ -61,4 +61,4 @@ class GradeEntry extends Component {
 export default connect(
     mapStateToProps,
     {editGradeEntry}
-)(GradeEntry);
+)(GradeEntryListItem);

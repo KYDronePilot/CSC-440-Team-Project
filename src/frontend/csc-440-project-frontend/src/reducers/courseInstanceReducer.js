@@ -1,5 +1,5 @@
 import {FETCH_COURSE_INSTANCES, GRADE_ENTRY_FORM_CREATE_MODE, SET_ACTIVE_COURSE_INSTANCE} from '../actions/types';
-import {objectify} from '../actions/utils';
+import {objectify} from '../utils/objectification_utils';
 
 const initialRootState = {
     courseInstances: {},

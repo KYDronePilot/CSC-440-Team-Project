@@ -1,7 +1,6 @@
-import React from 'react';
-import BaseForm from '../form/BaseForm';
+import React, {Component} from 'react';
 import {MDBBtn, MDBContainer, MDBModal, MDBModalBody, MDBModalFooter, MDBModalHeader} from 'mdbreact';
-import TextInput from '../form/Items/TextInput';
+import TextInput from '../components/TextInput';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {
@@ -11,10 +10,10 @@ import {
     updateFormField,
     updateFormState,
     updateGradeEntry
-} from '../../actions/gradeEntryActions';
+} from '../actions/gradeEntryActions';
 import validator from 'validator';
-import {GRADE_ENTRY_FORM_CREATE_MODE, GRADE_ENTRY_FORM_EDIT_MODE} from '../../actions/types';
-import {DeleteButtonWithConfirmation} from '../common/forms';
+import {GRADE_ENTRY_FORM_CREATE_MODE, GRADE_ENTRY_FORM_EDIT_MODE} from '../actions/types';
+import {DeleteButtonWithConfirmation} from '../components/forms';
 
 function mapStateToProps(state) {
     return {
@@ -27,7 +26,7 @@ function mapStateToProps(state) {
     };
 }
 
-class GradeEntryForm extends BaseForm {
+class GradeEntryForm extends Component {
     static propTypes = {
         createGradeEntry: PropTypes.func.isRequired,
         visible: PropTypes.bool.isRequired,

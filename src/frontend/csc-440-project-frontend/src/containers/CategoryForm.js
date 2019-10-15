@@ -9,14 +9,14 @@ import {
     updateCategory,
     updateFormField,
     updateFormState
-} from '../../actions/categoryActions';
-import {CATEGORY_FORM_CREATE_MODE, CATEGORY_FORM_EDIT_MODE, POINT_BASED} from '../../actions/types';
+} from '../actions/categoryActions';
+import {CATEGORY_FORM_CREATE_MODE, CATEGORY_FORM_EDIT_MODE, POINT_BASED} from '../actions/types';
 import {MDBBtn, MDBContainer, MDBModal, MDBModalBody, MDBModalFooter, MDBModalHeader} from 'mdbreact';
-import TextInput from '../form/Items/TextInput';
-import {allInstances} from '../../actions/utils';
+import TextInput from '../components/TextInput';
+import {allInstances} from '../utils/objectification_utils';
 import Select from 'react-select';
-import {csrName} from '../../actions/csrActions';
-import {DeleteButtonWithConfirmation} from '../common/forms';
+import {csrName} from '../actions/csrActions';
+import {DeleteButtonWithConfirmation} from '../components/forms';
 
 function mapStateToProps(state) {
     const categoryForm = state.category.form;

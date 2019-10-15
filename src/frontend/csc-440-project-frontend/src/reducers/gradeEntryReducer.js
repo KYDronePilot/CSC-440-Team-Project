@@ -18,7 +18,7 @@ import {
     REPLACE_GRADE_ENTRY,
     SET_EDITED_GRADE_ENTRY
 } from '../actions/types';
-import {appendInstance, objectify, removeInstance, replaceInstance} from '../actions/utils';
+import {appendInstance, objectify, removeInstance, replaceInstance} from '../utils/objectification_utils';
 import produce from 'immer';
 
 /**

@@ -11,7 +11,7 @@ function mapStateToProps(state) {
 /**
  * Category Score Requirement entry component.
  */
-class CsrListEntry extends Component {
+class CsrListItem extends Component {
     static propTypes = {
         csr: PropTypes.object.isRequired
     };
@@ -40,4 +40,4 @@ class CsrListEntry extends Component {
 
 export default connect(
     mapStateToProps
-)(CsrListEntry);
+)(CsrListItem);

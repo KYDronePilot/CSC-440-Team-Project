@@ -1,5 +1,5 @@
 import {FETCH_COURSES} from '../actions/types';
-import {objectify} from '../actions/utils';
+import {objectify} from '../utils/objectification_utils';
 
 const initialRootState = {
     courses: {}

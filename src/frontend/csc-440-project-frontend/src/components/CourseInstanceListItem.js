@@ -5,8 +5,8 @@ import TimeAgo from 'react-timeago';
 import {MDBBtn, MDBListGroupItem} from 'mdbreact';
 import {withRouter} from 'react-router';
 import {Link} from 'react-router-dom';
-import DeleteWarning from '../common/DeleteWarning';
-import {removeStudentCourseInstanceRelationship} from '../../actions/courseInstanceActions';
+import DeleteWarning from './DeleteWarning';
+import {removeStudentCourseInstanceRelationship} from '../actions/courseInstanceActions';
 
 function mapStateToProps(state) {
     return {
@@ -14,7 +14,7 @@ function mapStateToProps(state) {
     };
 }
 
-class CourseInstance extends Component {
+class CourseInstanceListItem extends Component {
     static propTypes = {
         courseInstance: PropTypes.object.isRequired,
         courses: PropTypes.object.isRequired,
@@ -96,4 +96,4 @@ class CourseInstance extends Component {
 export default connect(
     mapStateToProps,
     {removeStudentCourseInstanceRelationship}
-)(withRouter(CourseInstance));
+)(withRouter(CourseInstanceListItem));

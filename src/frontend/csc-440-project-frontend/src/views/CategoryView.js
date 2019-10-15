@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {MDBContainer} from 'mdbreact';
-import GradeEntries from '../grade_entries/GradeEntries';
-import {allInstances} from '../../actions/utils';
-import {editCategory} from '../../actions/categoryActions';
+import GradeEntries from '../containers/GradeEntryList';
+import {allInstances} from '../utils/objectification_utils';
+import {editCategory} from '../actions/categoryActions';
 
 function mapStateToProps(state) {
     return {

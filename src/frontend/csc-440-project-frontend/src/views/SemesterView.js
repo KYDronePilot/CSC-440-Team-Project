@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {allInstances} from '../../actions/utils';
+import {allInstances} from '../utils/objectification_utils';
 import {MDBBtn, MDBContainer, MDBListGroup} from 'mdbreact';
-import CourseInstance from './CourseInstance';
-import AddCourseInstanceForm from './AddCourseInstanceForm';
-import {SemesterBreadcrumb} from '../layout/breadcrumbs';
+import CourseInstance from '../components/CourseInstanceListItem';
+import AddCourseInstanceForm from '../containers/AddCourseInstanceForm';
+import {SemesterBreadcrumb} from '../components/layout/breadcrumbs';
 
 function mapStateToProps(state) {
     return {
@@ -14,7 +14,7 @@ function mapStateToProps(state) {
     };
 }
 
-class CourseInstances extends Component {
+class SemesterView extends Component {
     static propTypes = {
         courseInstances: PropTypes.object.isRequired,
         // activeSemesterID: PropTypes.number
@@ -76,4 +76,4 @@ class CourseInstances extends Component {
 
 export default connect(
     mapStateToProps
-)(CourseInstances);
+)(SemesterView);

@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {MDBBtn, MDBContainer, MDBListGroup} from 'mdbreact';
 import PropTypes from 'prop-types';
-import GradeEntry from './GradeEntry';
+import GradeEntry from '../components/GradeEntryListItem';
 import {connect} from 'react-redux';
-import {closeGradeEntryForm, openCreateGradeEntryForm, openGradeEntryForm} from '../../actions/gradeEntryActions';
+import {closeGradeEntryForm, openCreateGradeEntryForm, openGradeEntryForm} from '../actions/gradeEntryActions';
 
 
 function mapStateToProps(state) {
@@ -15,7 +15,7 @@ function mapStateToProps(state) {
 /**
  * List view for grade entries.
  */
-class GradeEntries extends Component {
+class GradeEntryList extends Component {
     static propTypes = {
         gradeEntries: PropTypes.arrayOf(PropTypes.object),
         gradeEntryFormVisible: PropTypes.bool.isRequired,
@@ -65,4 +65,4 @@ export default connect(
         closeGradeEntryForm,
         openCreateGradeEntryForm
     }
-)(GradeEntries);
+)(GradeEntryList);

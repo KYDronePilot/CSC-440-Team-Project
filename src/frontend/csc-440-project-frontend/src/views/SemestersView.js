@@ -1,16 +1,16 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {fetchSemesters} from '../../actions/semesterActions';
+import {fetchSemesters} from '../actions/semesterActions';
 import {MDBBtn, MDBContainer, MDBListGroup} from 'mdbreact';
-import {indexInstances} from '../../actions/utils';
-import Semester from './Semester';
-import {fetchCourses} from '../../actions/courseActions';
-import {fetchCourseInstances} from '../../actions/courseInstanceActions';
-import {fetchGradeEntries} from '../../actions/gradeEntryActions';
-import {fetchCategories} from '../../actions/categoryActions';
-import AddSemesterForm from './AddSemesterForm';
-import {GradeTrackerBreadcrumb, HomeBreadcrumb} from '../layout/breadcrumbs';
+import {indexInstances} from '../utils/objectification_utils';
+import Semester from '../components/SemesterListItem';
+import {fetchCourses} from '../actions/courseActions';
+import {fetchCourseInstances} from '../actions/courseInstanceActions';
+import {fetchGradeEntries} from '../actions/gradeEntryActions';
+import {fetchCategories} from '../actions/categoryActions';
+import AddSemesterForm from '../containers/AddSemesterForm';
+import {GradeTrackerBreadcrumb, HomeBreadcrumb} from '../components/layout/breadcrumbs';
 
 function mapStateToProps(state) {
     return {
@@ -19,7 +19,7 @@ function mapStateToProps(state) {
     };
 }
 
-class Semesters extends Component {
+class SemestersView extends Component {
     static propTypes = {
         fetchSemesters: PropTypes.func.isRequired,
         semesters: PropTypes.object,
@@ -87,4 +87,4 @@ export default connect(
         fetchGradeEntries,
         fetchCategories
     }
-)(Semesters);
+)(SemestersView);

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {MDBBtn, MDBContainer, MDBListGroup} from 'mdbreact';
-import GradeEntry from '../grade_entries/GradeEntry';
+import GradeEntry from '../components/GradeEntryListItem';
 
 function mapStateToProps(state) {
     return {

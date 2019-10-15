@@ -16,7 +16,7 @@ import {
     FETCH_CATEGORIES,
     REPLACE_CATEGORY
 } from '../actions/types';
-import {appendInstance, objectify, removeInstance, replaceInstance} from '../actions/utils';
+import {appendInstance, objectify, removeInstance, replaceInstance} from '../utils/objectification_utils';
 import produce from 'immer';
 
 const defaultFormFieldState = {

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {fetchCourseInstances} from '../../actions/courseInstanceActions';
+import {fetchCourseInstances} from '../actions/courseInstanceActions';
 
 function mapStateToProps(state) {
     return {

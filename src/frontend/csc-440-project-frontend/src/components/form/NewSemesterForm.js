@@ -1,10 +1,9 @@
-import React from 'react';
-import BaseForm from './BaseForm';
+import React, {Component} from 'react';
 import {MDBBtn, MDBContainer, MDBInput, MDBModal, MDBModalBody, MDBModalFooter, MDBModalHeader} from 'mdbreact';
 import validator from 'validator';
 
 
-class NewSemesterForm extends BaseForm {
+class NewSemesterForm extends Component {
     constructor(props) {
         super(props);
         this.state = {

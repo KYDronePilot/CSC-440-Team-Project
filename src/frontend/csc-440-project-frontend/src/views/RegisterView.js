@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Link, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {register} from '../../actions/auth';
+import {register} from '../actions/auth';
 
 function mapStateToProps(state) {
     return {
@@ -10,7 +10,7 @@ function mapStateToProps(state) {
     };
 }
 
-class Register extends Component {
+class RegisterView extends Component {
     constructor(props) {
         super(props);
 
@@ -118,4 +118,4 @@ class Register extends Component {
 export default connect(
     mapStateToProps,
     {register}
-)(Register);
+)(RegisterView);

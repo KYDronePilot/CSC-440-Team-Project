@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Link, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {login} from '../../actions/auth';
+import {login} from '../actions/auth';
 
 function mapStateToProps(state) {
     return {
@@ -10,7 +10,7 @@ function mapStateToProps(state) {
     };
 }
 
-class Login extends Component {
+class LoginView extends Component {
     constructor(props) {
         super(props);
         this.onChange = this.onChange.bind(this);
@@ -85,4 +85,4 @@ class Login extends Component {
 export default connect(
     mapStateToProps,
     {login}
-)(Login);
+)(LoginView);

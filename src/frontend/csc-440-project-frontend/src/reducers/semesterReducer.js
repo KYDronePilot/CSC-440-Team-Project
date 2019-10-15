@@ -1,5 +1,5 @@
 import {APPEND_SEMESTER, DELETE_SEMESTER, FETCH_SEMESTERS, SET_ACTIVE_SEMESTER} from '../actions/types';
-import {appendInstance, objectify, removeInstance} from '../actions/utils';
+import {appendInstance, objectify, removeInstance} from '../utils/objectification_utils';
 import produce from 'immer';
 
 const initialState = {

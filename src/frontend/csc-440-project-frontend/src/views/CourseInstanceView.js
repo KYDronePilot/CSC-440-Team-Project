@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {allInstances} from '../../actions/utils';
-import CategoryView from '../categories/CategoryView';
-import GradeEntryForm from '../grade_entries/GradeEntryForm';
-import CategoryForm from '../categories/CategoryForm';
-import {openCreateCategoryForm} from '../../actions/categoryActions';
+import {allInstances} from '../utils/objectification_utils';
+import CategoryView from './CategoryView';
+import GradeEntryForm from '../containers/GradeEntryForm';
+import CategoryForm from '../containers/CategoryForm';
+import {openCreateCategoryForm} from '../actions/categoryActions';
 import {MDBBtn} from 'mdbreact';
-import {CourseInstanceBreadcrumb} from '../layout/breadcrumbs';
+import {CourseInstanceBreadcrumb} from '../components/layout/breadcrumbs';
 
 function mapStateToProps(state) {
     return {
