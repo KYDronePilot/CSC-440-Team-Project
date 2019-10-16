@@ -1,3 +1,5 @@
+from typing import Union, Dict
+
 from django.db import models
 from django.db.models import QuerySet
 
@@ -170,6 +172,36 @@ class Requirement(Common):
                 and self.are_sub_requirements_fulfilled(student)
                 and self.is_sub_requirement_course_count_fulfilled(student)
         )
+
+    def get_requirements_structure(self, student) -> Dict[str, Union[bool, list]]:
+        """
+        Get the structure of requirements recursively. Uses dicts and
+        lists to produce a JSON representation. The structure is as
+        follows:
+
+            struct = {
+                'fulfilled': True,
+                'courses': [
+                    {
+                        'fulfilled': True,
+                        'course': CourseInstance
+                    }
+                ],
+                'sub_requirements': [
+                    {
+                        'fulfilled': True,
+                        ...
+                    }
+                ]
+            }
+
+        Returns:
+            Requirement structure
+        """
+        return {
+            'fulfilled': self.is_fulfilled(student),
+            'courses': self.courses
+        }
 
     def __str__(self) -> str:
         requirement_type = 'Sub-requirement' if self.is_sub_requirement() else 'Requirement'
