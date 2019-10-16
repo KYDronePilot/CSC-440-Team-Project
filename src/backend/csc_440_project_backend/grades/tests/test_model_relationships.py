@@ -1,13 +1,10 @@
 from django.test import TestCase
+
 from grades.models import Category, CategoryScoreRequirement, College, Concentration, Course, CourseInstance, \
     GradeEntry, Major, Semester, User, Requirement
 
 
-class TestModelRelationships(TestCase):
-    """
-    Test the relationships between models
-     - And also provide some dummy record creation statements that can be used elsewhere.
-    """
+class TestDatabaseSetup(TestCase):
     def setUp(self) -> None:
         self.create_users()
         self.create_colleges()
@@ -543,6 +540,360 @@ class TestModelRelationships(TestCase):
             course=self.csc_440,
             semester=self.fall_2019
         )
+        self.sco_100i_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.sco_100i,
+            semester=self.fall_2019
+        )
+        self.csc_185_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.csc_185,
+            semester=self.fall_2019
+        )
+        self.csc_190_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.csc_190,
+            semester=self.fall_2019
+        )
+        self.csc_191_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.csc_191,
+            semester=self.fall_2019
+        )
+        self.csc_195_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.csc_195,
+            semester=self.fall_2019
+        )
+        self.csc_308_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.csc_308,
+            semester=self.fall_2019
+        )
+        self.csc_310_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.csc_310,
+            semester=self.fall_2019
+        )
+        self.csc_313_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.csc_313,
+            semester=self.fall_2019
+        )
+        self.csc_340_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.csc_340,
+            semester=self.fall_2019
+        )
+        self.csc_499_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.csc_499,
+            semester=self.fall_2019
+        )
+
+        self.csc_311_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.csc_311,
+            semester=self.fall_2019
+        )
+        self.csc_320_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.csc_320,
+            semester=self.fall_2019
+        )
+        self.csc_360_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.csc_360,
+            semester=self.fall_2019
+        )
+        self.csc_400_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.csc_400,
+            semester=self.fall_2019
+        )
+        self.csc_460_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.csc_460,
+            semester=self.fall_2019
+        )
+        self.csc_541_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.csc_541,
+            semester=self.fall_2019
+        )
+        self.csc_545_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.csc_545,
+            semester=self.fall_2019
+        )
+
+        self.csc_494_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.csc_494,
+            semester=self.fall_2019
+        )
+        self.csc_495_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.csc_495,
+            semester=self.fall_2019
+        )
+        self.csc_496_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.csc_496,
+            semester=self.fall_2019
+        )
+
+        self.eet_252_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.eet_252,
+            semester=self.fall_2019
+        )
+        self.mat_234_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.mat_234,
+            semester=self.fall_2019
+        )
+        self.mat_239_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.mat_239,
+            semester=self.fall_2019
+        )
+        self.mat_244_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.mat_244,
+            semester=self.fall_2019
+        )
+        self.sta_270_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.sta_270,
+            semester=self.fall_2019
+        )
+
+        self.bio_111_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.bio_111,
+            semester=self.fall_2019
+        )
+        self.bio_112_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.bio_112,
+            semester=self.fall_2019
+        )
+        self.che_111_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.che_111,
+            semester=self.fall_2019
+        )
+        self.che_111l_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.che_111l,
+            semester=self.fall_2019
+        )
+        self.che_112_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.che_112,
+            semester=self.fall_2019
+        )
+        self.che_112l_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.che_112l,
+            semester=self.fall_2019
+        )
+        self.gly_108_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.gly_108,
+            semester=self.fall_2019
+        )
+        self.gly_109_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.gly_109,
+            semester=self.fall_2019
+        )
+        self.phy_201_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.phy_201,
+            semester=self.fall_2019
+        )
+        self.phy_202_instance = CourseInstance.objects.create(
+            grading_strategy=CourseInstance.WEIGHT_BASED,
+            min_a=0.9,
+            min_b=0.8,
+            min_c=0.7,
+            min_d=0.6,
+            section=1,
+            course=self.phy_202,
+            semester=self.fall_2019
+        )
 
     def create_course_instance_user_relationships(self):
         self.csc_440_instance.students.add(self.student_william)
@@ -651,6 +1002,13 @@ class TestModelRelationships(TestCase):
             student=self.student_william,
             category=self.csc_440_team_project
         )
+
+
+class TestModelRelationships(TestDatabaseSetup):
+    """
+    Test the relationships between models
+     - And also provide some dummy record creation statements that can be used elsewhere.
+    """
 
     def test_college_student_relationships(self):
         self.assertCountEqual(

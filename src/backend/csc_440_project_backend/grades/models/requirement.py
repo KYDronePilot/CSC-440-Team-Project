@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import QuerySet
+
 from .common import Common
 
 
@@ -65,8 +67,109 @@ class Requirement(Common):
         Returns:
             Whether the requirement is a sub-requirement
         """
-
         return self.super_requirement is not None
+
+    @property
+    def course_instances(self) -> QuerySet:
+        """
+        All course instances of directly related courses.
+        """
+        from grades.models import CourseInstance
+        return CourseInstance.objects.filter(course__requirements=self)
+
+    def get_completed_courses(self, student) -> QuerySet:
+        """
+        Get courses that the student has completed.
+
+        Args:
+            student: Student who completed the courses
+
+        Returns:
+            Courses completed by the student
+        """
+        from grades.models import Course
+
+        course_instances = self.course_instances.filter(students=student)
+        return Course.objects.filter(course_instances__in=course_instances)
+
+    def get_completed_sub_requirement_courses(self, student) -> QuerySet:
+        """
+        Get courses that are completed in directly related sub-requirements.
+
+        Args:
+            student: Student being checked
+
+        Returns:
+            Courses completed in directly related sub-requirements
+        """
+        from grades.models import Course
+
+        all_courses = Course.objects.filter(requirements__in=self.sub_requirements.all())
+        return all_courses.filter(course_instances__students=student)
+
+    def are_course_requirements_fulfilled(self, student) -> bool:
+        """
+        Check if directly related course requirements are fulfilled.
+        Returns True if no course count requirements.
+
+        Args:
+            student: Student being checked
+
+        Returns:
+            Whether the course requirements were fulfilled
+        """
+        if self.course_count is None:
+            return True
+
+        return self.get_completed_courses(student).count() >= self.course_count
+
+    def are_sub_requirements_fulfilled(self, student) -> bool:
+        """
+        Check if sub-requirements are fulfilled.
+
+        Args:
+            student: Student being checked
+
+        Returns:
+            Whether sub-requirements are fulfilled
+        """
+        if self.sub_requirement_count is None:
+            return True
+
+        completed_count = 0
+        for requirement in self.sub_requirements.all():
+            if requirement.is_fulfilled(student):
+                completed_count += 1
+
+        return completed_count >= self.sub_requirement_count
+
+    def is_sub_requirement_course_count_fulfilled(self, student) -> bool:
+        """
+        Check if the sub-requirement course count requirement is fulfilled.
+
+        Args:
+            student: Student being checked
+
+        Returns:
+            Whether the sub-requirement course count requirement is fulfilled
+        """
+        if self.sub_requirement_course_count is None:
+            return True
+
+        return self.get_completed_sub_requirement_courses(student).count() >= self.sub_requirement_course_count
+
+    def is_fulfilled(self, student) -> bool:
+        """
+        Check if the requirement is fulfilled recursively.
+
+        Returns:
+            Whether the requirement is fulfilled or not
+        """
+        return (
+                self.are_course_requirements_fulfilled(student)
+                and self.are_sub_requirements_fulfilled(student)
+                and self.is_sub_requirement_course_count_fulfilled(student)
+        )
 
     def __str__(self) -> str:
         requirement_type = 'Sub-requirement' if self.is_sub_requirement() else 'Requirement'
