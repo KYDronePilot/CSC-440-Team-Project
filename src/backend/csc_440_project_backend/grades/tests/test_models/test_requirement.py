@@ -138,7 +138,7 @@ class TestRequirements(TestDatabaseSetup):
         self.gly_108_instance.students.add(self.student_william)
         self.phy_201_instance.students.add(self.student_william)
         self.assertTrue(
-            self.csg_concentration_sup_sub_req.is_sub_requirement_course_count_fulfilled(self.student_william)
+            self.csg_concentration_sup_sub_3_req.is_sub_requirement_course_count_fulfilled(self.student_william)
         )
 
     @data(
@@ -169,3 +169,202 @@ class TestRequirements(TestDatabaseSetup):
             result
         )
         print('test')
+
+    def test_get_requirements_structure_not_nested(self):
+        # Simpler case when requirement is at first level (no sub-requirements)
+        self.csc_494_instance.students.add(self.student_william)
+        struct = self.csg_concentration_sub_req.get_requirements_structure(self.student_william)
+        self.assertEqual(
+            struct,
+            {
+                'fulfilled': True,
+                'courses': [
+                    {
+                        'fulfilled': True,
+                        'course': self.csc_494
+                    },
+                    {
+                        'fulfilled': False,
+                        'course': self.csc_495
+                    },
+                    {
+                        'fulfilled': False,
+                        'course': self.csc_496
+                    },
+                ],
+                'sub_requirements': []
+            }
+        )
+
+    def test_get_requirements_structure_nested(self):
+        # More complicated case when requirements are nested
+        self.csc_311_instance.students.add(self.student_william)
+        self.csc_494_instance.students.add(self.student_william)
+        struct = self.csg_concentration_req.get_requirements_structure(self.student_william)
+        self.assertEqual(
+            struct,
+            {
+                'fulfilled': False,
+                'courses': [
+                    {
+                        'fulfilled': True,
+                        'course': self.csc_311
+                    },
+                    {
+                        'fulfilled': False,
+                        'course': self.csc_320
+                    },
+                    {
+                        'fulfilled': False,
+                        'course': self.csc_360
+                    },
+                    {
+                        'fulfilled': False,
+                        'course': self.csc_400
+                    },
+                    {
+                        'fulfilled': False,
+                        'course': self.csc_440
+                    },
+                    {
+                        'fulfilled': False,
+                        'course': self.csc_460
+                    },
+                    {
+                        'fulfilled': False,
+                        'course': self.csc_541
+                    },
+                    {
+                        'fulfilled': False,
+                        'course': self.csc_545
+                    }
+                ],
+                'sub_requirements': [
+                    {
+                        'fulfilled': True,
+                        'courses': [
+                            {
+                                'fulfilled': True,
+                                'course': self.csc_494
+                            },
+                            {
+                                'fulfilled': False,
+                                'course': self.csc_495
+                            },
+                            {
+                                'fulfilled': False,
+                                'course': self.csc_496
+                            },
+                        ],
+                        'sub_requirements': []
+                    }
+                ]
+            }
+        )
+
+    def test_get_requirements_structure_deeply_nested(self):
+        # Very complicated requirements structure
+        self.eet_252_instance.students.add(self.student_william)
+        self.bio_111_instance.students.add(self.student_william)
+        self.bio_112_instance.students.add(self.student_william)
+        struct = self.csg_concentration_sup_req.get_requirements_structure(self.student_william)
+        self.assertEqual(
+            struct,
+            {
+                'fulfilled': False,
+                'courses': [
+                    {
+                        'fulfilled': True,
+                        'course': self.eet_252
+                    },
+                    {
+                        'fulfilled': False,
+                        'course': self.mat_234
+                    },
+                    {
+                        'fulfilled': False,
+                        'course': self.mat_239
+                    },
+                    {
+                        'fulfilled': False,
+                        'course': self.mat_244
+                    },
+                    {
+                        'fulfilled': False,
+                        'course': self.sta_270
+                    }
+                ],
+                'sub_requirements': [
+                    {
+                        'fulfilled': False,
+                        'courses': [],
+                        'sub_requirements': [
+                            {
+                                'fulfilled': True,
+                                'courses': [
+                                    {
+                                        'fulfilled': True,
+                                        'course': self.bio_111
+                                    },
+                                    {
+                                        'fulfilled': True,
+                                        'course': self.bio_112
+                                    }
+                                ],
+                                'sub_requirements': []
+                            },
+                            {
+                                'fulfilled': False,
+                                'courses': [
+                                    {
+                                        'fulfilled': False,
+                                        'course': self.che_111
+                                    },
+                                    {
+                                        'fulfilled': False,
+                                        'course': self.che_111l
+                                    },
+                                    {
+                                        'fulfilled': False,
+                                        'course': self.che_112
+                                    },
+                                    {
+                                        'fulfilled': False,
+                                        'course': self.che_112l
+                                    }
+                                ],
+                                'sub_requirements': []
+                            },
+                            {
+                                'fulfilled': False,
+                                'courses': [
+                                    {
+                                        'fulfilled': False,
+                                        'course': self.gly_108
+                                    },
+                                    {
+                                        'fulfilled': False,
+                                        'course': self.gly_109
+                                    }
+                                ],
+                                'sub_requirements': []
+                            },
+                            {
+                                'fulfilled': False,
+                                'courses': [
+                                    {
+                                        'fulfilled': False,
+                                        'course': self.phy_201
+                                    },
+                                    {
+                                        'fulfilled': False,
+                                        'course': self.phy_202
+                                    }
+                                ],
+                                'sub_requirements': []
+                            }
+                        ]
+                    }
+                ]
+            }
+        )

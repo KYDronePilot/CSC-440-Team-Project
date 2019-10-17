@@ -54,7 +54,7 @@ class Requirement(Common):
         null=True,
         verbose_name='Sub Requirement Course Count',
         help_text='Number of courses in directly related sub-requirements that must be completed to fulfill the '
-                  'requirement (in addition to courses in sub-requirements that must be fulfilled)'
+                  'requirement (including courses in sub-requirements that must be fulfilled)'
     )
     is_required = models.BooleanField(
         null=False,
@@ -199,8 +199,20 @@ class Requirement(Common):
             Requirement structure
         """
         return {
+            'name': self.name,
             'fulfilled': self.is_fulfilled(student),
-            'courses': self.courses
+            'courses': [
+                {
+                    'name': course.name,
+                    'code': course.code,
+                    'credit_hours': course.credit_hours,
+                    'fulfilled': course.is_completed(student)
+                } for course in self.courses.order_by('code').all()
+            ],
+            'sub_requirements': [
+                requirement.get_requirements_structure(student)
+                for requirement in self.sub_requirements.order_by('name').all()
+            ]
         }
 
     def __str__(self) -> str:

@@ -173,7 +173,7 @@ class TestDatabaseSetup(TestCase):
             name='Plus One (1) Of The Following Bracketed Physical Science Sequences',
             super_requirement=self.csg_concentration_sup_req,
             sub_requirement_count=1,
-            sub_requirement_course_count=2,
+            sub_requirement_course_count=4,
             is_required=True
         )
         self.csg_concentration_sup_sub_1_req = Requirement.objects.create(
