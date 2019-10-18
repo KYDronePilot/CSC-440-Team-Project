@@ -1,14 +1,14 @@
-from grades.models import Course, CourseInstance, GradeEntry, Category, College, CategoryScoreRequirement, Semester, \
-    User
-from rest_framework import viewsets, permissions
-from django.db.models import Q, IntegerField, CharField
-from typing import Optional
-from rest_framework.response import Response
-from rest_framework import filters
-from rest_framework.mixins import status
+from django.db.models import Q, IntegerField
 from django.db.models.functions import Cast
+from rest_framework import viewsets, permissions, filters
+from rest_framework.mixins import status
+from rest_framework.response import Response
+
+from grades.models import Course, CourseInstance, GradeEntry, Category, CategoryScoreRequirement, Semester, \
+    Requirement
 from grades.serializers import CourseSerializer, CourseInstanceSerializer, GradeEntrySerializer, CategorySerializer, \
-    CollegeSerializer, CategoryScoreRequirementSerializer, SemesterSerializer, CourseInstanceSearchSerializer
+    CollegeSerializer, CategoryScoreRequirementSerializer, SemesterSerializer, CourseInstanceSearchSerializer, \
+    RequirementStructureSerializer
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -177,3 +177,18 @@ class SemesterViewSet(viewsets.ModelViewSet):
 
         # No one can delete a semester via the API
         return status.HTTP_403_FORBIDDEN
+
+
+class RequirementStructureViewSet(viewsets.ReadOnlyModelViewSet):
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
+    serializer_class = RequirementStructureSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        if 'pk' not in self.kwargs:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        queryset = Requirement.objects.get(id=self.kwargs['pk'])
+        data = queryset.get_requirements_structure(self.request.user)
+        serializer = RequirementStructureSerializer(data)
+        return Response(serializer.data)

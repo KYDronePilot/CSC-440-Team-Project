@@ -177,21 +177,28 @@ class TestRequirements(TestDatabaseSetup):
         self.assertEqual(
             struct,
             {
-                'fulfilled': True,
                 'courses': [
                     {
+                        'code': 'CSC 494',
+                        'credit_hours': 1.0,
                         'fulfilled': True,
-                        'course': self.csc_494
+                        'name': 'Innovative Problem Solving'
                     },
                     {
+                        'code': 'CSC 495',
+                        'credit_hours': 1.0,
                         'fulfilled': False,
-                        'course': self.csc_495
+                        'name': 'Independent Work'
                     },
                     {
+                        'code': 'CSC 496',
+                        'credit_hours': 1.0,
                         'fulfilled': False,
-                        'course': self.csc_496
-                    },
+                        'name': 'Senior Seminar'
+                    }
                 ],
+                'fulfilled': True,
+                'name': 'Plus One (1) Hour Selected from',
                 'sub_requirements': []
             }
         )
@@ -204,58 +211,82 @@ class TestRequirements(TestDatabaseSetup):
         self.assertEqual(
             struct,
             {
-                'fulfilled': False,
                 'courses': [
                     {
+                        'code': 'CSC 311',
+                        'credit_hours': 3.0,
                         'fulfilled': True,
-                        'course': self.csc_311
+                        'name': 'Algorithms I'
                     },
                     {
+                        'code': 'CSC 320',
+                        'credit_hours': 3.0,
                         'fulfilled': False,
-                        'course': self.csc_320
+                        'name': 'Introduction to Algorithms'
                     },
                     {
+                        'code': 'CSC 360',
+                        'credit_hours': 3.0,
                         'fulfilled': False,
-                        'course': self.csc_360
+                        'name': 'Computer Org and Architecture'
                     },
                     {
+                        'code': 'CSC 400',
+                        'credit_hours': 3.0,
                         'fulfilled': False,
-                        'course': self.csc_400
+                        'name': 'Operating Systems'
                     },
                     {
+                        'code': 'CSC 440',
+                        'credit_hours': 3.0,
                         'fulfilled': False,
-                        'course': self.csc_440
+                        'name': 'Applied Software Engineering'
                     },
                     {
+                        'code': 'CSC 460',
+                        'credit_hours': 3.0,
                         'fulfilled': False,
-                        'course': self.csc_460
+                        'name': 'Computer Network & System Administration'
                     },
                     {
+                        'code': 'CSC 541',
+                        'credit_hours': 3.0,
                         'fulfilled': False,
-                        'course': self.csc_541
+                        'name': 'Software Testing'
                     },
                     {
+                        'code': 'CSC 545',
+                        'credit_hours': 3.0,
                         'fulfilled': False,
-                        'course': self.csc_545
+                        'name': 'Theory of Database Systems'
                     }
                 ],
+                'fulfilled': False,
+                'name': 'Computer Science (General) Concentration Requirements',
                 'sub_requirements': [
                     {
-                        'fulfilled': True,
                         'courses': [
                             {
+                                'code': 'CSC 494',
+                                'credit_hours': 1.0,
                                 'fulfilled': True,
-                                'course': self.csc_494
+                                'name': 'Innovative Problem Solving'
                             },
                             {
+                                'code': 'CSC 495',
+                                'credit_hours': 1.0,
                                 'fulfilled': False,
-                                'course': self.csc_495
+                                'name': 'Independent Work'
                             },
                             {
+                                'code': 'CSC 496',
+                                'credit_hours': 1.0,
                                 'fulfilled': False,
-                                'course': self.csc_496
-                            },
+                                'name': 'Senior Seminar'
+                            }
                         ],
+                        'fulfilled': True,
+                        'name': 'Plus One (1) Hour Selected from',
                         'sub_requirements': []
                     }
                 ]
@@ -271,96 +302,132 @@ class TestRequirements(TestDatabaseSetup):
         self.assertEqual(
             struct,
             {
-                'fulfilled': False,
                 'courses': [
                     {
+                        'code': 'EET 252',
+                        'credit_hours': 3.0,
                         'fulfilled': True,
-                        'course': self.eet_252
+                        'name': 'Digital Electronics'
                     },
                     {
+                        'code': 'MAT 234',
+                        'credit_hours': 4.0,
                         'fulfilled': False,
-                        'course': self.mat_234
+                        'name': 'Calculus I'
                     },
                     {
+                        'code': 'MAT 239',
+                        'credit_hours': 3.0,
                         'fulfilled': False,
-                        'course': self.mat_239
+                        'name': 'Linear Algebra & Matrices'
                     },
                     {
+                        'code': 'MAT 244',
+                        'credit_hours': 4.0,
                         'fulfilled': False,
-                        'course': self.mat_244
+                        'name': 'Calculus II'
                     },
                     {
+                        'code': 'STA 270',
+                        'credit_hours': 4.0,
                         'fulfilled': False,
-                        'course': self.sta_270
+                        'name': 'Applied Statistics I'
                     }
                 ],
+                'fulfilled': False,
+                'name': 'Computer Science (General) Concentration Supporting Course Requirements',
                 'sub_requirements': [
                     {
-                        'fulfilled': False,
                         'courses': [],
+                        'fulfilled': False,
+                        'name': 'Plus One (1) Of The Following Bracketed Physical Science Sequences',
                         'sub_requirements': [
                             {
+                                'courses': [
+                                    {
+                                        'code': 'BIO 111',
+                                        'credit_hours': 4.0,
+                                        'fulfilled': True,
+                                        'name': 'Cell and Molecular Biology'
+                                    },
+                                    {
+                                        'code': 'BIO 112',
+                                        'credit_hours': 4.0,
+                                        'fulfilled': True,
+                                        'name': 'Ecology and Evolution'
+                                    }
+                                ],
                                 'fulfilled': True,
-                                'courses': [
-                                    {
-                                        'fulfilled': True,
-                                        'course': self.bio_111
-                                    },
-                                    {
-                                        'fulfilled': True,
-                                        'course': self.bio_112
-                                    }
-                                ],
+                                'name': 'Biology Sequence',
                                 'sub_requirements': []
                             },
                             {
-                                'fulfilled': False,
                                 'courses': [
                                     {
+                                        'code': 'CHE 111',
+                                        'credit_hours': 3.0,
                                         'fulfilled': False,
-                                        'course': self.che_111
+                                        'name': 'General Chemistry I'
                                     },
                                     {
+                                        'code': 'CHE 111L',
+                                        'credit_hours': 1.0,
                                         'fulfilled': False,
-                                        'course': self.che_111l
+                                        'name': 'General Chemistry Lab I'
                                     },
                                     {
+                                        'code': 'CHE 112',
+                                        'credit_hours': 3.0,
                                         'fulfilled': False,
-                                        'course': self.che_112
+                                        'name': 'General Chemistry II'
                                     },
                                     {
+                                        'code': 'CHE 112L',
+                                        'credit_hours': 1.0,
                                         'fulfilled': False,
-                                        'course': self.che_112l
+                                        'name': 'General Chemistry Lab II'
                                     }
                                 ],
+                                'fulfilled': False,
+                                'name': 'Chemistry Sequence',
                                 'sub_requirements': []
                             },
                             {
-                                'fulfilled': False,
                                 'courses': [
                                     {
+                                        'code': 'GLY 108',
+                                        'credit_hours': 3.0,
                                         'fulfilled': False,
-                                        'course': self.gly_108
+                                        'name': 'Plate Tectonics: The Active Earth'
                                     },
                                     {
+                                        'code': 'GLY 109',
+                                        'credit_hours': 3.0,
                                         'fulfilled': False,
-                                        'course': self.gly_109
+                                        'name': 'Great Moments in Earth History'
                                     }
                                 ],
+                                'fulfilled': False,
+                                'name': 'Geology Sequence',
                                 'sub_requirements': []
                             },
                             {
-                                'fulfilled': False,
                                 'courses': [
                                     {
+                                        'code': 'PHY 201',
+                                        'credit_hours': 5.0,
                                         'fulfilled': False,
-                                        'course': self.phy_201
+                                        'name': 'University Physics I'
                                     },
                                     {
+                                        'code': 'PHY 202',
+                                        'credit_hours': 5.0,
                                         'fulfilled': False,
-                                        'course': self.phy_202
+                                        'name': 'University Physics II'
                                     }
                                 ],
+                                'fulfilled': False,
+                                'name': 'Physics Sequence',
                                 'sub_requirements': []
                             }
                         ]
