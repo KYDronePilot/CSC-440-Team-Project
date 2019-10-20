@@ -6,6 +6,18 @@ type WINTER = 'winter';
 type SPRING = 'spring';
 type SUMMER = 'summer';
 
+declare global {
+    interface ArrayConstructor {
+        isArray(arg: ReadonlyArray<any> | any): arg is ReadonlyArray<any>
+    }
+}
+
+export interface GenericDjangoRestObject {
+    id: number;
+    notes: string;
+    last_updated: string;
+}
+
 export interface CourseInstance {
     grading_strategy: POINT_BASED | WEIGHT_BASED;
     min_a: number;
@@ -56,4 +68,19 @@ export interface GradeEntry {
     max_points: number;
     student: number;
     category: number;
+}
+
+export interface College extends GenericDjangoRestObject{
+    name: string;
+    location: string;
+}
+
+export interface Major {
+    name: string;
+    college: number;
+}
+
+export interface Concentration {
+    name: string;
+    major: number;
 }

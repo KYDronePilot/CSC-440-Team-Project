@@ -5,10 +5,16 @@ from rest_framework.mixins import status
 from rest_framework.response import Response
 
 from grades.models import Course, CourseInstance, GradeEntry, Category, CategoryScoreRequirement, Semester, \
-    Requirement
+    Requirement, College, Major
 from grades.serializers import CourseSerializer, CourseInstanceSerializer, GradeEntrySerializer, CategorySerializer, \
     CollegeSerializer, CategoryScoreRequirementSerializer, SemesterSerializer, CourseInstanceSearchSerializer, \
-    RequirementStructureSerializer
+    RequirementStructureSerializer, MajorSerializer
+
+
+class GenericViewSet(viewsets.ModelViewSet):
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -109,13 +115,16 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 
 class CollegeViewSet(viewsets.ModelViewSet):
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name', 'location')
+    serializer_class = CollegeSerializer
+
     permission_classes = [
         permissions.IsAuthenticated
     ]
-    serializer_class = CollegeSerializer
 
     def get_queryset(self):
-        return self.request.user.colleges.all()
+        return College.objects.all()
 
 
 class CategoryScoreRequirementViewSet(viewsets.ModelViewSet):
@@ -192,3 +201,15 @@ class RequirementStructureViewSet(viewsets.ReadOnlyModelViewSet):
         data = queryset.get_requirements_structure(self.request.user)
         serializer = RequirementStructureSerializer(data)
         return Response(serializer.data)
+
+
+class MajorViewSet(GenericViewSet):
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name',)
+    serializer_class = MajorSerializer
+
+    def get_queryset(self):
+        queryset = Major.objects
+        if 'college_id' in self.request.query_params:
+            queryset = queryset.filter(college_id=self.request.query_params['college_id'])
+        return queryset.all()

@@ -1,7 +1,8 @@
 from rest_framework import routers
 
 from grades.api import CourseViewSet, CourseInstanceViewSet, GradeEntryViewSet, CategoryViewSet, CollegeViewSet, \
-    CategoryScoreRequirementViewSet, SemesterViewSet, CourseInstanceAddSearchViewSet, RequirementStructureViewSet
+    CategoryScoreRequirementViewSet, SemesterViewSet, CourseInstanceAddSearchViewSet, RequirementStructureViewSet, \
+    MajorViewSet
 
 router = routers.DefaultRouter()
 router.register('api/courses', CourseViewSet, 'courses')
@@ -13,5 +14,6 @@ router.register('api/colleges', CollegeViewSet, 'colleges')
 router.register('api/category-score-requirements', CategoryScoreRequirementViewSet, 'category_score_requirements')
 router.register('api/semesters', SemesterViewSet, 'semesters')
 router.register('api/requirement-structure', RequirementStructureViewSet, 'requirement_structure')
+router.register('api/majors', MajorViewSet, 'majors')
 
 urlpatterns = router.urls

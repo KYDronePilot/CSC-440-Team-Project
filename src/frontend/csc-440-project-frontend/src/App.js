@@ -11,6 +11,7 @@ import SemestersView from './views/SemestersView';
 import SemesterView from './views/SemesterView';
 import CourseInstanceView from './views/CourseInstanceView';
 import GradeTrackerRoute from './routes/GradeTrackerRoute';
+import ConcentrationProgressView from './views/ConcentrationProgressView';
 
 class App extends Component {
     componentDidMount() {
@@ -31,6 +32,7 @@ class App extends Component {
                                     {/*<PrivateRoute path={'/courses'} component={CourseInstances}/>*/}
                                     <GradeTrackerRoute path={'/semester/:semesterId'} component={SemesterView}/>
                                     <GradeTrackerRoute path={'/course/:courseId'} component={CourseInstanceView}/>
+                                    <GradeTrackerRoute path={'/concentration-progress'} component={ConcentrationProgressView}/>
                                     <Route exact path={'/register'} component={Register}/>
                                     <Route exact path={'/login'} component={Login}/>
                                 </Switch>

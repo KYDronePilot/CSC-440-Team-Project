@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework_recursive.fields import RecursiveField
 
 from grades.models import Course, CourseInstance, GradeEntry, Category, College, CategoryScoreRequirement, Semester, \
-    Requirement
+    Requirement, Major
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -98,3 +98,13 @@ class RequirementStructureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Requirement
         fields = ('name', 'courses', 'sub_requirements', 'fulfilled')
+
+
+class MajorSerializer(serializers.ModelSerializer):
+    """
+    Simple Major serializer.
+    """
+
+    class Meta:
+        model = Major
+        fields = '__all__'
