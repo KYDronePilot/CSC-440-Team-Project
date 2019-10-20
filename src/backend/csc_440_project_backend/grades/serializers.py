@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework_recursive.fields import RecursiveField
 
 from grades.models import Course, CourseInstance, GradeEntry, Category, College, CategoryScoreRequirement, Semester, \
-    Requirement, Major
+    Requirement, Major, Concentration
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -107,4 +107,14 @@ class MajorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Major
+        fields = '__all__'
+
+
+class ConcentrationSerializer(serializers.ModelSerializer):
+    """
+    Simple Concentration serializer.
+    """
+
+    class Meta:
+        model = Concentration
         fields = '__all__'

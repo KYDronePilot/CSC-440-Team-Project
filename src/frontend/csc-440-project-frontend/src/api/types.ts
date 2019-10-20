@@ -75,12 +75,12 @@ export interface College extends GenericDjangoRestObject{
     location: string;
 }
 
-export interface Major {
+export interface Major extends GenericDjangoRestObject {
     name: string;
     college: number;
 }
 
-export interface Concentration {
+export interface Concentration extends GenericDjangoRestObject{
     name: string;
     major: number;
 }

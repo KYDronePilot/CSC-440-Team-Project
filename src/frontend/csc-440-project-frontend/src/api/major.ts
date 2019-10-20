@@ -9,6 +9,7 @@ export interface MajorOption extends OptionTypeBase {
     label: string;
     value: Major;
 }
+export type MajorOptions = OptionsType<MajorOption>;
 
 /**
  * Get string representation of major.
@@ -23,7 +24,7 @@ export function majorToString(major: Major): string {
  * Wrapped major loader for async select input.
  * @param params - Optional query parameters
  */
-export const loadMajors = (params: object) => (inputValue: string, callback: CallableFunction) => {
+export const loadMajors = (params: object) => (inputValue: string, callback: ((options: MajorOptions) => void)) => {
     const config: AxiosRequestConfig = {
         params: {
             search: inputValue,
@@ -33,7 +34,7 @@ export const loadMajors = (params: object) => (inputValue: string, callback: Cal
 
     axios.get<MajorResponse>('http://localhost:8000/api/majors/', config)
         .then(res => {
-            const options: OptionsType<MajorOption> = res.data.map(major => ({
+            const options: MajorOptions = res.data.map(major => ({
                 label: majorToString(major),
                 value: major
             }));

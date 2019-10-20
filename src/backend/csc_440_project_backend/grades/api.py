@@ -5,10 +5,10 @@ from rest_framework.mixins import status
 from rest_framework.response import Response
 
 from grades.models import Course, CourseInstance, GradeEntry, Category, CategoryScoreRequirement, Semester, \
-    Requirement, College, Major
+    Requirement, College, Major, Concentration
 from grades.serializers import CourseSerializer, CourseInstanceSerializer, GradeEntrySerializer, CategorySerializer, \
     CollegeSerializer, CategoryScoreRequirementSerializer, SemesterSerializer, CourseInstanceSearchSerializer, \
-    RequirementStructureSerializer, MajorSerializer
+    RequirementStructureSerializer, MajorSerializer, ConcentrationSerializer
 
 
 class GenericViewSet(viewsets.ModelViewSet):
@@ -212,4 +212,16 @@ class MajorViewSet(GenericViewSet):
         queryset = Major.objects
         if 'college_id' in self.request.query_params:
             queryset = queryset.filter(college_id=self.request.query_params['college_id'])
+        return queryset.all()
+
+
+class ConcentrationViewSet(GenericViewSet):
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name',)
+    serializer_class = ConcentrationSerializer
+
+    def get_queryset(self):
+        queryset = Concentration.objects
+        if 'major_id' in self.request.query_params:
+            queryset = queryset.filter(major_id=self.request.query_params['major_id'])
         return queryset.all()
