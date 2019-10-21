@@ -137,22 +137,28 @@ class TestDatabaseSetup(TestCase):
         self.fs_general.students.add(self.student_jane)
 
     def create_requirements_and_sub_requirements(self):
+        self.csg_root_req = Requirement.objects.create(
+            name='Computer Science General Concentration Requirements',
+            concentration=self.cs_general,
+            sub_requirement_count=4,
+            is_required=True
+        )
         self.csg_gen_ed_req = Requirement.objects.create(
             name='General Education & University Requirements',
-            concentration=self.cs_general,
             course_count=1,
+            super_requirement=self.csg_root_req,
             is_required=True
         )
         self.csg_core_course_req = Requirement.objects.create(
             name='Core Course Requirements',
-            concentration=self.cs_general,
             course_count=9,
+            super_requirement=self.csg_root_req,
             is_required=True
         )
         self.csg_concentration_req = Requirement.objects.create(
             name='Computer Science (General) Concentration Requirements',
-            concentration=self.cs_general,
             course_count=8,
+            super_requirement=self.csg_root_req,
             sub_requirement_count=1,
             is_required=True
         )
@@ -164,8 +170,8 @@ class TestDatabaseSetup(TestCase):
         )
         self.csg_concentration_sup_req = Requirement.objects.create(
             name='Computer Science (General) Concentration Supporting Course Requirements',
-            concentration=self.cs_general,
             course_count=5,
+            super_requirement=self.csg_root_req,
             sub_requirement_count=1,
             is_required=True
         )

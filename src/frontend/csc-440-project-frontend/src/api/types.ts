@@ -70,7 +70,7 @@ export interface GradeEntry {
     category: number;
 }
 
-export interface College extends GenericDjangoRestObject{
+export interface College extends GenericDjangoRestObject {
     name: string;
     location: string;
 }
@@ -80,7 +80,21 @@ export interface Major extends GenericDjangoRestObject {
     college: number;
 }
 
-export interface Concentration extends GenericDjangoRestObject{
+export interface Concentration extends GenericDjangoRestObject {
     name: string;
     major: number;
+}
+
+export interface RequirementStructureCourse {
+    code: string;
+    credit_hours: number;
+    fulfilled: boolean;
+    name: string;
+}
+
+export interface RequirementStructureNode {
+    courses: RequirementStructureCourse[];
+    fulfilled: boolean;
+    name: string;
+    sub_requirements: RequirementStructureNode[];
 }

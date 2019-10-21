@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {MDBListGroupItem} from 'mdbreact';
+import {MDBBtn, MDBListGroupItem} from 'mdbreact';
 import * as PropTypes from 'prop-types';
 import TimeAgo from 'react-timeago';
 import {connect} from 'react-redux';
@@ -34,7 +34,6 @@ class GradeEntryListItem extends Component {
      * @param e {Event} - Event from click
      */
     editGradeEntryEH(e) {
-        e.preventDefault();
         this.props.editGradeEntry(this.props.gradeEntry, this.props.gradeEntry.category);
     }
 
@@ -51,7 +50,9 @@ class GradeEntryListItem extends Component {
                     <h6 className={'font-weight-bold'}>
                         {this.props.gradeEntry.points} / {this.props.gradeEntry.max_points} = {this.getPercentCorrect()}
                     </h6>
-                    <a onClick={this.editGradeEntryEH}>Edit</a>
+                    <MDBBtn className={'btn-link p-0'} color={''} onClick={this.editGradeEntryEH}>
+                        Edit
+                    </MDBBtn>
                 </div>
             </MDBListGroupItem>
         );

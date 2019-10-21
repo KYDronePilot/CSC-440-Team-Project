@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {MDBContainer} from 'mdbreact';
+import {MDBBtn, MDBContainer} from 'mdbreact';
 import AsyncSelect from 'react-select/async';
 import {CollegeOption, loadColleges} from '../api/college';
-import {College} from '../api/types';
+import {College, RequirementStructureNode} from '../api/types';
 import {ValueType} from 'react-select/src/types';
 import {loadMajors, MajorOption, MajorOptions} from '../api/major';
 import {ConcentrationOption, ConcentrationOptions, loadConcentrations} from '../api/concentration';
+import RequirementTree from '../components/RequirementTree';
+import {loadRequirementStructure} from '../api/requirement';
 
 function mapStateToProps(state: any) {
     return {};
@@ -22,6 +24,7 @@ interface ConcentrationProgressViewState {
     defaultMajorOptions: MajorOptions;
     concentrationOption: ValueType<ConcentrationOption>;
     defaultConcentrationOptions: ConcentrationOptions;
+    requirementStructure: RequirementStructureNode | null;
 }
 
 
@@ -33,7 +36,8 @@ class ConcentrationProgressView extends Component<ConcentrationProgressViewProps
             majorOption: null,
             defaultMajorOptions: [],
             concentrationOption: null,
-            defaultConcentrationOptions: []
+            defaultConcentrationOptions: [],
+            requirementStructure: null
         };
 
         this.onCollegeSelectChange = this.onCollegeSelectChange.bind(this);
@@ -41,6 +45,8 @@ class ConcentrationProgressView extends Component<ConcentrationProgressViewProps
         this.onMajorSelectChange = this.onMajorSelectChange.bind(this);
         this.onConcentrationSelectChange = this.onConcentrationSelectChange.bind(this);
         this.loadMajorConcentrations = this.loadMajorConcentrations.bind(this);
+        this.areOptionsSet = this.areOptionsSet.bind(this);
+        this.loadRequirementStructure = this.loadRequirementStructure.bind(this);
     }
 
     componentDidUpdate(prevProps: Readonly<ConcentrationProgressViewProps>, prevState: Readonly<ConcentrationProgressViewState>, snapshot?: any): void {
@@ -75,6 +81,12 @@ class ConcentrationProgressView extends Component<ConcentrationProgressViewProps
                     loadOptions={this.loadMajorConcentrations()}
                     onChange={this.onConcentrationSelectChange}
                 />
+                <MDBBtn disabled={!this.areOptionsSet()} onClick={this.loadRequirementStructure}>
+                    Load Progress
+                </MDBBtn>
+                {this.state.requirementStructure !== null &&
+                <RequirementTree rootRequirement={this.state.requirementStructure}/>
+                }
             </MDBContainer>
         );
     }
@@ -112,7 +124,8 @@ class ConcentrationProgressView extends Component<ConcentrationProgressViewProps
                 defaultMajorOptions: [],
                 majorOption: null,
                 defaultConcentrationOptions: [],
-                concentrationOption: null
+                concentrationOption: null,
+                requirementStructure: null
             });
         } else if (!Array.isArray(option)) {
             this.setState({college: option.value}, () => {
@@ -135,7 +148,8 @@ class ConcentrationProgressView extends Component<ConcentrationProgressViewProps
             this.setState({
                 majorOption: null,
                 defaultConcentrationOptions: [],
-                concentrationOption: null
+                concentrationOption: null,
+                requirementStructure: null
             });
         }
         else if (!Array.isArray(option)) {
@@ -155,7 +169,38 @@ class ConcentrationProgressView extends Component<ConcentrationProgressViewProps
      * @param option - Selected option
      */
     private onConcentrationSelectChange(option: ValueType<ConcentrationOption>) {
-        this.setState({concentrationOption: option});
+        this.setState({
+            concentrationOption: option,
+            requirementStructure: null
+        });
+    }
+
+    /**
+     * Check if concentration options are set.
+     * @return If all concentration options are set
+     */
+    private areOptionsSet() {
+        return (
+            this.state.college !== null
+            && this.state.majorOption !== null
+            && this.state.concentrationOption !== null
+        );
+    }
+
+    /**
+     * Load requirement structure for the concentration.
+     */
+    private loadRequirementStructure() {
+        const concentrationOption = this.state.concentrationOption;
+        if (concentrationOption !== null
+            && concentrationOption !== undefined
+            && !Array.isArray(concentrationOption)
+        )
+        loadRequirementStructure(concentrationOption.value.id)
+            .then(res => {
+                if (res !== undefined)
+                    this.setState({requirementStructure: res})
+            });
     }
 }
 

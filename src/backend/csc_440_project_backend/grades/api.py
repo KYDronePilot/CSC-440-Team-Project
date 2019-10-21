@@ -195,9 +195,14 @@ class RequirementStructureViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = RequirementStructureSerializer
 
     def retrieve(self, request, *args, **kwargs):
+        # TODO: Be consistent with between 'model_name' and 'model_name_id' query params
+        # TODO: Fix this. Shouldn't be using pk for this situation
         if 'pk' not in self.kwargs:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        queryset = Requirement.objects.get(id=self.kwargs['pk'])
+        # if 'concentration' not in self.request.query_params:
+        #     return Response(status=status.HTTP_404_NOT_FOUND)
+        queryset = Requirement.objects.get(concentration_id=self.kwargs['pk'])
+        # queryset = Requirement.objects.get(concentration_id=self.request.query_params['concentration'])
         data = queryset.get_requirements_structure(self.request.user)
         serializer = RequirementStructureSerializer(data)
         return Response(serializer.data)

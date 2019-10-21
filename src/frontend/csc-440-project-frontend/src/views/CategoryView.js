@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import * as PropTypes from 'prop-types';
-import {MDBContainer} from 'mdbreact';
+import {MDBBtn, MDBContainer} from 'mdbreact';
 import GradeEntries from '../containers/GradeEntryList';
 import {allInstances} from '../utils/objectification_utils';
 import {editCategory} from '../actions/categoryActions';
@@ -36,7 +36,6 @@ class CategoryView extends Component {
     }
 
     editCategory(e) {
-        e.preventDefault();
         this.props.editCategory(this.props.category, this.props.category.course_instance);
     }
 
@@ -44,9 +43,9 @@ class CategoryView extends Component {
         return (
             <MDBContainer>
                 <h1>{this.props.category.name}</h1>
-                <small className={'text-muted'}>
-                    <a onClick={this.editCategory}>Edit</a>
-                </small>
+                <MDBBtn className={'btn-link p-0'} color={''} onClick={this.editCategory}>
+                    Edit
+                </MDBBtn>
                 <GradeEntries gradeEntries={this.gradeEntries()} category={this.props.category}/>
             </MDBContainer>
         );

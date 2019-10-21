@@ -2,12 +2,36 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {logout} from '../../actions/auth';
+import {
+    MDBCollapse,
+    MDBContainer,
+    MDBNavbar,
+    MDBNavbarBrand,
+    MDBNavbarNav,
+    MDBNavbarToggler,
+    MDBNavItem,
+    MDBNavLink
+} from 'mdbreact';
 
 function mapStateToProps(state) {
     return {auth: state.auth};
 }
 
 export class Header extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isOpen: false
+        };
+
+        this.toggleNavbarOpen = this.toggleNavbarOpen.bind(this);
+    }
+
+    toggleNavbarOpen() {
+        this.setState(state => ({isOpen: !state.isOpen}));
+    }
+
+
     render() {
         const {isAuthenticated, user} = this.props.auth;
 
@@ -43,27 +67,29 @@ export class Header extends Component {
         );
 
         return (
-            <nav className="navbar navbar-expand-sm navbar-light bg-light">
-                <div className="container">
-                    <button
-                        className="navbar-toggler"
-                        type="button"
-                        data-toggle="collapse"
-                        data-target="#navbarTogglerDemo01"
-                        aria-controls="navbarTogglerDemo01"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation"
-                    >
-                        <span className="navbar-toggler-icon"/>
-                    </button>
-                    <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-                        <a className="navbar-brand" href="#">
-                            College Tools
-                        </a>
-                    </div>
-                    {isAuthenticated ? authLinks : guestLinks}
-                </div>
-            </nav>
+            <MDBContainer>
+                <MDBNavbar color={'default-color'} dark expand={'md'}>
+                    <MDBNavbarBrand>
+                        <strong>College Progress Tracker</strong>
+                    </MDBNavbarBrand>
+                    <MDBNavbarToggler onClick={this.toggleNavbarOpen} />
+                    <MDBCollapse id={'nav-toggler'} isOpen={this.state.isOpen} navbar>
+                        <MDBNavbarNav left>
+                            <MDBNavItem active>
+                                <MDBNavLink to={'/'}>Grade Tracker</MDBNavLink>
+                            </MDBNavItem>
+                            <MDBNavItem>
+                                <MDBNavLink to={'/concentration-progress'}>
+                                    Concentration Progress Tracker
+                                </MDBNavLink>
+                            </MDBNavItem>
+                        </MDBNavbarNav>
+                        <MDBNavbarNav right>
+                            {isAuthenticated ? authLinks : guestLinks}
+                        </MDBNavbarNav>
+                    </MDBCollapse>
+                </MDBNavbar>
+            </MDBContainer>
         );
     }
 }
