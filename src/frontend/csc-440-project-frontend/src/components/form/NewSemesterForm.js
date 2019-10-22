@@ -1,9 +1,9 @@
-import React from 'react';
-import BaseForm from './BaseForm';
+import React, {Component} from 'react';
 import {MDBBtn, MDBContainer, MDBInput, MDBModal, MDBModalBody, MDBModalFooter, MDBModalHeader} from 'mdbreact';
+import validator from 'validator';
 
 
-class NewSemesterForm extends BaseForm {
+class NewSemesterForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -67,7 +67,7 @@ class NewSemesterForm extends BaseForm {
      * @return {boolean} Whether the year is valid
      */
     validateYear(year) {
-        if (!this.isInt(year))
+        if (!validator.isInt(year))
             return false;
         const yearInt = parseInt(year);
         return yearInt >= 1900 && yearInt <= new Date().getFullYear() + 1;

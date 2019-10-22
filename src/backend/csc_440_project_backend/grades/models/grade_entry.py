@@ -26,7 +26,8 @@ class GradeEntry(Common):
         on_delete=models.CASCADE,
         related_name='grade_entries',
         null=False,
-        verbose_name='Student'
+        verbose_name='Student',
+        blank=True
     )
     category = models.ForeignKey(
         to='Category',

@@ -2,11 +2,19 @@ import {combineReducers} from 'redux';
 import semesterReducer from './semesterReducer';
 import courseInstanceReducer from './courseInstanceReducer';
 import gradeEntryReducer from './gradeEntryReducer';
+import categoryReducer from './categoryReducer';
 import auth from './auth';
+import courseReducer from './courseReducer';
+import commonReducer from './commonReducer';
+import csrReducer from './csrReducer';
 
 export default combineReducers({
-    semesters: semesterReducer,
-    courseInstances: courseInstanceReducer,
-    gradeEntries: gradeEntryReducer,
-    auth
+    semester: semesterReducer,
+    courseInstance: courseInstanceReducer,
+    gradeEntry: gradeEntryReducer,
+    category: categoryReducer,
+    auth,
+    course: courseReducer,
+    common: commonReducer,
+    csr: csrReducer
 });

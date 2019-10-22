@@ -1,21 +1,45 @@
 import {
-    USER_LOADED,
-    USER_LOADING,
+    ADD_SEMESTER_TO_STUDENT,
     AUTH_ERROR,
-    LOGIN_SUCCESS,
     LOGIN_FAIL,
-    LOGOUT_SUCCESS, REGISTER_SUCCESS, REGISTER_FAIL
+    LOGIN_SUCCESS,
+    LOGOUT_SUCCESS,
+    REGISTER_FAIL,
+    REGISTER_SUCCESS,
+    REMOVE_SEMESTER_FROM_STUDENT,
+    USER_LOADED,
+    USER_LOADING
 } from '../actions/types';
+import produce from 'immer';
 
 const initialState = {
     token: localStorage.getItem('token'),
     isAuthenticated: false,
-    isLoading: false,
+    isLoading: true,
     user: null
 };
 
-export default function (state = initialState, action) {
-    switch(action.type) {
+/**
+ * Reducer for user operations.
+ * @param action {Object} - Dispatched action item
+ * @param draft {Object} - Draft state
+ */
+function userReducer(action, draft) {
+    switch (action.type) {
+        case ADD_SEMESTER_TO_STUDENT:
+            draft.semesters.push(action.payload);
+            break;
+        case REMOVE_SEMESTER_FROM_STUDENT:
+            const semesterIndex = draft.semesters.indexOf(action.payload);
+            draft.semesters.splice(semesterIndex, 1);
+            break;
+        default:
+            break;
+    }
+}
+
+export default (state = initialState, action) => produce(state, draft => {
+    switch (action.type) {
         case USER_LOADING:
             return {
                 ...state,
@@ -36,7 +60,7 @@ export default function (state = initialState, action) {
                 ...action.payload,
                 isAuthenticated: true,
                 isLoading: false
-            }
+            };
         case AUTH_ERROR:
         case LOGIN_FAIL:
         case LOGOUT_SUCCESS:
@@ -50,6 +74,7 @@ export default function (state = initialState, action) {
                 isLoading: false
             };
         default:
-            return state;
+            userReducer(action, draft.user);
+            break;
     }
-}
+});

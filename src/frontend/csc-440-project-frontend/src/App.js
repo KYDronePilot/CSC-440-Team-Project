@@ -1,56 +1,44 @@
-import React, {Fragment, Component} from 'react';
-import logo from './logo.svg';
+import React, {Component, Fragment} from 'react';
 import './App.css';
 import {Provider} from 'react-redux';
-import Text from './components/form/Items/Text';
 import store from './store';
-import NewSemesterForm from './components/form/NewSemesterForm';
-import GradeEntries from './components/views/GradeEntries/GradeEntries';
-import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
-import Login from './components/accounts/Login';
-import Register from './components/accounts/Register';
-import PrivateRoute from './components/common/PrivateRoute';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import Login from './views/LoginView';
+import Register from './views/RegisterView';
 import {loadUser} from './actions/auth';
 import Header from './components/layout/Header';
+import SemestersView from './views/SemestersView';
+import SemesterView from './views/SemesterView';
+import CourseInstanceView from './views/CourseInstanceView';
+import GradeTrackerRoute from './routes/GradeTrackerRoute';
+import ConcentrationProgressView from './views/ConcentrationProgressView';
 
-class App extends Component{
+class App extends Component {
     componentDidMount() {
-        store.dispatch(loadUser())
+        store.dispatch(loadUser());
     }
 
     render() {
         return (
             <Provider store={store}>
-                <div className="App">
+                <div>
                     <Router>
                         <Fragment>
-                            <Header />
+                            <Header/>
                             <div>
                                 <Switch>
-                                    <PrivateRoute exact path={'/'} component={GradeEntries}/>
+                                    {/*<PrivateRoute exact path={'/'} component={CategoryView}/>*/}
+                                    <GradeTrackerRoute exact path={'/'} component={SemestersView}/>
+                                    {/*<PrivateRoute path={'/courses'} component={CourseInstances}/>*/}
+                                    <GradeTrackerRoute path={'/semester/:semesterId'} component={SemesterView}/>
+                                    <GradeTrackerRoute path={'/course/:courseId'} component={CourseInstanceView}/>
+                                    <GradeTrackerRoute path={'/concentration-progress'} component={ConcentrationProgressView}/>
                                     <Route exact path={'/register'} component={Register}/>
                                     <Route exact path={'/login'} component={Login}/>
                                 </Switch>
                             </div>
                         </Fragment>
                     </Router>
-                    {/*<header className="App-header">*/}
-                    {/*  <img src={logo} className="App-logo" alt="logo" />*/}
-                    {/*  <p>*/}
-                    {/*    Edit <code>src/App.js</code> and save to reload.*/}
-                    {/*  </p>*/}
-                    {/*  <a*/}
-                    {/*    className="App-link"*/}
-                    {/*    href="https://reactjs.org"*/}
-                    {/*    target="_blank"*/}
-                    {/*    rel="noopener noreferrer"*/}
-                    {/*  >*/}
-                    {/*    Learn React*/}
-                    {/*  </a>*/}
-                    {/*</header>*/}
-                    {/*<Text label={'Some Label'}/>*/}
-                    {/*<NewSemesterForm/>*/}
-                    {/*<Register/>*/}
                 </div>
             </Provider>
         );
