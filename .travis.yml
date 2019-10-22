@@ -2,7 +2,13 @@ sudo: false
 language: generic
 matrix:
   include:
-    - os: linux
+    - dist: bionic
+      addons:
+        apt:
+          packages:
+            - coreutils
+      services:
+        - docker
       cache:
         directories:
           - "/tmp/texlive"
@@ -10,6 +16,7 @@ matrix:
       before_install:
         - travis_wait 45 bash ./utils/travis_latex_setup.sh
         - export PATH="/tmp/texlive/bin/x86_64-linux:$PATH"
+        - docker pull kydronepilot19/draw.io-builder
       script:
         - ./utils/install_travis_requirements.sh
         - ./utils/build_docs.sh
