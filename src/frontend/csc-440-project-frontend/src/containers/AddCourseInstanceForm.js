@@ -7,6 +7,7 @@ import AsyncSelect from 'react-select/async';
 import {tokenConfig} from '../actions/auth';
 import axios from 'axios';
 import {setDataNotLoaded} from '../actions/commonActions';
+import {COURSE_INSTANCE_SEARCH_URL, COURSE_INSTANCES_URL} from '../api/urls';
 
 function mapStateToProps(state) {
     return {
@@ -60,7 +61,7 @@ class AddCourseInstanceForm extends Component {
             semester_id: this.props.semesterId
         };
 
-        axios.get('http://localhost:8000/api/course-instance-search/', config)
+        axios.get(COURSE_INSTANCE_SEARCH_URL, config)
             .then(res => {
                 const options = res.data.map(result => ({
                     label: this.resultToString(result),
@@ -77,7 +78,7 @@ class AddCourseInstanceForm extends Component {
      */
     async getCourseInstance(courseInstanceId) {
         return axios.get(
-            `http://localhost:8000/api/course-instances/${courseInstanceId}/`,
+            `${COURSE_INSTANCES_URL}${courseInstanceId}/`,
             tokenConfig(() => this.props.state))
             .catch(err => console.log(err));
     }
@@ -92,7 +93,7 @@ class AddCourseInstanceForm extends Component {
             id: courseInstance.id,
             students: courseInstance.students
         };
-        return axios.patch(`http://localhost:8000/api/course-instances/${courseInstance.id}/`, body, config)
+        return axios.patch(`${COURSE_INSTANCES_URL}${courseInstance.id}/`, body, config)
             .catch(err => {
                 console.log('Failed to update course instance');
             });

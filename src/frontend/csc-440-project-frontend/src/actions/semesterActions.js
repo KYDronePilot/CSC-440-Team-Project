@@ -7,6 +7,7 @@ import {
 } from '../actions/types';
 import {tokenConfig} from './auth';
 import axios from 'axios';
+import {SEMESTERS_URL} from '../api/urls';
 
 const FALL = 'fall';
 const WINTER = 'winter';
@@ -35,7 +36,7 @@ export const fetchSemesters = () => (dispatch, getState) => {
             student_id: ''
         }
     };
-    return axios.get('http://localhost:8000/api/semesters/', config)
+    return axios.get(SEMESTERS_URL, config)
         .then(res => {
             dispatch({
                 type: FETCH_SEMESTERS,
@@ -53,7 +54,7 @@ export const updateSemester = (semester, callback = () => null) => (dispatch, ge
         ...semester
     };
 
-    axios.patch(`http://localhost:8000/api/semesters/${semester.id}/`, body, config)
+    axios.patch(`${SEMESTERS_URL}${semester.id}/`, body, config)
         .then(res => {
             dispatch({
                 type: REPLACE_CATEGORY,
@@ -73,7 +74,7 @@ export const updateSemester = (semester, callback = () => null) => (dispatch, ge
 export const addStudentSemesterRelationship = (semester, callback = () => null) => (dispatch, getState) => {
     const config = tokenConfig(getState);
 
-    axios.patch(`http://localhost:8000/api/semesters/${semester.id}/`, semester, config)
+    axios.patch(`${SEMESTERS_URL}${semester.id}/`, semester, config)
         .then(res => {
             // Add semester to state
             dispatch({
@@ -100,7 +101,7 @@ export const removeStudentSemesterRelationship = (semester, callback = () => nul
         student_relationship: ''
     };
 
-    axios.delete(`http://localhost:8000/api/semesters/${semester.id}/`, config)
+    axios.delete(`${SEMESTERS_URL}${semester.id}/`, config)
         .then(res => {
             // Trigger entire state reload
             callback();

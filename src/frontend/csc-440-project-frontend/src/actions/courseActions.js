@@ -1,9 +1,10 @@
 import {FETCH_COURSES} from '../actions/types';
 import {tokenConfig} from './auth';
 import axios from 'axios';
+import {COURSES_URL} from '../api/urls';
 
 export const fetchCourses = () => (dispatch, getState) => {
-    return axios.get('http://localhost:8000/api/courses/', tokenConfig(getState))
+    return axios.get(COURSES_URL, tokenConfig(getState))
         .then(res => {
             dispatch({
                 type: FETCH_COURSES,

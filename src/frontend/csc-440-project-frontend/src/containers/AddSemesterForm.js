@@ -7,6 +7,7 @@ import AsyncSelect from 'react-select/async';
 import axios from 'axios';
 import {addStudentSemesterRelationship, semesterToString} from '../actions/semesterActions';
 import {objectIsEmpty} from '../utils';
+import {SEMESTERS_URL} from '../api/urls';
 
 function mapStateToProps(state) {
     return {
@@ -45,7 +46,7 @@ class AddSemesterForm extends Component {
             search: inputValue,
             exclude_student_id: ''
         };
-        axios.get('http://localhost:8000/api/semesters/', config)
+        axios.get(SEMESTERS_URL, config)
             .then(res => {
                 const options = res.data.map(semester => ({
                     label: semesterToString(semester),

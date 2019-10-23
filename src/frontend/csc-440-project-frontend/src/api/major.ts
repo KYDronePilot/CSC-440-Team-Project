@@ -1,6 +1,7 @@
 import {Major} from './types';
 import axios, {AxiosRequestConfig} from 'axios';
 import {OptionsType, OptionTypeBase} from 'react-select/src/types';
+import {MAJORS_URL} from './urls';
 
 interface MajorResponse extends Array<Major> {
 }
@@ -32,7 +33,7 @@ export const loadMajors = (params: object) => (inputValue: string, callback: ((o
         }
     };
 
-    axios.get<MajorResponse>('http://localhost:8000/api/majors/', config)
+    axios.get<MajorResponse>(MAJORS_URL, config)
         .then(res => {
             const options: MajorOptions = res.data.map(major => ({
                 label: majorToString(major),
