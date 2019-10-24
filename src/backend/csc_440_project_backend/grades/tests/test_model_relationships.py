@@ -1094,15 +1094,10 @@ class TestModelRelationships(TestDatabaseSetup):
     def test_concentration_requirement_relationship(self):
         self.assertCountEqual(
             list(self.cs_general.requirements.all()),
-            [
-                self.csg_gen_ed_req,
-                self.csg_core_course_req,
-                self.csg_concentration_req,
-                self.csg_concentration_sup_req
-            ]
+            [self.csg_root_req]
         )
         self.assertEqual(
-            self.csg_gen_ed_req.concentration,
+            self.csg_root_req.concentration,
             self.cs_general
         )
 
