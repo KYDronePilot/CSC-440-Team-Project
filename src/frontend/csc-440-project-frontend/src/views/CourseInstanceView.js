@@ -81,15 +81,15 @@ class CourseInstanceView extends Component {
         return (
             <div>
                 <GradeEntryForm/>
-                <CategoryForm/>
+                {/*<CategoryForm/>*/}
                 <CourseInstanceBreadcrumb
                     semesterId={this.courseInstance().semester}
                     courseInstanceId={this.courseInstanceId()}
                 />
-                <h1>{course.name}</h1>
-                <MDBBtn color={'secondary'} onClick={this.openCreateCategoryForm}>
-                    Add Category
-                </MDBBtn>
+                <h1 className={'text-center'}>{course.name}</h1>
+                {/*<MDBBtn color={'secondary'} onClick={this.openCreateCategoryForm}>*/}
+                {/*    Add Category*/}
+                {/*</MDBBtn>*/}
                 {this.categories().map(category => <CategoryView key={category.id} category={category}/>)}
             </div>
         );

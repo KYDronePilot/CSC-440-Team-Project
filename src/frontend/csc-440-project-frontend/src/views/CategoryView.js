@@ -5,6 +5,7 @@ import {MDBBtn, MDBContainer} from 'mdbreact';
 import GradeEntries from '../containers/GradeEntryList';
 import {allInstances} from '../utils/objectification_utils';
 import {editCategory} from '../actions/categoryActions';
+import ScoreBar from '../components/ScoreBar';
 
 function mapStateToProps(state) {
     return {
@@ -25,6 +26,7 @@ class CategoryView extends Component {
         this.editCategory = this.editCategory.bind(this);
 
         this.gradeEntries = this.gradeEntries.bind(this);
+        this.score = this.score.bind(this);
     }
 
     /**
@@ -39,13 +41,28 @@ class CategoryView extends Component {
         this.props.editCategory(this.props.category, this.props.category.course_instance);
     }
 
+    /**
+     * Get score of all grade entries.
+     */
+    score() {
+        let max_points = 0;
+        let actual_points = 0;
+        for (const gradeEntry of this.gradeEntries()) {
+            max_points += gradeEntry.max_points;
+            actual_points += gradeEntry.points;
+        }
+        return actual_points / max_points;
+    }
+
     render() {
         return (
             <MDBContainer>
                 <h1>{this.props.category.name}</h1>
-                <MDBBtn className={'btn-link p-0'} color={''} onClick={this.editCategory}>
-                    Edit
-                </MDBBtn>
+                <ScoreBar score={this.score()}/>
+                <span>{(this.score() * 100).toFixed(1)}%</span>
+                {/*<MDBBtn className={'btn-link p-0'} color={''} onClick={this.editCategory}>*/}
+                {/*    Edit*/}
+                {/*</MDBBtn>*/}
                 <GradeEntries gradeEntries={this.gradeEntries()} category={this.props.category}/>
             </MDBContainer>
         );
