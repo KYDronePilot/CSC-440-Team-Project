@@ -2,7 +2,8 @@ sudo: false
 language: generic
 matrix:
   include:
-    - dist: bionic
+    - name: 'Build Docs'
+      dist: bionic
       addons:
         apt:
           packages:
@@ -30,12 +31,46 @@ matrix:
           on:
             repo: KYDronePilot/CSC-440-Team-Project
             tags: true
-    - language: python
+    - name: 'Test, Build and Distribute Backend'
+      language: python
       python: '3.7'
+      services:
+        - docker
       cache: pip
+      env:
+        - REPO=kydronepilot19/csc-440-project-backend
+        - TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+        - COMMIT=${TRAVIS_COMMIT::8}
       before_script:
         - cd src/backend/csc_440_project_backend
         - python -m pip install -r requirements.txt
         - python manage.py makemigrations
       script:
         - python manage.py test
+        - docker build -t $REPO:$COMMIT .
+      after_success:
+        - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        - docker tag $REPO:$COMMIT $REPO:$TAG
+        - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
+        - docker push $REPO
+    - name: 'Build/Distribute Frontend Container'
+      language: node_js
+      node_js: 'stable'
+      cache:
+        directories:
+          - src/frontend/csc-440-project-frontend/node_modules
+      env:
+        - REPO=kydronepilot19/csc-440-project-frontend
+        - TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+        - COMMIT=${TRAVIS_COMMIT::8}
+      before_script:
+        - cd src/frontend/csc-440-project-frontend
+        - yarn
+      script:
+        - yarn build
+        - docker build -t $REPO:$COMMIT .
+      after_success:
+        - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        - docker tag $REPO:$COMMIT $REPO:$TAG
+        - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
+        - docker push $REPO
