@@ -47,6 +47,9 @@ matrix:
         - python manage.py makemigrations
       script:
         - python manage.py test
+        - python manage.py makemigrations
+        - python manage.py migrate
+        - python manage.py create_dummy_data
         - docker build -t $REPO:$COMMIT .
       after_success:
         - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD

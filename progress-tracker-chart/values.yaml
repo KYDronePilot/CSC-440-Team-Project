@@ -4,10 +4,27 @@
 
 replicaCount: 1
 
-image:
-  repository: nginx
-  tag: stable
-  pullPolicy: IfNotPresent
+# Backend of application
+backend:
+  name: csc-440-backend
+  image:
+    repo: kydronepilot19/csc-440-project-backend
+    tag: deployment-setup
+    pullPolicy: Always
+
+# Frontend/NGINX of application
+frontend:
+  name: csc-440-frontend
+  image:
+    repo: kydronepilot19/csc-440-project-frontend
+    tag: deployment-setup
+    pullPolicy: Always
+
+
+# image:
+#   repository: nginx
+#   tag: stable
+#   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
 nameOverride: ""
@@ -15,7 +32,7 @@ fullnameOverride: ""
 
 serviceAccount:
   # Specifies whether a service account should be created
-  create: true
+  create: false
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name:
@@ -32,7 +49,7 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: ClusterIP
+  type: LoadBalancer
   port: 80
 
 ingress:
