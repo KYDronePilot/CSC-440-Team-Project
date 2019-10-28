@@ -39,9 +39,21 @@
     }
     % Create the subsubsection for the requirement
     \subsubsection{#1}
+    \begin{enumerate}
 }
-{}
+{
+    \end{enumerate}
+}
 
+\newcommand{\dictitem}[1]{\item \textbf{#1}:}
+% Data dictionary environment
+\newenvironment{dict}
+{
+    \begin{itemize}
+}
+{
+    \end{itemize}
+}
 
 % Set path to all graphics
 \graphicspath{{figures/}{build/diagrams/}}
@@ -161,51 +173,157 @@ on courses the student has entered through the grade tracking component.
 
 \section{System Requirements}
 \subsection{Functional Requirements}
-% \begin{requirement}{The system shall..1}
 
+% Some common text/sequences that are used a lot...
+\newcommand{\sysshall}{The system shall }
+\newcommand{\stushall}{The student shall }
+\newcommand{\usershall}{The user shall }
+\newcommand{\loginpage}{\sysshall display the login page.}
+\newcommand{\mainmenu}{\sysshall display the main menu.}
+\newcommand{\clickmainmenu}{\stushall click the \textbf{Main Menu} button}
+\newcommand{\redirecthome}{\sysshall redirect the student to the homepage.}
+\newcommand{\gotohome}{
+    \item \clickmainmenu
+    \item \mainmenu
+}
 
-% \begin{enumerate}
-%     \item Test item 1
-%     \item Test item 2
-%     \begin{enumerate}
-%         \item Test item 1.1
-%         \item Test item 1.2
-%         \begin{enumerate}
-%             \item Test item 1.1.1
-%             \item Test item 1.1.2
-%             \begin{enumerate}
-%                 \item Test item 1.1.1.1
-%                 \item Test item 1.1.1.2
-%             \end{enumerate}
-%         \end{enumerate}
-%     \end{enumerate}
-% \end{enumerate}
+\begin{requirement}{\sysshall allow a user to register for an account}
+    \item \loginpage
+    \item \usershall click the \textbf{Register} button.
+    \item \sysshall display the \emph{Registration} page.
+    \item \usershall enter the requested information.
+    \item \usershall click the \textbf{Register} button.
+    \item \sysshall validate the information entered by the user.
+    \begin{enumerate}
+        \item If the entered information is invalid, the system shall display warnings next to the
+        relevant fields.
+    \end{enumerate}
+    \item \redirecthome
+\end{requirement}
 
+\begin{requirement}{\sysshall allow a student to login to his/her account}
+    \item \loginpage
+    \item \stushall enter his/her login credentials.
+    \item \sysshall validate the credentials.
+    \begin{enumerate}
+        \item If the credentials are not valid, the system shall display warnings next to the
+        fields with errors.
+    \end{enumerate}
+    \item \redirecthome
+\end{requirement}
 
-% \end{requirement}
+\begin{requirement}{\sysshall allow a student to logout of his/her account}
+    \item \mainmenu
+    \item \stushall click the \textbf{Logout} button.
+    \item \loginpage
+\end{requirement}
 
-% \begin{requirement}{The system shall..2}
+\begin{requirement}{\sysshall allow a student to view progress in a concentration}
+    \item \mainmenu
+    \item \stushall click the \textbf{Concentration Progress} button.
+    \item \sysshall display the \emph{Concentration Progress} page.
+    \item \stushall select the college which the concentration is in.
+    \item \stushall select the major which the concentration is in.
+    \item \stushall select the concentration.
+    \item \stushall click the \textbf{Load Progress} button.
+    \item \sysshall display the concentration requirement structure.
+    \gotohome
+\end{requirement}
 
+% Shortcut for navigating to semester page
+\newcommand{\navsemesters}{
+    \item \mainmenu
+    \item \stushall click the \textbf{Semesters} button.
+    \item \sysshall display the semesters the student is enrolled in.
+}
 
-% \begin{enumerate}
-%     \item Test item 1
-%     \item Test item 2
-%     \begin{enumerate}
-%         \item Test item 1.1
-%         \item Test item 1.2
-%         \begin{enumerate}
-%             \item Test item 1.1.1
-%             \item Test item 1.1.2
-%             \begin{enumerate}
-%                 \item Test item 1.1.1.1
-%                 \item Test item 1.1.1.2
-%             \end{enumerate}
-%         \end{enumerate}
-%     \end{enumerate}
-% \end{enumerate}
+\begin{requirement}{\sysshall allow a student to view enrolled semesters}
+    \navsemesters
+    \gotohome
+\end{requirement}
 
+\begin{requirement}{\sysshall allow a student to add/remove enrolled semesters}
+    \navsemesters
+    \item \stushall click the \textbf{Add Semester} button.
+    \item \sysshall display the \emph{Add Semester} form.
+    \item \stushall select the semester to add.
+    \item \stushall click the \textbf{Save} button.
+    \item \sysshall add that semester to the semesters shown.
+    \item \stushall click the \textbf{Delete} button next to one of the semesters.
+    \item \sysshall display a delete confirmation message.
+    \item \stushall click the \textbf{Yes, Delete} button.
+    \item \sysshall remove that semester from the semesters shown.
+    \gotohome
+\end{requirement}
 
-% \end{requirement}
+% Shortcut for navigating to enrolled courses
+\newcommand{\navcourses}{
+    \navsemesters
+    \item \stushall click the chosen semester.
+    \item \sysshall display the courses the student is enrolled in, in the selected semester.
+}
+
+\begin{requirement}{\sysshall allow a student to view enrolled courses}
+    \navcourses
+    \gotohome
+\end{requirement}
+
+\begin{requirement}{\sysshall allow a student to add/remove enrolled courses}
+    \navcourses
+    \item \stushall click the \textbf{Add Course} button.
+    \item \sysshall display the \emph{Add Course} form.
+    \item \stushall select the course to add.
+    \item \stushall click the \textbf{Save} button.
+    \item \sysshall add that course to the courses shown.
+    \item \stushall click the \textbf{Delete} button next to one of the courses.
+    \item \sysshall display a delete confirmation message.
+    \item \stushall click the \textbf{Yes, Delete} button.
+    \item \sysshall remove that course from the courses shown.
+    \gotohome
+\end{requirement}
+
+% Shortcut for navigating to course details
+\newcommand{\navcoursedetails}{
+    \navcourses
+    \item \stushall click the chosen course.
+    \item \sysshall display the course details for the selected course.
+}
+
+\begin{requirement}{\sysshall allow a student to view course details}
+    \navcoursedetails
+    \gotohome
+\end{requirement}
+
+\begin{requirement}{\sysshall allow a student to add/edit/remove grade entries}
+    \navcoursedetails
+    \item \stushall click the \textbf{Add Grade Entry} button under one of the categories.
+    \item \sysshall display the \emph{Grade Entry} form.
+    \item \stushall enter the information required.
+    \item \stushall click the \textbf{Save} button.
+    \begin{enumerate}
+        \item If any of the fields are invalid, the system shall display warnings next to those
+        fields which are invalid.
+    \end{enumerate}
+    \item \sysshall add the new grade entry to the grade entries shown.
+    \item \stushall click the \textbf{Edit} button next to one of the grade entries.
+    \item \sysshall display the \emph{Grade Entry} form, populated with the selected grade entry's
+    information.
+    \item \stushall edit the grade entry information.
+    \item \stushall click the \textbf{Save} button.
+    \begin{enumerate}
+        \item If any of the fields are invalid, the system shall display warnings next to those
+        fields which are invalid.
+    \end{enumerate}
+    \item \sysshall update the grade entry information on the course details page accordingly.
+    \item \stushall click the \textbf{Edit} button next to one of the courses.
+    \item \sysshall display the \emph{Grade Entry} form, populated with the selected grade entry's
+    information.
+    \item \stushall click the \textbf{Delete} button.
+    \item \sysshall display a delete confirmation message.
+    \item \stushall click the \textbf{Yes, Delete} button.
+    \item \sysshall remove that grade entry from the course details page.
+    \gotohome
+\end{requirement}
 
 \subsection{Non-functional Requirements}
 
@@ -251,14 +369,18 @@ on courses the student has entered through the grade tracking component.
 \section{Conclusion}
 
 \section{Dictionary}
-\begin{itemize}
-    \item \textbf{Semester}: A single semester of education consisting of courses. Each semester can
+\begin{dict}
+    \dictitem{Semester} A single semester of education consisting of courses. Each semester can
     be associated with a different educational institution; consistency is not required.
-    \item \textbf{Course}: Any educational course/class occurring within a particular semester.
-    \item \textbf{Section}: An equally weighted or logically grouped collection of material within a
+    \dictitem{Course} Any educational course/class occurring within a particular semester.
+    \dictitem{Section} An equally weighted or logically grouped collection of material within a
     particular course (e.g. Homework, Tests, etc.).
-    \item \textbf{Grade Entry}: A graded piece of material associated with a particular section 
+    \dictitem{Grade Entry} A graded piece of material associated with a particular section 
     (e.g. Homework 2, Exam 1, etc.).
-\end{itemize}
+    \dictitem{User} A new user of the software system who does not yet have an account.
+    \dictitem{Student} A user of the software system who has an account and is a college student.
+    \dictitem{Requirement Structure} A recursive structure defining the required courses to complete
+    a concentration.
+\end{dict}
 
 \end{document}
