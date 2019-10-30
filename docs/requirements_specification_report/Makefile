@@ -27,6 +27,10 @@ LOGIN_SEQUENCE_DIAGRAM_DIST=${LOGIN_SEQUENCE_DIAGRAM_DIR}/dist
 REGISTER_SEQUENCE_DIAGRAM_DIR=$(dir ${CURDIR})register_sequence_diagram
 REGISTER_SEQUENCE_DIAGRAM_DIST=${REGISTER_SEQUENCE_DIAGRAM_DIR}/dist
 
+# logout_sequence_diagram diagram info
+LOGOUT_SEQUENCE_DIAGRAM_DIR=$(dir ${CURDIR})logout_sequence_diagram
+LOGOUT_SEQUENCE_DIAGRAM_DIST=${LOGOUT_SEQUENCE_DIAGRAM_DIR}/dist
+
 prepare:
 	mkdir -p ${DIST} ${BUILD} ${DIAGRAM_BUILD}
 
@@ -50,7 +54,11 @@ build-database-diagram:
 	$(MAKE) -C ${DATABASE_DESIGN_DIR} clean build
 	cp ${DATABASE_DESIGN_DIST}/* ${DIAGRAM_BUILD}
 
-build-diagrams: prepare build-use-case-diagram build-class-diagram build-login-sequence-diagram \
+build-logout-sequence-diagram:
+	$(MAKE) -C ${LOGOUT_SEQUENCE_DIAGRAM_DIR} clean build
+	cp ${LOGOUT_SEQUENCE_DIAGRAM_DIST}/* ${DIAGRAM_BUILD}
+
+build-diagrams: prepare build-logout-sequence-diagram build-use-case-diagram build-class-diagram build-login-sequence-diagram \
 	build-register-sequence-diagram build-database-diagram
 
 build-docx: prepare
