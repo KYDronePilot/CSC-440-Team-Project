@@ -79,6 +79,26 @@ CONCENTRATION_PROGRESS_ACTIVITY_DIAGRAM_DIST=${CONCENTRATION_PROGRESS_ACTIVITY_D
 VIEW_SEMESTERS_ACTIVITY_DIAGRAM_DIR=$(dir ${CURDIR})view_semesters_activity_diagram
 VIEW_SEMESTERS_ACTIVITY_DIAGRAM_DIST=${VIEW_SEMESTERS_ACTIVITY_DIAGRAM_DIR}/dist
 
+# add_remove_semesters_activity_diagram diagram info
+ADD_REMOVE_SEMESTERS_ACTIVITY_DIAGRAM_DIR=$(dir ${CURDIR})add_remove_semesters_activity_diagram
+ADD_REMOVE_SEMESTERS_ACTIVITY_DIAGRAM_DIST=${ADD_REMOVE_SEMESTERS_ACTIVITY_DIAGRAM_DIR}/dist
+
+# view_courses_activity_diagram diagram info
+VIEW_COURSES_ACTIVITY_DIAGRAM_DIR=$(dir ${CURDIR})view_courses_activity_diagram
+VIEW_COURSES_ACTIVITY_DIAGRAM_DIST=${VIEW_COURSES_ACTIVITY_DIAGRAM_DIR}/dist
+
+# add_remove_courses_activity_diagram diagram info
+ADD_REMOVE_COURSES_ACTIVITY_DIAGRAM_DIR=$(dir ${CURDIR})add_remove_courses_activity_diagram
+ADD_REMOVE_COURSES_ACTIVITY_DIAGRAM_DIST=${ADD_REMOVE_COURSES_ACTIVITY_DIAGRAM_DIR}/dist
+
+# view_course_details_activity_diagram diagram info
+VIEW_COURSE_DETAILS_ACTIVITY_DIAGRAM_DIR=$(dir ${CURDIR})view_course_details_activity_diagram
+VIEW_COURSE_DETAILS_ACTIVITY_DIAGRAM_DIST=${VIEW_COURSE_DETAILS_ACTIVITY_DIAGRAM_DIR}/dist
+
+# add_edit_remove_grade_entries_activity_diagram diagram info
+ADD_EDIT_REMOVE_GRADE_ENTRIES_ACTIVITY_DIAGRAM_DIR=$(dir ${CURDIR})add_edit_remove_grade_entries_activity_diagram
+ADD_EDIT_REMOVE_GRADE_ENTRIES_ACTIVITY_DIAGRAM_DIST=${ADD_EDIT_REMOVE_GRADE_ENTRIES_ACTIVITY_DIAGRAM_DIR}/dist
+
 prepare:
 	mkdir -p ${DIST} ${BUILD} ${DIAGRAM_BUILD}
 
@@ -154,7 +174,27 @@ build-view-semesters-activity-diagram:
 	$(MAKE) -C ${VIEW_SEMESTERS_ACTIVITY_DIAGRAM_DIR} clean build
 	cp ${VIEW_SEMESTERS_ACTIVITY_DIAGRAM_DIST}/* ${DIAGRAM_BUILD}
 
-build-diagrams: prepare build-view-semesters-activity-diagram build-concentration-progress-activity-diagram build-logout-activity-diagram build-login-activity-diagram build-register-activity-diagram build-add-edit-remove-grade-entries-sequence-diagram build-view-course-details-sequence-diagram build-add-remove-courses-sequence-diagram build-view-courses-sequence-diagram build-add-remove-semesters-sequence-diagram build-view-semesters-sequence-diagram build-concentration-progress-sequence-diagram build-logout-sequence-diagram build-use-case-diagram build-class-diagram build-login-sequence-diagram \
+build-add-remove-semesters-activity-diagram:
+	$(MAKE) -C ${ADD_REMOVE_SEMESTERS_ACTIVITY_DIAGRAM_DIR} clean build
+	cp ${ADD_REMOVE_SEMESTERS_ACTIVITY_DIAGRAM_DIST}/* ${DIAGRAM_BUILD}
+
+build-view-courses-activity-diagram:
+	$(MAKE) -C ${VIEW_COURSES_ACTIVITY_DIAGRAM_DIR} clean build
+	cp ${VIEW_COURSES_ACTIVITY_DIAGRAM_DIST}/* ${DIAGRAM_BUILD}
+
+build-add-remove-courses-activity-diagram:
+	$(MAKE) -C ${ADD_REMOVE_COURSES_ACTIVITY_DIAGRAM_DIR} clean build
+	cp ${ADD_REMOVE_COURSES_ACTIVITY_DIAGRAM_DIST}/* ${DIAGRAM_BUILD}
+
+build-view-course-details-activity-diagram:
+	$(MAKE) -C ${VIEW_COURSE_DETAILS_ACTIVITY_DIAGRAM_DIR} clean build
+	cp ${VIEW_COURSE_DETAILS_ACTIVITY_DIAGRAM_DIST}/* ${DIAGRAM_BUILD}
+
+build-add-edit-remove-grade-entries-activity-diagram:
+	$(MAKE) -C ${ADD_EDIT_REMOVE_GRADE_ENTRIES_ACTIVITY_DIAGRAM_DIR} clean build
+	cp ${ADD_EDIT_REMOVE_GRADE_ENTRIES_ACTIVITY_DIAGRAM_DIST}/* ${DIAGRAM_BUILD}
+
+build-diagrams: prepare build-add-edit-remove-grade-entries-activity-diagram build-view-course-details-activity-diagram build-add-remove-courses-activity-diagram build-view-courses-activity-diagram build-add-remove-semesters-activity-diagram build-view-semesters-activity-diagram build-concentration-progress-activity-diagram build-logout-activity-diagram build-login-activity-diagram build-register-activity-diagram build-add-edit-remove-grade-entries-sequence-diagram build-view-course-details-sequence-diagram build-add-remove-courses-sequence-diagram build-view-courses-sequence-diagram build-add-remove-semesters-sequence-diagram build-view-semesters-sequence-diagram build-concentration-progress-sequence-diagram build-logout-sequence-diagram build-use-case-diagram build-class-diagram build-login-sequence-diagram \
 	build-register-sequence-diagram build-database-diagram
 
 build-docx: prepare
