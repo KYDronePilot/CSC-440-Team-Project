@@ -59,6 +59,26 @@ VIEW_COURSE_DETAILS_SEQUENCE_DIAGRAM_DIST=${VIEW_COURSE_DETAILS_SEQUENCE_DIAGRAM
 ADD_EDIT_REMOVE_GRADE_ENTRIES_SEQUENCE_DIAGRAM_DIR=$(dir ${CURDIR})add_edit_remove_grade_entries_sequence_diagram
 ADD_EDIT_REMOVE_GRADE_ENTRIES_SEQUENCE_DIAGRAM_DIST=${ADD_EDIT_REMOVE_GRADE_ENTRIES_SEQUENCE_DIAGRAM_DIR}/dist
 
+# register_activity_diagram diagram info
+REGISTER_ACTIVITY_DIAGRAM_DIR=$(dir ${CURDIR})register_activity_diagram
+REGISTER_ACTIVITY_DIAGRAM_DIST=${REGISTER_ACTIVITY_DIAGRAM_DIR}/dist
+
+# login_activity_diagram diagram info
+LOGIN_ACTIVITY_DIAGRAM_DIR=$(dir ${CURDIR})login_activity_diagram
+LOGIN_ACTIVITY_DIAGRAM_DIST=${LOGIN_ACTIVITY_DIAGRAM_DIR}/dist
+
+# logout_activity_diagram diagram info
+LOGOUT_ACTIVITY_DIAGRAM_DIR=$(dir ${CURDIR})logout_activity_diagram
+LOGOUT_ACTIVITY_DIAGRAM_DIST=${LOGOUT_ACTIVITY_DIAGRAM_DIR}/dist
+
+# concentration_progress_activity_diagram diagram info
+CONCENTRATION_PROGRESS_ACTIVITY_DIAGRAM_DIR=$(dir ${CURDIR})concentration_progress_activity_diagram
+CONCENTRATION_PROGRESS_ACTIVITY_DIAGRAM_DIST=${CONCENTRATION_PROGRESS_ACTIVITY_DIAGRAM_DIR}/dist
+
+# view_semesters_activity_diagram diagram info
+VIEW_SEMESTERS_ACTIVITY_DIAGRAM_DIR=$(dir ${CURDIR})view_semesters_activity_diagram
+VIEW_SEMESTERS_ACTIVITY_DIAGRAM_DIST=${VIEW_SEMESTERS_ACTIVITY_DIAGRAM_DIR}/dist
+
 prepare:
 	mkdir -p ${DIST} ${BUILD} ${DIAGRAM_BUILD}
 
@@ -114,7 +134,27 @@ build-add-edit-remove-grade-entries-sequence-diagram:
 	$(MAKE) -C ${ADD_EDIT_REMOVE_GRADE_ENTRIES_SEQUENCE_DIAGRAM_DIR} clean build
 	cp ${ADD_EDIT_REMOVE_GRADE_ENTRIES_SEQUENCE_DIAGRAM_DIST}/* ${DIAGRAM_BUILD}
 
-build-diagrams: prepare build-add-edit-remove-grade-entries-sequence-diagram build-view-course-details-sequence-diagram build-add-remove-courses-sequence-diagram build-view-courses-sequence-diagram build-add-remove-semesters-sequence-diagram build-view-semesters-sequence-diagram build-concentration-progress-sequence-diagram build-logout-sequence-diagram build-use-case-diagram build-class-diagram build-login-sequence-diagram \
+build-register-activity-diagram:
+	$(MAKE) -C ${REGISTER_ACTIVITY_DIAGRAM_DIR} clean build
+	cp ${REGISTER_ACTIVITY_DIAGRAM_DIST}/* ${DIAGRAM_BUILD}
+
+build-login-activity-diagram:
+	$(MAKE) -C ${LOGIN_ACTIVITY_DIAGRAM_DIR} clean build
+	cp ${LOGIN_ACTIVITY_DIAGRAM_DIST}/* ${DIAGRAM_BUILD}
+
+build-logout-activity-diagram:
+	$(MAKE) -C ${LOGOUT_ACTIVITY_DIAGRAM_DIR} clean build
+	cp ${LOGOUT_ACTIVITY_DIAGRAM_DIST}/* ${DIAGRAM_BUILD}
+
+build-concentration-progress-activity-diagram:
+	$(MAKE) -C ${CONCENTRATION_PROGRESS_ACTIVITY_DIAGRAM_DIR} clean build
+	cp ${CONCENTRATION_PROGRESS_ACTIVITY_DIAGRAM_DIST}/* ${DIAGRAM_BUILD}
+
+build-view-semesters-activity-diagram:
+	$(MAKE) -C ${VIEW_SEMESTERS_ACTIVITY_DIAGRAM_DIR} clean build
+	cp ${VIEW_SEMESTERS_ACTIVITY_DIAGRAM_DIST}/* ${DIAGRAM_BUILD}
+
+build-diagrams: prepare build-view-semesters-activity-diagram build-concentration-progress-activity-diagram build-logout-activity-diagram build-login-activity-diagram build-register-activity-diagram build-add-edit-remove-grade-entries-sequence-diagram build-view-course-details-sequence-diagram build-add-remove-courses-sequence-diagram build-view-courses-sequence-diagram build-add-remove-semesters-sequence-diagram build-view-semesters-sequence-diagram build-concentration-progress-sequence-diagram build-logout-sequence-diagram build-use-case-diagram build-class-diagram build-login-sequence-diagram \
 	build-register-sequence-diagram build-database-diagram
 
 build-docx: prepare
