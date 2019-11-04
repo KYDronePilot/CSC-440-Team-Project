@@ -13,9 +13,11 @@ matrix:
         directories:
           - "/tmp/texlive"
           - "$HOME/.texlive"
+          - "/tmp/pandoc"
       before_install:
         - travis_wait 45 bash ./utils/travis_latex_setup.sh
         - export PATH="/tmp/texlive/bin/x86_64-linux:$PATH"
+        - ./utils/install_pandoc.sh
         - docker pull kydronepilot19/draw.io-builder
       script:
         - ./utils/install_travis_requirements.sh
