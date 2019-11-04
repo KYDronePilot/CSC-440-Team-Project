@@ -1,5 +1,4 @@
-import React, {Component} from 'react';
-import * as PropTypes from 'prop-types';
+import React, {Component, FormEvent} from 'react';
 import {MDBInput} from 'mdbreact';
 
 // /**
@@ -17,30 +16,22 @@ import {MDBInput} from 'mdbreact';
 //         }, {});
 // }
 
-class TextInput extends Component {
-    static propTypes = {
-        invalidFeedback: PropTypes.oneOfType([
-            PropTypes.array,
-            PropTypes.string
-        ]),
-        validFeedback: PropTypes.oneOfType([
-            PropTypes.array,
-            PropTypes.string
-        ]),
-        valid: PropTypes.bool,
-        displayFeedback: PropTypes.bool,
-        name: PropTypes.string,
-        label: PropTypes.string,
-        onChange: PropTypes.func,
-        value: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.number
-        ]),
-        hint: PropTypes.string
-    };
+interface TextInputProps {
+    invalidFeedback: string | string[];
+    validFeedback: string | string[];
+    valid: boolean;
+    displayFeedback: boolean;
+    name: string;
+    label: string;
+    onChange: (e: FormEvent<HTMLInputElement>) => void;
+    value: string | number | null;
+    hint: string;
+}
+
+class TextInput extends Component<TextInputProps, {}> {
     static type = 'text';
 
-    constructor(props) {
+    constructor(props: TextInputProps) {
         super(props);
 
         this.feedbackClass = this.feedbackClass.bind(this);
@@ -62,8 +53,8 @@ class TextInput extends Component {
      * @param feedback {Any} - Feedback to wrap
      * @return {*[]|*} Wrapped feedback
      */
-    formatFeedback(feedback) {
-        if (typeof feedback !== typeof [] || feedback === null)
+    formatFeedback(feedback: string | string[] | number | null) {
+        if (!Array.isArray(feedback) || feedback === null)
             return [feedback];
         return feedback;
     }
