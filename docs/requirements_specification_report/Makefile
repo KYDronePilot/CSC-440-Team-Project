@@ -23,6 +23,18 @@ CLASS_DIAGRAM_DIST=${CLASS_DIAGRAM_DIR}/dist
 LEVEL_0_DFD_DIR=$(dir ${CURDIR})level_0_dfd
 LEVEL_0_DFD_DIST=${LEVEL_0_DFD_DIR}/dist
 
+# level_1_dfd diagram info
+LEVEL_1_DFD_DIR=$(dir ${CURDIR})level_1_dfd
+LEVEL_1_DFD_DIST=${LEVEL_1_DFD_DIR}/dist
+
+# level_2_dfd_p4 diagram info
+LEVEL_2_DFD_P4_DIR=$(dir ${CURDIR})level_2_dfd_p4
+LEVEL_2_DFD_P4_DIST=${LEVEL_2_DFD_P4_DIR}/dist
+
+# level_3_dfd_p4-4 diagram info
+LEVEL_3_DFD_P4-4_DIR=$(dir ${CURDIR})level_3_dfd_p4-4
+LEVEL_3_DFD_P4-4_DIST=${LEVEL_3_DFD_P4-4_DIR}/dist
+
 prepare:
 	mkdir -p ${DIST} ${BUILD} ${DIAGRAM_BUILD}
 
@@ -50,7 +62,19 @@ build-level-0-dfd-diagram:
 	$(MAKE) -C ${LEVEL_0_DFD_DIR} clean build
 	cp ${LEVEL_0_DFD_DIST}/* ${DIAGRAM_BUILD}
 
-build-diagrams: prepare build-use-case-diagram build-class-diagram build-database-diagram build-level-0-dfd-diagram
+build-level-1-dfd:
+	$(MAKE) -C ${LEVEL_1_DFD_DIR} clean build
+	cp ${LEVEL_1_DFD_DIST}/* ${DIAGRAM_BUILD}
+
+build-level-2-dfd-p4:
+	$(MAKE) -C ${LEVEL_2_DFD_P4_DIR} clean build
+	cp ${LEVEL_2_DFD_P4_DIST}/* ${DIAGRAM_BUILD}
+
+build-level-3-dfd-p4-4:
+	$(MAKE) -C ${LEVEL_3_DFD_P4-4_DIR} clean build
+	cp ${LEVEL_3_DFD_P4-4_DIST}/* ${DIAGRAM_BUILD}
+
+build-diagrams: prepare build-level-3-dfd-p4-4 build-level-2-dfd-p4 build-level-1-dfd build-use-case-diagram build-class-diagram build-database-diagram build-level-0-dfd-diagram
 
 build-docx: prepare
 	pandoc -s ${DOCUMENT}.tex -o ${DIST}/${DOCUMENT}.docx --toc --reference-doc reference.docx
