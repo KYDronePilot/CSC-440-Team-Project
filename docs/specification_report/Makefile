@@ -33,6 +33,10 @@ LEVEL_2_DFD_P4_DIST=${LEVEL_2_DFD_P4_DIR}/dist
 LEVEL_3_DFD_P4-4_DIR=$(dir ${CURDIR})level_3_dfd_p4-4
 LEVEL_3_DFD_P4-4_DIST=${LEVEL_3_DFD_P4-4_DIR}/dist
 
+# top_level_structure_chart diagram info
+TOP_LEVEL_STRUCTURE_CHART_DIR=$(dir ${CURDIR})top_level_structure_chart
+TOP_LEVEL_STRUCTURE_CHART_DIST=${TOP_LEVEL_STRUCTURE_CHART_DIR}/dist
+
 prepare:
 	mkdir -p ${DIST} ${BUILD} ${DIAGRAM_BUILD} ${SCREENSHOTS_BUILD}
 
@@ -66,7 +70,11 @@ build-level-3-dfd-p4-4:
 	$(MAKE) -C ${LEVEL_3_DFD_P4-4_DIR} clean build
 	cp ${LEVEL_3_DFD_P4-4_DIST}/* ${DIAGRAM_BUILD}
 
-build-diagrams: prepare build-level-3-dfd-p4-4 build-level-2-dfd-p4 build-level-1-dfd build-use-case-diagram build-database-diagram build-level-0-dfd-diagram
+build-top-level-structure-chart:
+	$(MAKE) -C ${TOP_LEVEL_STRUCTURE_CHART_DIR} clean build
+	cp ${TOP_LEVEL_STRUCTURE_CHART_DIST}/* ${DIAGRAM_BUILD}
+
+build-diagrams: prepare build-top-level-structure-chart build-level-3-dfd-p4-4 build-level-2-dfd-p4 build-level-1-dfd build-use-case-diagram build-database-diagram build-level-0-dfd-diagram
 
 build-docx: prepare
 	pandoc -s ${DOCUMENT}.tex -o ${DIST}/${DOCUMENT}.docx --toc --reference-doc reference.docx
