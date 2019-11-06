@@ -342,6 +342,13 @@ on courses the student has entered through the grade tracking component.
   \centering
   \includegraphics[width=\linewidth]{level_0_dfd.pdf}
   \caption{Level 0 DFD}
+  \begin{flushleft}
+    The system frontend passes user account information to the API to register for, login and logout
+    of user accounts. The frontend communicates with the backend API by use of data object IDs to
+    perform various tasks. Grade entries can be created and passed to the API as data structures.
+    The API gives the frontend access to all the main data structures so they can be used for
+    calculations and rendering.
+  \end{flushleft}
 \end{figure}
 
 \begin{figure}[p!]
@@ -349,6 +356,15 @@ on courses the student has entered through the grade tracking component.
   \centering
   \includegraphics[width=\linewidth]{level_1_dfd.pdf}
   \caption{Level 1 DFD}
+  \begin{flushleft}
+    The level one DFD depicts the main use cases of the backend API. All but one of the main use
+    cases is generic enough that the implementation is not worth decomposing further (already
+    implemented by software libraries). In these use cases, the word \emph{manage} is referring to
+    being able to create, retrieve, update and delete the data structure. The \emph{Calculate
+    Concentration Progress} process is for constructing a recursive data structure representing the
+    requirement structure of a concentration, including which requirements/courses the student has
+    completed.
+  \end{flushleft}
 \end{figure}
 
 \begin{figure}[p!]
@@ -356,6 +372,14 @@ on courses the student has entered through the grade tracking component.
   \centering
   \includegraphics[width=\linewidth]{level_2_dfd_p4.pdf}
   \caption{Level 2 DFD: P4}
+  \begin{flushleft}
+    \emph{Authenticate Student} verifies that the student is authenticated by checking their auth
+    token. The \emph{Retrieve Requirement} process uses the collge, major and concentration IDs to
+    narrow down which concentration is in question and get the root requirement for that
+    concentration. \emph{Generate Requirement Structure} works in a recursive manner with 
+    \emph{Check Fulfillment} to generate the requirements structure for a particular concentration's
+    root requirement, checking whether the requirement is fulfilled at each level.
+  \end{flushleft}
 \end{figure}
 
 \begin{figure}[p!]
@@ -363,11 +387,35 @@ on courses the student has entered through the grade tracking component.
   \centering
   \includegraphics[width=\linewidth]{level_3_dfd_p4-4.pdf}
   \caption{Level 3 DFD: P4.4}
+  \begin{flushleft}
+    \emph{Check Course Requirements} checks whether the minimum number of directly related courses
+    have been completed. \emph{Check Sub-Requirements} checks if the minimum number of
+    sub-requirements have been fulfilled. \emph{Check Sub-Requirement Course Count} checks if at
+    least the minimum number of courses in directly related sub-requirements have been completed.
+    The \emph{Check Fulfilled} process then uses the outputs of the previous three processes to
+    determine if the requirement has been fulfilled.
+  \end{flushleft}
 \end{figure}
 
 \clearpage
 
-% \section{Sequence Diagrams}
+\begin{figure}[p!]
+  \section{Structure Chart}
+  \centering
+  \includegraphics[width=0.8\linewidth]{top_level_structure_chart.pdf}
+  \caption{Structure Chart}
+  \begin{flushleft}
+    The \emph{Top Decider} represents the server software running the API; requests to particular
+    URLs are matched to the actions just beneath it. As mentioned in the DFD diagrams, all but one
+    of the first level functions are not expanded further, since the functionality is generic enough
+    for software libraries to handle the requests with little modification. The \emph{Calculate
+    Concentration Progress} function first checks that the student is authenticated before
+    subsequently retrieving the concentration's root requirement and generating the requirement
+    structure. In order to generate the requirement structure, the fulfillment of the three main
+    requirements must be checked, as mentioned in the DFD section. If any of the conditions are not
+    fulfilled, subsequent conditions are not checked.
+  \end{flushleft}
+\end{figure}
 
 % \section{State Diagram}
 
