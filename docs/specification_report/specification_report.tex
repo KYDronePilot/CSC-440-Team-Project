@@ -13,6 +13,7 @@
 \usepackage{hyperref}
 \usepackage{caption}
 \usepackage{xcolor}
+\usepackage[T1]{fontenc}
 % Page margins
 \usepackage[letterpaper, portrait, margin=1in]{geometry}
 
@@ -56,15 +57,22 @@
     \end{enumerate}
 }
 
-\newcommand{\dictitem}[1]{\item \textbf{#1}:}
-% Data dictionary environment
-\newenvironment{dict}
+% Dictionary table environment
+\newenvironment{dictionary}
 {
-    \begin{itemize}
+    \begin{table}[]
+    \begin{tabular}{p{0.3\linewidth}p{0.7\linewidth}}
+    \hline
+    Term & Description \\ \hline
 }
 {
-    \end{itemize}
+    \hline
+    \end{tabular}
+    \end{table}
 }
+
+% How to format a row in the dictionary
+\newcommand{\dictitem}[2]{\multicolumn{1}{l|}{\detokenize{#1}} & #2 \\}
 
 % Set path to all graphics
 \graphicspath{{figures/}{build/diagrams/}{build/screenshots/}}
@@ -634,26 +642,89 @@ make the system as easy as possible to setup and scale, allowing other colleges 
 organizations to quickly set it up and use it.
 
 \section{Dictionary}
-\begin{dict}
-    % \dictitem{Semester} A single semester of education consisting of courses. Each semester can
-    % be associated with a different educational institution; consistency is not required.
-    % \dictitem{Course} Immutable information about a course offered at a college.
-    % \dictitem{Course Instance} Semester-specific information about a particular course.
-    % \dictitem{Category} An equally weighted or logically grouped collection of material within a
-    % particular course (e.g. Homework, Tests, etc.).
-    % \dictitem{Grade Entry} A graded piece of material associated with a particular section 
-    % (e.g. Homework 2, Exam 1, etc.).
-    \item \textbf{studentName} (string): Name of a student
-    \item \textbf{studentEmail} (string): Email of a student
-    \item \textbf{studentUsername} (string): Username of a student
-    \item \textbf{studentPassword} (string): Password of a student
-    \item \textbf{student} (Student): Student object, composed of studentName, studentEmail,
-          studentUsername, studentPassword
-    \item \textbf{semester} (Semester): Semester object
-    \item \textbf{course} (Course): Course object
-    \item \textbf{category} (Category): Category object
-    \item \textbf{gradeEntry} (GradeEntry): GradeEntry object
-    \item \textbf{gradeEntry} (GradeEntry): GradeEntry object
-\end{dict}
+% \begin{dict}
+%     % \dictitem{Semester} A single semester of education consisting of courses. Each semester can
+%     % be associated with a different educational institution; consistency is not required.
+%     % \dictitem{Course} Immutable information about a course offered at a college.
+%     % \dictitem{Course Instance} Semester-specific information about a particular course.
+%     % \dictitem{Category} An equally weighted or logically grouped collection of material within a
+%     % particular course (e.g. Homework, Tests, etc.).
+%     % \dictitem{Grade Entry} A graded piece of material associated with a particular section 
+%     % (e.g. Homework 2, Exam 1, etc.).
+%     \item \textbf{studentName} (string): Name of a student
+%     \item \textbf{studentEmail} (string): Email of a student
+%     \item \textbf{studentUsername} (string): Username of a student
+%     \item \textbf{studentPassword} (string): Password of a student
+%     \item \textbf{student} (Student): Student object, composed of studentName, studentEmail,
+%           studentUsername, studentPassword
+%     \item \textbf{semester} (Semester): Semester object
+%     \item \textbf{course} (Course): Course object
+%     \item \textbf{category} (Category): Category object
+%     \item \textbf{gradeEntry} (GradeEntry): GradeEntry object
+%     \item \textbf{gradeEntry} (GradeEntry): GradeEntry object
+% \end{dict}
+
+\subsection{Data Elements}[H]
+\begin{dictionary}
+    \dictitem{username}{Username of a user}
+    \dictitem{password}{Password of a user}
+    \dictitem{email}{Email of a user}
+    \dictitem{user_id}{The integer ID of a user instance}
+    \dictitem{college_id}{The integer ID of a college instance}
+    \dictitem{major_id}{The integer ID of a major instance}
+    \dictitem{concentration_id}{The integer ID of a concentration instance}
+    \dictitem{semester_id}{The integer ID of a semester instance}
+    \dictitem{course_instance_id}{The integer ID of a course instance, instance}
+    \dictitem{grade_entry_id}{The integer ID of a grade entry instance}
+\end{dictionary}
+
+\subsection{Data Structures}[H]
+\begin{dictionary}
+    \dictitem{user}{User instance representing authenticated user}
+    \dictitem{requirement_structure}{Recursive representation of the requirements for a
+    concentration, including the student's completion of requirements and courses}
+    \dictitem{semester}{A college semester, represented by a season and year}
+    \dictitem{course_instance}{An offering of a particular course, related to only one semester}
+    \dictitem{category}{A grading category in a course (e.g. Homework)}
+    \dictitem{grade_entry}{An individual entry of a graded assignment in a category}
+    \dictitem{college}{A college where majors are offered}
+    \dictitem{major}{A major in a single college containing concentrations}
+    \dictitem{concentration}{A concentration of a single major}
+    \dictitem{registration_confirmation}{Confirmation that a new user has been registered}
+    \dictitem{logout_confirmation}{Confirmation that a new user has been logged out}
+    \dictitem{auth_token}{Authentication token used by the frontend to authenticate requests}
+\end{dictionary}
+
+\subsection{Data Flows}
+\begin{dictionary}
+    \dictitem{user}{}
+\end{dictionary}
+
+\subsection{Processes}
+\begin{dictionary}
+    \dictitem{Grade/Progress Tracking System}{Backend API for grade/progress tracking system}
+    \dictitem{Register User}{Registers an account for a new user}
+    \dictitem{Authenticate Student}{Authenticates a student's credentials and creates and returns an
+    auth\_token to the student}
+    \dictitem{Logout Student}{Logout a student and destroy their auth token}
+    \dictitem{Calculate Concentration Progress}{Calculate a student's progress in a concentration
+    by computing a requirement structure}
+    \dictitem{Manage Semesters}{Create, retrieve, update and delete semesters}
+    \dictitem{Manage Courses}{Create, retrieve, update and delete course instances}
+    \dictitem{Manage Categories}{Create, retrieve, update and delete categories}
+    \dictitem{Manage Grade Entries}{Create, retrieve, update and delete grade entries}
+    \dictitem{}{}
+\end{dictionary}
+
+\subsection{Glossary}
+\begin{dictionary}
+    \dictitem{user}{}
+\end{dictionary}
+
+\subsection{External Entities}
+\begin{dictionary}
+    \dictitem{System Frontend}{Frontend of grade/progress tracking application which makes web
+    requests to the backend API}
+\end{dictionary}
 
 \end{document}
