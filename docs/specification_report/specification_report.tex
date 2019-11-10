@@ -13,6 +13,8 @@
 \usepackage{hyperref}
 \usepackage{caption}
 \usepackage{xcolor}
+\usepackage{array}
+\usepackage[]{algorithm2e}
 \usepackage[T1]{fontenc}
 % Page margins
 \usepackage[letterpaper, portrait, margin=1in]{geometry}
@@ -58,21 +60,22 @@
 }
 
 % Dictionary table environment
-\newenvironment{dictionary}
+\newenvironment{dictionary}[1]
 {
-    \begin{table}[]
-    \begin{tabular}{p{0.3\linewidth}p{0.7\linewidth}}
+    \subsection{#1}
+    \begin{table}[H]
+    \begin{tabular}{ | m{\dimexpr.45\linewidth-1\tabcolsep-1.3333\arrayrulewidth}
+                     | m{\dimexpr.55\linewidth-1\tabcolsep-1.3333\arrayrulewidth} | }
     \hline
-    Term & Description \\ \hline
+    \textbf{Term} & \textbf{Description} \\ \hline
 }
 {
-    \hline
     \end{tabular}
     \end{table}
 }
 
 % How to format a row in the dictionary
-\newcommand{\dictitem}[2]{\multicolumn{1}{l|}{\detokenize{#1}} & #2 \\}
+\newcommand{\dictitem}[2]{\detokenize{#1} & #2 \\ \hline}
 
 % Set path to all graphics
 \graphicspath{{figures/}{build/diagrams/}{build/screenshots/}}
@@ -617,21 +620,129 @@ colored green and sub-requirement shall be expandable/collapsible.
   \end{flushleft}
 \end{figure}
 
-% \section{State Diagram}
-
 % \section{Activity Diagrams}
 
 \begin{figure}[p!]
   \section{Database Design}
   \subsection{ER Schema}
   \centering
-  \includegraphics[width=0.90\linewidth]{database_erd.pdf}
+  \includegraphics[width=0.85\linewidth]{database_erd.pdf}
   \caption{Database ERD}
+  \begin{flushleft}
+    The database diagram depicts the entities and relationships that will make up the database.
+    \textbf{Note}: The \emph{Table Schema} section was omitted, since table creation is handled by
+    the Django ORM.
+  \end{flushleft}
 \end{figure}
 
 \clearpage
 
 % \subsection{Table Schema}
+
+\section{Algorithm Design}
+% Python formatting for pseudo code
+\newcommand{\forcond}{$i=0$ \KwTo $n$}
+\SetStartEndCondition{ }{}{}%
+\SetKwProg{Fn}{def}{\string:}{}
+\SetKwFunction{Range}{range}%%
+\SetKw{KwTo}{in}
+\SetKw{KwIn}{in}
+\SetKw{KwIs}{is}
+\SetKwFor{For}{for}{\string:}{}%
+\SetKwIF{If}{ElseIf}{Else}{if}{:}{elif}{else:}{}% \SetKwFor{While}{while}{:}{fintq}%
+\renewcommand{\forcond}{$i$ \KwTo\Range{$n$}} \AlgoDontDisplayBlockMarkers\SetAlgoNoEnd\SetAlgoNoLine%
+
+\subsection{Check Course Requirements}
+\begin{algorithm}[H]
+\SetKwFunction{CourseRequirementsFulfilled}{are\_course\_requirements\_fulfilled}%
+\Fn{\CourseRequirementsFulfilled{student, course\_count, courses}}{
+  \KwData{Student whose requirement fulfillment is being checked, minimum number of completed
+  courses required to fulfill the requirement, the courses in this requirement}
+  \KwResult{Whether the course requirements are fulfilled for the student}
+  \tcc{If no course count requirement, it is fulfilled by convention}
+  \If{course\_count \KwIs None}
+  {
+    \Return{true}
+  }
+  $count = 0$\\
+  \For{$course$ \KwTo $courses$}{
+    \If{is\_fulfilled(student, course)}
+    {
+      $count += 1$\\
+    }
+  }
+  \tcc{Assert that the number of courses completed is greater than or equal to the minimum required}
+  \Return{$count \geq course\_count$}
+}
+\end{algorithm}
+
+\subsection{Check Sub-Requirements}
+\begin{algorithm}[H]
+\newcommand{\SubReqCnt}{sub\_requirement\_count}
+\newcommand{\SubReqs}{sub\_requirements}
+\newcommand{\SubReq}{sub\_requirement}
+\newcommand{\student}{student}
+
+
+\SetKwFunction{SubRequirementsFulfilled}{are\_sub\_requirements\_fulfilled}%
+\Fn{\SubRequirementsFulfilled{\student, \SubReqCnt, \SubReqs}}{
+  \KwData{Student whose requirement fulfillment is being checked, minimum number of sub-requirements
+  required to fulfill the requirement, the sub-requirements of this requirement}
+  \KwResult{Whether the minimum number of sub requirements are fulfilled for the student}
+  \tcc{If no minimum sub-requirement count requirement, it is fulfilled by convention}
+  \If{$\SubReqCnt$ \KwIs $None$}
+  {
+    \Return{$true$}
+  }
+  $count = 0$\\
+  \For{$\SubReq$ \KwIn $\SubReqs$}{
+    \If{is\_fulfilled($\student$, $\SubReq$)}
+    {
+      $count += 1$\\
+    }
+  }
+  \tcc{Assert that the number of sub-requirements completed is greater than or equal to the minimum
+  required}
+  \Return{$count \geq \SubReqCnt$}
+}
+\end{algorithm}
+
+\subsection{Check Sub-Requirement Course Count}
+\begin{algorithm}[H]
+\newcommand{\SubReqCourseCnt}{sub\_requirement\_course\_count}
+\newcommand{\SubReqs}{sub\_requirements}
+\newcommand{\SubReq}{sub\_requirement}
+\newcommand{\Course}{course}
+\newcommand{\Courses}{courses}
+\newcommand{\student}{student}
+
+
+\SetKwFunction{SubReqCourseCountFulfilled}{is\_sub\_requirement\_course\_count\_fulfilled}
+\Fn{\SubReqCourseCountFulfilled{\student, \SubReqCourseCnt, \SubReqs}}{
+  \KwData{Student whose requirement fulfillment is being checked, minimum number of sub-requirement
+  courses required to fulfill the requirement, the sub-requirements of this requirement}
+  \KwResult{Whether the minimum number of sub requirement courses are completed for the student}
+  \tcc{If no sub-requirement course count requirement, it is fulfilled by convention}
+  \If{$\SubReqCourseCnt$ \KwIs $None$}
+  {
+    \Return{$true$}
+  }
+  $count = 0$\\
+  \tcc{Go through each sub-requirement's courses to get the total number of sub-requirement courses
+  fulfilled}
+  \For{$\SubReq$ \KwIn $\SubReqs$}{
+    \For{$\Course$ \KwIn $\SubReq.\Courses$}{
+      \If{is\_fulfilled($\student$, $\Course$)}
+      {
+        $count += 1$\\
+      }
+    }
+  }
+  \tcc{Assert that the number of sub-requirement courses completed is greater than or equal to the
+  minimum required}
+  \Return{$count \geq \SubReqCourseCnt$}
+}
+\end{algorithm}
 
 \section{Conclusion}
 As a result of developing this software system, we hope to have a direct effect on other college
@@ -642,30 +753,7 @@ make the system as easy as possible to setup and scale, allowing other colleges 
 organizations to quickly set it up and use it.
 
 \section{Dictionary}
-% \begin{dict}
-%     % \dictitem{Semester} A single semester of education consisting of courses. Each semester can
-%     % be associated with a different educational institution; consistency is not required.
-%     % \dictitem{Course} Immutable information about a course offered at a college.
-%     % \dictitem{Course Instance} Semester-specific information about a particular course.
-%     % \dictitem{Category} An equally weighted or logically grouped collection of material within a
-%     % particular course (e.g. Homework, Tests, etc.).
-%     % \dictitem{Grade Entry} A graded piece of material associated with a particular section 
-%     % (e.g. Homework 2, Exam 1, etc.).
-%     \item \textbf{studentName} (string): Name of a student
-%     \item \textbf{studentEmail} (string): Email of a student
-%     \item \textbf{studentUsername} (string): Username of a student
-%     \item \textbf{studentPassword} (string): Password of a student
-%     \item \textbf{student} (Student): Student object, composed of studentName, studentEmail,
-%           studentUsername, studentPassword
-%     \item \textbf{semester} (Semester): Semester object
-%     \item \textbf{course} (Course): Course object
-%     \item \textbf{category} (Category): Category object
-%     \item \textbf{gradeEntry} (GradeEntry): GradeEntry object
-%     \item \textbf{gradeEntry} (GradeEntry): GradeEntry object
-% \end{dict}
-
-\subsection{Data Elements}[H]
-\begin{dictionary}
+\begin{dictionary}{Data Elements}
     \dictitem{username}{Username of a user}
     \dictitem{password}{Password of a user}
     \dictitem{email}{Email of a user}
@@ -675,15 +763,26 @@ organizations to quickly set it up and use it.
     \dictitem{concentration_id}{The integer ID of a concentration instance}
     \dictitem{semester_id}{The integer ID of a semester instance}
     \dictitem{course_instance_id}{The integer ID of a course instance, instance}
+    \dictitem{course_id}{The integer ID of a course instance}
     \dictitem{grade_entry_id}{The integer ID of a grade entry instance}
+    \dictitem{fulfillment_status/fulfillment_result}{Boolean return value, determining whether a
+    requirement is fulfilled}
+    \dictitem{course_requirement_result}{Boolean return value, determining whether the course
+    requirements are fulfilled}
+    \dictitem{sub_requirement_result}{Boolean return value, determining whether the
+    sub-requirements are fulfilled}
+    \dictitem{sub_requirement_course_count_result}{Boolean return value, determining whether the
+    sub-requirement course count requirement is fulfilled}
 \end{dictionary}
 
-\subsection{Data Structures}[H]
-\begin{dictionary}
+\begin{dictionary}{Data Structures}
     \dictitem{user}{User instance representing authenticated user}
+    \dictitem{requirement}{A course requirement, assignable to a concentration or other
+    requirements}
     \dictitem{requirement_structure}{Recursive representation of the requirements for a
     concentration, including the student's completion of requirements and courses}
     \dictitem{semester}{A college semester, represented by a season and year}
+    \dictitem{course}{An immutable definition of a course (what would appear in a course catalog)}
     \dictitem{course_instance}{An offering of a particular course, related to only one semester}
     \dictitem{category}{A grading category in a course (e.g. Homework)}
     \dictitem{grade_entry}{An individual entry of a graded assignment in a category}
@@ -693,15 +792,15 @@ organizations to quickly set it up and use it.
     \dictitem{registration_confirmation}{Confirmation that a new user has been registered}
     \dictitem{logout_confirmation}{Confirmation that a new user has been logged out}
     \dictitem{auth_token}{Authentication token used by the frontend to authenticate requests}
+    \dictitem{root_requirement}{The root requirement for a concentration, from which all other
+    sub-requirements emanate}
 \end{dictionary}
 
-\subsection{Data Flows}
-\begin{dictionary}
-    \dictitem{user}{}
-\end{dictionary}
+% \begin{dictionary}{Data Flows}
+%     \dictitem{user}{}
+% \end{dictionary}
 
-\subsection{Processes}
-\begin{dictionary}
+\begin{dictionary}{Processes}
     \dictitem{Grade/Progress Tracking System}{Backend API for grade/progress tracking system}
     \dictitem{Register User}{Registers an account for a new user}
     \dictitem{Authenticate Student}{Authenticates a student's credentials and creates and returns an
@@ -713,16 +812,25 @@ organizations to quickly set it up and use it.
     \dictitem{Manage Courses}{Create, retrieve, update and delete course instances}
     \dictitem{Manage Categories}{Create, retrieve, update and delete categories}
     \dictitem{Manage Grade Entries}{Create, retrieve, update and delete grade entries}
-    \dictitem{}{}
+    \dictitem{Retrieve Requirement}{Retrieves the root requirement, given a college\_id, major\_id,
+    and concentration\_id}
+    \dictitem{Authenticate Student}{Verify that a student's auth token is valid}
+    \dictitem{Generate Requirement Structure}{Recurse through the requirement tree, generating a
+    requirement structure representing the requirements and the student's progress}
+    \dictitem{Check Fulfillment}{Check whether a requirement is fulfilled}
+    \dictitem{Check Course Requirements}{Checks whether the course requirement for a requirement
+    is fulfilled}
+    \dictitem{Check Sub-Requirements}{Checks whether the sub-requirements requirement for a
+    requirement is fulfilled}
+    \dictitem{Check Sub-requirement Course Count}{Checks whether the minimum number of courses in
+    directly related sub-requirements are fulfilled}
 \end{dictionary}
 
-\subsection{Glossary}
-\begin{dictionary}
-    \dictitem{user}{}
-\end{dictionary}
+% \begin{dictionary}{Glossary}
+%     \dictitem{user}{}
+% \end{dictionary}
 
-\subsection{External Entities}
-\begin{dictionary}
+\begin{dictionary}{External Entities}
     \dictitem{System Frontend}{Frontend of grade/progress tracking application which makes web
     requests to the backend API}
 \end{dictionary}
