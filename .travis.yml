@@ -1,5 +1,7 @@
 sudo: false
 language: generic
+notifications:
+  webhooks: https://coveralls.io/webhook?repo_token=$coveralls_repo_token
 matrix:
   include:
     - dist: bionic
@@ -38,7 +40,9 @@ matrix:
         - python -m pip install -r requirements.txt
         - python manage.py makemigrations
       script:
-        - python manage.py test
+        - coverage run --source='.' manage.py test
+      after_success:
+        - COVERALLS_REPO_TOKEN=$coveralls_repo_token coveralls
     - name: 'Build/Distribute Frontend Container'
       language: node_js
       node_js: 'stable'
@@ -49,7 +53,7 @@ matrix:
         - cd src/frontend/csc-440-project-frontend
         - yarn
       script:
-        - yarn build
         - yarn run test --coverage
+        - yarn build
       after_script:
         - COVERALLS_REPO_TOKEN=$coveralls_repo_token yarn run coveralls
