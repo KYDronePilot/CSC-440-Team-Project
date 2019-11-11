@@ -39,3 +39,17 @@ matrix:
         - python manage.py makemigrations
       script:
         - python manage.py test
+    - name: 'Build/Distribute Frontend Container'
+      language: node_js
+      node_js: 'stable'
+      cache:
+        directories:
+          - src/frontend/csc-440-project-frontend/node_modules
+      before_script:
+        - cd src/frontend/csc-440-project-frontend
+        - yarn
+      script:
+        - yarn build
+        - yarn run test --coverage
+      after_script:
+        - COVERALLS_REPO_TOKEN=$coveralls_repo_token yarn run coveralls
