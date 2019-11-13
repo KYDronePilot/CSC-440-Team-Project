@@ -12,13 +12,7 @@ import {
     MDBNavItem,
     MDBNavLink
 } from 'mdbreact';
-import {
-    CONCENTRATION_PROGRESS_URL,
-    GRADE_TRACKER_URLS,
-    isGradeTrackingURL,
-    LOGIN_URL,
-    REGISTER_URL
-} from '../../routes/urls';
+import {CONCENTRATION_PROGRESS_URL, isGradeTrackingURL, LOGIN_URL, REGISTER_URL} from '../../routes/urls';
 import {RouteComponentProps, withRouter} from 'react-router';
 
 function mapStateToProps(state: any) {

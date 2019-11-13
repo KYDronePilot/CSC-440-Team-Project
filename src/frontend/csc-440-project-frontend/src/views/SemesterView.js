@@ -6,16 +6,29 @@ import {MDBBtn, MDBContainer, MDBListGroup} from 'mdbreact';
 import CourseInstance from '../components/CourseInstanceListItem';
 import AddCourseInstanceForm from '../containers/AddCourseInstanceForm';
 import {SemesterBreadcrumb} from '../components/layout/breadcrumbs';
+import {getSemesterCourseInstances} from '../api/courseInstance';
+import {getCourseInstanceGradeEntries} from '../api/gradeEntry';
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
+    const courseInstances = getSemesterCourseInstances(
+        allInstances(state.courseInstance.courseInstances),
+        parseInt(ownProps.match.params.semesterId)
+    );
+    for (const courseInstance of courseInstances) {
+        courseInstance.gradeEntries = getCourseInstanceGradeEntries(
+            allInstances(state.gradeEntry.gradeEntries),
+            allInstances(state.category.categories),
+            courseInstance.id
+        );
+    }
     return {
-        courseInstances: state.courseInstance.courseInstances
+        courseInstances
     };
 }
 
 class SemesterView extends Component {
     static propTypes = {
-        courseInstances: PropTypes.object.isRequired
+        courseInstances: PropTypes.array.isRequired
         // activeSemesterID: PropTypes.number
     };
 
@@ -25,7 +38,6 @@ class SemesterView extends Component {
             addFormVisible: false
         };
 
-        this.activeCourseInstances = this.activeCourseInstances.bind(this);
         this.semesterId = this.semesterId.bind(this);
         this.toggleAddFormVisible = this.toggleAddFormVisible.bind(this);
     }
@@ -35,14 +47,6 @@ class SemesterView extends Component {
      */
     semesterId() {
         return parseInt(this.props.match.params.semesterId);
-    }
-
-    /**
-     * Get course instances related to the current semester.
-     */
-    activeCourseInstances() {
-        const instances = allInstances(this.props.courseInstances);
-        return instances.filter(instance => instance.semester === this.semesterId());
     }
 
     toggleAddFormVisible() {
@@ -62,7 +66,7 @@ class SemesterView extends Component {
                 <SemesterBreadcrumb semesterId={this.semesterId()}/>
                 <MDBContainer>
                     <MDBListGroup>
-                        {this.activeCourseInstances().map(item => (
+                        {this.props.courseInstances.map(item => (
                             <CourseInstance key={item.id} courseInstance={item}/>
                         ))}
                     </MDBListGroup>

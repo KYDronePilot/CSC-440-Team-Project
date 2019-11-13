@@ -4,7 +4,7 @@ import * as PropTypes from 'prop-types';
 import {fetchSemesters} from '../actions/semesterActions';
 import {MDBBtn, MDBContainer, MDBListGroup} from 'mdbreact';
 import {indexInstances} from '../utils/objectification_utils';
-import Semester from '../components/SemesterListItem';
+import SemesterListItem from '../components/SemesterListItem';
 import {fetchCourses} from '../actions/courseActions';
 import {fetchCourseInstances} from '../actions/courseInstanceActions';
 import {fetchGradeEntries} from '../actions/gradeEntryActions';
@@ -69,7 +69,7 @@ class SemestersView extends Component {
                 <GradeTrackerBreadcrumb/>
                 <MDBContainer>
                     <MDBListGroup>
-                        {this.userEnrolledSemesters().map(item => <Semester key={item.id} semester={item}/>)}
+                        {this.userEnrolledSemesters().map(item => <SemesterListItem key={item.id} semester={item}/>)}
                     </MDBListGroup>
                 </MDBContainer>
                 <MDBBtn onClick={this.openAddForm} className={'primary'}>Add Semester</MDBBtn>
