@@ -83,7 +83,7 @@ export class Header extends Component<HeaderProps, HeaderState> {
         );
 
         return (
-            <MDBContainer>
+            <MDBContainer fluid className={'mx-0 px-0'}>
                 <MDBNavbar color={'default-color'} dark expand={'md'}>
                     <MDBNavbarBrand>
                         <strong>College Progress Tracker</strong>

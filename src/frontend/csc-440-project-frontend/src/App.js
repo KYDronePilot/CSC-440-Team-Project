@@ -28,7 +28,7 @@ class App extends Component {
     render() {
         return (
             <Provider store={store}>
-                <div>
+                <div className={'winter-neva-gradient'}>
                     <Router>
                         <Fragment>
                             <Header/>

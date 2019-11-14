@@ -56,10 +56,11 @@ class CategoryView extends Component {
 
     render() {
         return (
-            <MDBContainer>
-                <h1>{this.props.category.name}</h1>
-                <ScoreBar score={this.score()}/>
-                <span>{(this.score() * 100).toFixed(1)}%</span>
+            <MDBContainer className={'my-5'}>
+                <h2 className={'font-weight-bold'}>
+                    {this.props.category.name} - {(this.score() * 100).toFixed(1)}%
+                </h2>
+                <ScoreBar score={this.score()} className={'mb-3'}/>
                 {/*<MDBBtn className={'btn-link p-0'} color={''} onClick={this.editCategory}>*/}
                 {/*    Edit*/}
                 {/*</MDBBtn>*/}

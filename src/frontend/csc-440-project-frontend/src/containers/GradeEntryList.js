@@ -41,18 +41,21 @@ class GradeEntryList extends Component {
     render() {
         return (
             <div>
-                <MDBContainer>
-                    <MDBListGroup>
-                        {this.props.gradeEntries.map(item => (
-                            <GradeEntry key={item.id} gradeEntry={item}/>
-                        ))}
-                    </MDBListGroup>
-                    <div className={'d-flex w-100'}>
-                        <MDBBtn color={'secondary'} onClick={this.openCreateForm} className={'ml-auto'}>
-                            Add Grade Entry
-                        </MDBBtn>
-                    </div>
-                </MDBContainer>
+                <MDBListGroup>
+                    {this.props.gradeEntries.map(item => (
+                        <GradeEntry key={item.id} gradeEntry={item}/>
+                    ))}
+                </MDBListGroup>
+                <div className={'text-right mt-2'}>
+                    <MDBBtn
+                        color={'secondary'}
+                        onClick={this.openCreateForm}
+                        className={'mr-0 btn heavy-rain-gradient'}
+                        style={{fontSize: '16px', color: 'black'}}
+                    >
+                        Add Grade Entry
+                    </MDBBtn>
+                </div>
             </div>
         );
     }

@@ -75,6 +75,7 @@ class CourseInstanceView extends Component {
 
     render() {
         const course = this.course();
+        const courseInstance = this.courseInstance();
 
         return (
             <div>
@@ -84,7 +85,10 @@ class CourseInstanceView extends Component {
                     semesterId={this.courseInstance().semester}
                     courseInstanceId={this.courseInstanceId()}
                 />
-                <h1 className={'text-center'}>{course.name}</h1>
+                <h1 className={'text-center'}>{course.code}: {course.name}</h1>
+                <p className={'text-muted text-center'}>
+                    Credit Hours: {course.credit_hours} | Section: {courseInstance.section}
+                </p>
                 {/*<MDBBtn color={'secondary'} onClick={this.openCreateCategoryForm}>*/}
                 {/*    Add Category*/}
                 {/*</MDBBtn>*/}

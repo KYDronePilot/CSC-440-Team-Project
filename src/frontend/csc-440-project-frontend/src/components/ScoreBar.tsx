@@ -3,9 +3,14 @@ import {MDBProgress} from 'mdbreact';
 
 interface ScoreBarProps {
     score: number;
+    className?: string;
 }
 
 class ScoreBar extends Component<ScoreBarProps, {}> {
+    public static defaultProps = {
+        className: ''
+    };
+
     constructor(props: ScoreBarProps) {
         super(props);
 
@@ -35,7 +40,7 @@ class ScoreBar extends Component<ScoreBarProps, {}> {
 
     render() {
         return (
-            <div>
+            <div className={this.props.className}>
                 <MDBProgress material value={this.progressFormat()} height={'20px'} color={this.barColor()}>
                     {this.props.children}
                 </MDBProgress>
