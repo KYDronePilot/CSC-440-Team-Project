@@ -1,53 +1,50 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import * as PropTypes from 'prop-types';
 import TimeAgo from 'react-timeago';
 import {MDBBtn, MDBListGroupItem} from 'mdbreact';
-import {withRouter} from 'react-router';
+import {RouteComponentProps, withRouter} from 'react-router';
 import {Link} from 'react-router-dom';
 import DeleteWarning from './DeleteWarning';
-import {removeStudentCourseInstanceRelationship} from '../actions/courseInstanceActions';
 import {COURSE_URL} from '../routes/urls';
+import {GradeEntry} from '../api/types';
 
-function mapStateToProps(state) {
-    return {
-        courses: state.course.courses
-    };
+// function mapStateToProps(state: any) {
+//     return {
+//         courses: state.course.courses
+//     };
+// }
+
+interface CourseInstanceListItemProps extends RouteComponentProps {
+    name: string;
+    code: string;
+    courseInstanceId: number;
+    lastUpdated: string;
+    removeCourseInstance: (courseInstanceId: number) => void;
+    gradeEntries: GradeEntry[];
 }
 
-class CourseInstanceListItem extends Component {
-    static propTypes = {
-        courseInstance: PropTypes.object.isRequired,
-        courses: PropTypes.object.isRequired,
-        removeStudentCourseInstanceRelationship: PropTypes.func.isRequired
-    };
+interface CourseInstanceListItemState {
+    deleteWarningVisible: boolean;
+}
 
-    constructor(props) {
+class CourseInstanceListItem extends Component<CourseInstanceListItemProps, CourseInstanceListItemState> {
+    constructor(props: CourseInstanceListItemProps) {
         super(props);
         this.state = {
             deleteWarningVisible: false
         };
 
         // this.handleCourseInstanceSelected = this.handleCourseInstanceSelected.bind(this);
-        this.course = this.course.bind(this);
+        // this.course = this.course.bind(this);
         this.toggleDeleteWarningVisible = this.toggleDeleteWarningVisible.bind(this);
         this.deleteCourseInstance = this.deleteCourseInstance.bind(this);
     }
 
-    // handleCourseInstanceSelected(e) {
-    //     e.preventDefault();
-    //     // Set as active course instance
-    //     this.props.setActiveCourseInstance(this.props.courseInstance);
-    //     // Redirect to course
-    //     this.props.history.push('/course');
-    // }
-
     /**
      * Gets the corresponding course for this course instance.
      */
-    course() {
-        return this.props.courses[this.props.courseInstance.course];
-    }
+    // course() {
+    //     return this.props.courses[this.props.courseInstance.course];
+    // }
 
     /**
      * Toggle visibility of delete warning message.
@@ -60,12 +57,10 @@ class CourseInstanceListItem extends Component {
      * Delete relationship between course instance and student.
      */
     deleteCourseInstance() {
-        this.props.removeStudentCourseInstanceRelationship(this.props.courseInstance);
+        this.props.removeCourseInstance(this.props.courseInstanceId);
     }
 
     render() {
-        const course = this.course();
-
         return (
             <MDBListGroupItem>
                 <DeleteWarning
@@ -78,11 +73,10 @@ class CourseInstanceListItem extends Component {
                 </DeleteWarning>
                 <div className={'d-flex w-100 justify-content-between'}>
                     <h5 className={'mb-1'}>
-                        <Link to={`${COURSE_URL}${this.props.courseInstance.id}`}>{course.name}</Link>
-                        {/*<a onClick={this.handleCourseInstanceSelected}>{course.name}</a>*/}
+                        <Link to={`${COURSE_URL}${this.props.courseInstanceId}`}>{this.props.name}</Link>
                     </h5>
                     <small>
-                        <TimeAgo date={this.props.courseInstance.last_updated}/>
+                        <TimeAgo date={this.props.lastUpdated}/>
                     </small>
                     <MDBBtn onClick={this.toggleDeleteWarningVisible}>Delete</MDBBtn>
                 </div>
@@ -94,7 +88,4 @@ class CourseInstanceListItem extends Component {
     }
 }
 
-export default connect(
-    mapStateToProps,
-    {removeStudentCourseInstanceRelationship}
-)(withRouter(CourseInstanceListItem));
+export default withRouter<CourseInstanceListItemProps, typeof CourseInstanceListItem>(CourseInstanceListItem);

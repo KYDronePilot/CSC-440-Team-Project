@@ -1420,6 +1420,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-timeago@^4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@types/react-timeago/-/react-timeago-4.1.1.tgz#14c24cb8c1299379d9c2941ca3373f849d8bc78a"
+  integrity sha512-Rokr09qNqkKXpKwrDVYzGz/mGlmgX5ZdxAJToUehMyRHXEwtXUUNaAZur5RoZ5JtukBwXKzDevS72Axtjm+yKg==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-transition-group@*":
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-4.2.3.tgz#4924133f7268694058e415bf7aea2d4c21131470"

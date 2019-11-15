@@ -16,13 +16,13 @@ export const fetchCourseInstances = () => (dispatch, getState) => {
         });
 };
 
-export const removeStudentCourseInstanceRelationship = (courseInstance) => (dispatch, getState) => {
+export const removeStudentCourseInstanceRelationship = (courseInstanceId) => (dispatch, getState) => {
     const config = tokenConfig(getState);
     config.params = {
         student_relationship: ''
     };
 
-    axios.delete(`${COURSE_INSTANCES_URL}${courseInstance.id}/`, config)
+    axios.delete(`${COURSE_INSTANCES_URL}${courseInstanceId}/`, config)
         .then(res => {
             // Trigger state reload
             dispatch({

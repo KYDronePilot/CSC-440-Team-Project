@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {MDBBtn, MDBContainer, MDBListGroup} from 'mdbreact';
+import {MDBBtn, MDBListGroup} from 'mdbreact';
 import * as PropTypes from 'prop-types';
 import GradeEntry from '../components/GradeEntryListItem';
 import {connect} from 'react-redux';
