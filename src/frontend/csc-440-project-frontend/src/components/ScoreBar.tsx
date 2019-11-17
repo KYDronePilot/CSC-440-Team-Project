@@ -7,7 +7,7 @@ interface ScoreBarProps {
 }
 
 class ScoreBar extends Component<ScoreBarProps, {}> {
-    public static defaultProps = {
+    private static defaultProps = {
         className: ''
     };
 

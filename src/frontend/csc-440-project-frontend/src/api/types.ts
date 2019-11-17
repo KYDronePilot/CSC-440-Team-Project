@@ -14,7 +14,7 @@ declare global {
 
 export interface GenericDjangoRestObject {
     id: number;
-    notes: string;
+    notes: string | null;
     last_updated: string;
 }
 
