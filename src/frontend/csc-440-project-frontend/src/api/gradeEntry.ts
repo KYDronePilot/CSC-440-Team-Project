@@ -55,7 +55,7 @@ interface LetterGradeScoreRange {
 /**
  * Statistics about a set of grade entries.
  */
-interface GradeEntryStatistics extends LetterGradeScoreRange {
+export interface GradeEntryStatistics extends LetterGradeScoreRange {
     points: number;
     maxPoints: number;
     score: number;

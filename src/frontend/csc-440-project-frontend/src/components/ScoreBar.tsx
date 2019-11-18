@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import {MDBProgress} from 'mdbreact';
+import {GRADE_A, GRADE_B, GRADE_C, GRADE_D, LetterGrade} from '../api/gradeEntry';
 
 interface ScoreBarProps {
     score: number;
+    letterGrade: LetterGrade;
     className?: string;
 }
 
@@ -31,11 +33,18 @@ class ScoreBar extends Component<ScoreBarProps, {}> {
      * @return Color class for score bar
      */
     private barColor() {
-        if (this.props.score >= 0.80)
-            return 'success';
-        if (this.props.score >= 0.70)
-            return 'warning';
-        return 'danger';
+        switch (this.props.letterGrade) {
+            case GRADE_A:
+                return 'success';
+            case GRADE_B:
+                return 'warning';
+            case GRADE_C:
+                return 'warning';
+            case GRADE_D:
+                return 'danger';
+            default:
+                return 'danger';
+        }
     }
 
     render() {

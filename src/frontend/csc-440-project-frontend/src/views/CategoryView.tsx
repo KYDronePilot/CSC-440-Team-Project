@@ -4,60 +4,70 @@ import GradeEntries from '../containers/GradeEntryList';
 import ScoreBar from '../components/ScoreBar';
 import {Category, GradeEntry} from '../api/types';
 import {formatScore, gradeEntryStatistics} from '../api/gradeEntry';
+import {PointCategoryStats, WeightCategoryStats} from '../api/courseInstance';
 
 interface CategoryViewProps {
     category: Category;
     gradeEntries: GradeEntry[];
-    minA?: number;
-    minB?: number;
-    minC?: number;
-    minD?: number;
     // editCategory: (categoryId: number) => void;
     editGradeEntry: (gradeEntryId: number, categoryId: number) => void;
     openCreateGradeEntryForm: (categoryId: number) => void;
+    categoryStats: PointCategoryStats | WeightCategoryStats;
 }
 
 class CategoryView extends Component<CategoryViewProps, {}> {
-    // Default letter grade cutoffs
-    private static defaultProps = {
-        minA: 0.9,
-        minB: 0.8,
-        minC: 0.7,
-        minD: 0.6
-    };
-
     constructor(props: CategoryViewProps) {
         super(props);
         this.state = {};
         // this.editCategory = this.editCategory.bind(this);
+        this.noGradeEntries = this.noGradeEntries.bind(this);
+        this.emptyCategory = this.emptyCategory.bind(this);
+        this.categoryDetails = this.categoryDetails.bind(this);
+    }
+
+    /**
+     * Check if there are no grade entries.
+     */
+    private noGradeEntries() {
+        return this.props.gradeEntries.length === 0;
     }
 
     // editCategory(e: SyntheticEvent) {
     //     this.props.editCategory(this.props.category.id);
     // }
 
-    render() {
-        const gradeStatistics = gradeEntryStatistics(
-            this.props.gradeEntries.map(gradeEntry => ({
-                points: gradeEntry.points,
-                maxPoints: gradeEntry.max_points
-            })),
-            this.props.minA,
-            this.props.minB,
-            this.props.minC,
-            this.props.minD
+    /**
+     * What to show for a category that doesn't have any grade entries.
+     */
+    emptyCategory() {
+        return (
+            <>
+                <h2 className={'font-weight-bold'}>
+                    {this.props.category.name}
+                </h2>
+                <p>No grade entries for this category</p>
+            </>
         );
+    }
+
+    /**
+     * What to show for a category with grade entries.
+     */
+    categoryDetails() {
+        const stats = this.props.categoryStats;
+
+        if (stats === null)
+            return this.emptyCategory();
 
         return (
-            <MDBContainer className={'my-5'}>
+            <>
                 <h2 className={'font-weight-bold'}>
-                    {this.props.category.name} {gradeStatistics !== null &&
-                `- ${formatScore(gradeStatistics.score)}`
-                }
+                    {this.props.category.name}
                 </h2>
-                {gradeStatistics !== null &&
-                <ScoreBar score={gradeStatistics.score} className={'mb-3'}/>
-                }
+                <p>
+                    Grade: {stats.letterGrade} | {stats.points} / {stats.maxPoints} = {formatScore(stats.score)}
+                </p>
+                <ScoreBar score={stats.score} className={'mb-3'} letterGrade={stats.letterGrade}/>
                 {/*<MDBBtn className={'btn-link p-0'} color={''} onClick={this.editCategory}>*/}
                 {/*    Edit*/}
                 {/*</MDBBtn>*/}
@@ -65,7 +75,23 @@ class CategoryView extends Component<CategoryViewProps, {}> {
                     gradeEntries={this.props.gradeEntries}
                     editGradeEntry={gradeEntryId => this.props.editGradeEntry(gradeEntryId, this.props.category.id)}
                     openCreateGradeEntryForm={() => this.props.openCreateGradeEntryForm(this.props.category.id)}
+                    gradeEntryStats={stats.gradeEntryStats}
                 />
+            </>
+        );
+    }
+
+    render() {
+        // Handle if there are no grade entries
+        let category;
+        if (this.noGradeEntries())
+            category = this.emptyCategory();
+        else
+            category = this.categoryDetails();
+
+        return (
+            <MDBContainer className={'my-5'}>
+                {category}
             </MDBContainer>
         );
     }

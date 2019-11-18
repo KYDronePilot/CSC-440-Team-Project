@@ -7,8 +7,13 @@ import {CourseInstanceBreadcrumb} from '../components/layout/breadcrumbs';
 import {RouteComponentProps} from 'react-router';
 import {Category, Course, CourseInstance, GradeEntry} from '../api/types';
 import {getCourseInstanceCategories} from '../api/category';
-import {getCategoryGradeEntries, getCourseInstanceGradeEntries} from '../api/gradeEntry';
-import {POINT_BASED_GRADING} from '../api/courseInstance';
+import {formatScore, getCategoryGradeEntries, getCourseInstanceGradeEntries} from '../api/gradeEntry';
+import {
+    generateRawPointCourseInstanceStructure,
+    generateRawWeightCourseInstanceStructure,
+    POINT_BASED_GRADING, PointCourseInstanceStats, pointCourseInstanceStats,
+    WEIGHT_BASED_GRADING, WeightCourseInstanceStats, weightCourseInstanceStats
+} from '../api/courseInstance';
 import {editGradeEntry, openCreateGradeEntryForm} from '../actions/gradeEntryActions';
 
 interface MatchParams {
@@ -22,6 +27,7 @@ interface MapStateToPropsTypes {
     gradeEntries: GradeEntry[];
     // TODO: This is a big hack and should be handled in another way
     gradeEntriesMap: { [key: number]: GradeEntry };
+    courseInstanceStats: PointCourseInstanceStats | WeightCourseInstanceStats;
 }
 
 interface CourseInstanceViewProps extends RouteComponentProps<MatchParams>, MapStateToPropsTypes {
@@ -33,17 +39,36 @@ interface CourseInstanceViewProps extends RouteComponentProps<MatchParams>, MapS
 function mapStateToProps(state: any, ownProps: CourseInstanceViewProps): MapStateToPropsTypes {
     const courseId = parseInt(ownProps.match.params.courseId);
     const courseInstance: CourseInstance = state.courseInstance.courseInstances[courseId];
+    const categories = getCourseInstanceCategories(allInstances(state.category.categories), courseInstance.id);
+    const gradeEntries = getCourseInstanceGradeEntries(
+        allInstances(state.gradeEntry.gradeEntries),
+        allInstances(state.category.categories),
+        courseInstance.id
+    );
+
+    // Get raw data structure of course instance
+    let courseInstanceStats;
+    if (courseInstance.grading_strategy === WEIGHT_BASED_GRADING) {
+        courseInstanceStats = weightCourseInstanceStats(generateRawWeightCourseInstanceStructure(
+            courseInstance,
+            categories,
+            gradeEntries
+        ));
+    } else {
+        courseInstanceStats = pointCourseInstanceStats(generateRawPointCourseInstanceStructure(
+            courseInstance,
+            categories,
+            gradeEntries
+        ));
+    }
 
     return {
         courseInstance,
         course: state.course.courses[courseInstance.course],
-        categories: getCourseInstanceCategories(allInstances(state.category.categories), courseInstance.id),
-        gradeEntries: getCourseInstanceGradeEntries(
-            allInstances(state.gradeEntry.gradeEntries),
-            allInstances(state.category.categories),
-            courseInstance.id
-        ),
-        gradeEntriesMap: state.gradeEntry.gradeEntries
+        categories,
+        gradeEntries,
+        gradeEntriesMap: state.gradeEntry.gradeEntries,
+        courseInstanceStats
     };
 }
 
@@ -64,7 +89,7 @@ class CourseInstanceView extends Component<CourseInstanceViewProps, {}> {
     //     this.props.openCreateCategoryForm(this.props.courseInstance.id);
     // }
 
-    categoryView(category: Category) {
+    categoryView(category: Category, i: number) {
         let gradeCutoffs;
         if (this.props.courseInstance.grading_strategy === POINT_BASED_GRADING)
             gradeCutoffs = {};
@@ -84,6 +109,7 @@ class CourseInstanceView extends Component<CourseInstanceViewProps, {}> {
             )}
             category={category}
             gradeEntries={getCategoryGradeEntries(this.props.gradeEntries, category.id)}
+            categoryStats={this.props.courseInstanceStats.categoryStats[i]}
             {...gradeCutoffs}
         />
     }
@@ -98,13 +124,13 @@ class CourseInstanceView extends Component<CourseInstanceViewProps, {}> {
                     courseInstanceId={this.props.courseInstance.id}
                 />
                 <h1 className={'text-center'}>{this.props.course.code}: {this.props.course.name}</h1>
-                <p className={'text-muted text-center'}>
-                    Credit Hours: {this.props.course.credit_hours} | Section: {this.props.courseInstance.section}
+                <p className={'text-center'}>
+                    Credit Hours: {this.props.course.credit_hours} | Section: {this.props.courseInstance.section} | Grade: {this.props.courseInstanceStats.letterGrade} ({formatScore(this.props.courseInstanceStats.score)})
                 </p>
                 {/*<MDBBtn color={'secondary'} onClick={this.openCreateCategoryForm}>*/}
                 {/*    Add Category*/}
                 {/*</MDBBtn>*/}
-                {this.props.categories.map(category => this.categoryView(category))}
+                {this.props.categories.map((category, i) => this.categoryView(category, i))}
             </div>
         );
     }
