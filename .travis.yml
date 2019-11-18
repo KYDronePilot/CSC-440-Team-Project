@@ -43,12 +43,15 @@ matrix:
         - COMMIT=${TRAVIS_COMMIT::8}
       before_script:
         - cd src/backend/csc_440_project_backend
+        
+        # Install requirements
         - python -m pip install -r requirements.txt
-        - python manage.py makemigrations
+        
+        # Use template (base) dotenv file for building
+        - cp base.env .env
       script:
-        - python manage.py test
-        - python manage.py makemigrations
         - python manage.py migrate
+        - python manage.py test
         - python manage.py create_dummy_data
         - docker build -t $REPO:$COMMIT .
       after_success:
