@@ -7,6 +7,10 @@ replicaCount: 1
 # Backend of application
 backend:
   name: csc-440-backend
+  env:
+    debug: 'True'
+    allowedHosts: '*'
+    corsOriginAllowAll: 'False'
   image:
     repo: kydronepilot19/csc-440-project-backend
     tag: deployment-setup
