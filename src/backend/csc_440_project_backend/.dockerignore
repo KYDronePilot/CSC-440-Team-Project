@@ -1,0 +1,5 @@
+# Ignore dotenv config file
+.env
+
+# Ignore sqlite database file
+db.sqlite3

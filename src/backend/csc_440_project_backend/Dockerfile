@@ -12,4 +12,4 @@ COPY . /src
 
 EXPOSE 8000
 
-ENTRYPOINT ["/src/gunicorn_start.sh"]
+ENTRYPOINT ["/src/entrypoint.sh"]
