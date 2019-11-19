@@ -70,7 +70,7 @@ export class Header extends Component {
             <MDBContainer>
                 <MDBNavbar color={'default-color'} dark expand={'md'}>
                     <MDBNavbarBrand>
-                        <strong>College Progress Tracker</strong>
+                        <strong>College Progress Tracker 0.0.1</strong>
                     </MDBNavbarBrand>
                     <MDBNavbarToggler onClick={this.toggleNavbarOpen} />
                     <MDBCollapse id={'nav-toggler'} isOpen={this.state.isOpen} navbar>
