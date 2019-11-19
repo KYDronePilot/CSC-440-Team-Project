@@ -39,7 +39,7 @@ matrix:
       cache: pip
       env:
         - REPO=kydronepilot19/csc-440-project-backend
-        - TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+        - TAG=`if [ "$TRAVIS_TAG" ]; then echo "$TRAVIS_TAG"; else echo $TRAVIS_BRANCH ; fi`
         - COMMIT=${TRAVIS_COMMIT::8}
       before_script:
         - cd src/backend/csc_440_project_backend
@@ -67,7 +67,7 @@ matrix:
           - src/frontend/csc-440-project-frontend/node_modules
       env:
         - REPO=kydronepilot19/csc-440-project-frontend
-        - TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+        - TAG=`if [ "$TRAVIS_TAG" ]; then echo "$TRAVIS_TAG"; else echo $TRAVIS_BRANCH ; fi`
         - COMMIT=${TRAVIS_COMMIT::8}
       before_script:
         - cd src/frontend/csc-440-project-frontend
