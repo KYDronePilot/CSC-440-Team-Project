@@ -12,4 +12,4 @@ ${PYTHON} ${BASE}manage.py migrate
 
 # Start the gunicorn server
 echo "Starting Gunicorn server"
-${GUNICORN} -c ${BASE}gunicorn_config.py csc_440_project_backend.wsgi:application
+${GUNICORN} -c ${GUNICORN_CONFIG} csc_440_project_backend.wsgi:application
