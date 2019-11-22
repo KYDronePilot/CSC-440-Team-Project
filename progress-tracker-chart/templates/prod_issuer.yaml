@@ -1,0 +1,18 @@
+{{- if .Values.certIssuer.create -}}
+apiVersion: cert-manager.io/v1alpha2
+kind: Issuer
+metadata:
+  name: {{ include "progress-tracker-chart.fullname" . }}-cert-issuer
+  labels:
+{{ include "progress-tracker-chart.labels" . | indent 4 }}
+spec:
+  acme:
+    email: {{ .Values.certIssuer.email }}
+    server: {{ .Values.certIssuer.server }}
+    privateKeySecretRef:
+      name: {{ .Values.ingress.tls.secretName }}
+    solvers:
+    - http01:
+        ingress:
+          class: {{ .Values.certIssuer.ingressClass }}
+{{- end -}}

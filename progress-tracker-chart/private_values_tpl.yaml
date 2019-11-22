@@ -1,0 +1,41 @@
+# Number of replicas of the application pods
+replicaCount: 4
+
+backend:
+  env:
+    # Whether debug mode should be enabled for Django backend (disable for prod!)
+    debug: 'False'
+    # CSV of hostnames for the application
+    allowedHosts: 'example.com'
+
+ingress:
+  # Hostname of application
+  host: example.com
+  tls:
+    hosts:
+      # Same as above
+      - example.com
+
+certIssuer:
+  # Whether to create a new letsencrypt issuer
+  create: true
+  # Email to use when requesting certs from letsencrypt
+  email: me@myemail.com
+
+backendSecrets:
+    # Secret key for Django backend (search google for how to generate)
+    secretKey: ''
+    # Database user (just leave as is)
+    databaseUser: postgres
+    # Database password: Generate a random secure password to use here (and below)
+    databasePassword: ''
+    # Data port (leave as is)
+    databasePort: 5432
+    # Database (leave as is)
+    database: postgres
+
+postgresql:
+    # Database username: same as `databaseUser` above
+    postgresqlUsername: postgres
+    # Database password: same as `databasePassword` above
+    postgresqlPassword: ''
