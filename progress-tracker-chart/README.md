@@ -2,37 +2,59 @@
 A Helm chart for deploying the progress tracker application
 
 ## Configuration
-Before installing the chart, a private values file should be created. This can be accomplished using `-f` flags when
-installing the chart, but saving everything in a file makes it much easier to maintain, especially when upgrading.
+Before installing the chart, a custom private values file should be created from the template
+`private_values.tpl.yaml` file. The contents should reflect your own setup environment.
 
-A template file is provided in the same directory, `private_values_tpl.yaml` with comments explaining what should be set
-for each value.
+## Dependencies
+This chart has the following non-bundled dependencies:
+ - Helm/Tiller
+ - Cert Manager
+ - Ingress
 
-## Installation
-First of all, you need to have a working Kubernetes cluster with Helm/tiller installed. You will also need to have
-`kubectl` setup to access the cluster from the machine you will be using to install the chart.
+### Helm/Tiller
+To install the helm client to your machine, following the instructions [here](https://helm.sh/docs/intro/install/).
 
-### Cert Manager
-This chart depends on `cert-manager`, a Helm chart for managing certificates. That installation requires extra steps
-discussed [here](https://docs.cert-manager.io/en/latest/getting-started/install/kubernetes.html).
-
-If you already have cert manager set up with an issuer, you can disable the automatic letsencrypt issuer which comes
-with the chart.
-
-### Ingress
-This chart also uses Nginx ingress to route traffic to the application. If you already have ingress setup, you can skip
-this section.
-
-Ingress can easily be installed using Helm with the following commands:
-
+Once the Helm client is installed, install Tiller (the server-side component of Helm) by running the following commands:
 ```bash
-kubectl create namespace ingress
-helm install stable/nginx-ingress --namespace ingress --set controller.publishService.enabled=true
+kubectl -n kube-system create serviceaccount tiller
+
+kubectl create clusterrolebinding tiller \
+  --clusterrole=cluster-admin \
+  --serviceaccount=kube-system:tiller
+
+helm init --service-account tiller
 ```
 
-The namespace part is optional; it could just as well be installed into the current namespace without any issues. The
-`--set controller.publishService.enabled=true` option allows you to access the load balancer IP from the ingress
-resource.
+More information can be found [here](https://rancher.com/docs/rancher/v2.x/en/installation/ha/helm-init/).
 
-### Main Chart
-Before installing
+### Cert Manager
+Cert manager is used for managing cluster certificates. Specifically in this application, it is used for automatically
+obtaining and setting up letsencrypt certs. To install, follow the Helm installation instructions
+[here](https://docs.cert-manager.io/en/latest/getting-started/install/kubernetes.html#steps).
+
+Once installed, do **not** configure a new issuer. This chart will do it for you.
+
+### Ingress
+Ingress is used for routing network traffic to the application.
+
+To install with Helm, use the following commands:
+```bash
+# Create a separate namespace to create the controller in
+kubectl create namespace ingress
+
+helm install stable/nginx-ingress --set controller.publishService.enabled=true --namespace ingress
+```
+
+Creating a separate namespace is not required, just a matter of preference.
+
+## Install, Upgrade, and Clean
+A Makefile is provided to simplify the chart installation management tasks. Before installing, check the Makefile and
+override any user-defined variables as needed. For instance, to install into a different namespace:
+```bash
+make install -e NAMESPACE=some-namespace
+```
+
+### Main Make Targets
+ - install: Install the chart
+ - upgrade: Upgrade the chart installation
+ - clean: Delete and purge the chart (does not delete postgresql PVCs)
