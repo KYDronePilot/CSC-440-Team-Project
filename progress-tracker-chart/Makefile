@@ -10,12 +10,14 @@ NAMESPACE=csc-440-test
 CHART_PATH=.
 
 
+# Check if installation namespace exists
 check-namespace:
 	@if ! $(KUBECTL) get namespaces | grep -q -E "^${NAMESPACE} +"; then \
 		echo "Namespace '${NAMESPACE}' does not exist"; \
 		exit 2; \
 	fi
 
+# Check if private values file exists
 check-private-values:
 	@if [[ ! -f ${PRIVATE_VALUES} ]]; then \
 		echo "Custom private values file doesn't exist"; \
@@ -23,7 +25,7 @@ check-private-values:
 	fi
 
 install-chart:
-	$(HELM) install ${CHART_PATH} --name ${INSTALLATION_NAME} \
+	$(HELM) install ${INSTALLATION_NAME} ${CHART_PATH} \
 		--namespace ${NAMESPACE} --values ${PRIVATE_VALUES}
 
 upgrade-chart:
@@ -31,7 +33,7 @@ upgrade-chart:
 		--namespace ${NAMESPACE} --values ${PRIVATE_VALUES}
 
 delete-chart:
-	$(HELM) delete --purge ${INSTALLATION_NAME}
+	$(HELM) delete ${INSTALLATION_NAME} --namespace ${NAMESPACE}
 
 
 precheck: check-namespace check-private-values

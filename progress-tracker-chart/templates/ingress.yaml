@@ -15,7 +15,7 @@ metadata:
   {{- with .Values.ingress.annotations }}
   annotations:
   {{- if $values.certIssuer.create }}
-    cert-manager.io/issuer: {{ $fullName }}-cert-issuer
+    cert-manager.io/cluster-issuer: {{ $fullName }}-cert-issuer
   {{- end }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
