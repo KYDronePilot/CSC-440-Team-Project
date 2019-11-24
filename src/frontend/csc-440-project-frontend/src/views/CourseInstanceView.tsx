@@ -15,6 +15,7 @@ import {
     POINT_BASED_GRADING
 } from '../api/courseInstance';
 import {editGradeEntry, openCreateGradeEntryForm} from '../actions/gradeEntryActions';
+import CategoryScoreChart from '../components/CategoryScoreChart';
 
 interface MatchParams {
     courseId: string;
@@ -115,6 +116,16 @@ class CourseInstanceView extends Component<CourseInstanceViewProps, {}> {
                 <p className={'text-center'}>
                     Credit Hours: {this.props.course.credit_hours} | Section: {this.props.courseInstance.section} | Grade: {this.props.courseInstanceStats.letterGrade} ({formatScore(this.props.courseInstanceStats.score)})
                 </p>
+                <CategoryScoreChart
+                    containerClassName={'text-center'}
+                    height={300}
+                    width={300}
+                    categories={this.props.courseInstanceStats.categoryStats.map((category, i) => ({
+                        name: `test ${i}`,
+                        score: category.score,
+                        grade: category.letterGrade
+                    }))}
+                />
                 {/*<MDBBtn color={'secondary'} onClick={this.openCreateCategoryForm}>*/}
                 {/*    Add Category*/}
                 {/*</MDBBtn>*/}

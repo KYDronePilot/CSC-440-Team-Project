@@ -1,3 +1,4 @@
+/// <reference types="react-vis-types" />
 import React, {Component, Fragment} from 'react';
 import './App.css';
 import {Provider} from 'react-redux';
