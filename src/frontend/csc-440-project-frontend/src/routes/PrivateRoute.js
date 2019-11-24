@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Redirect, Route} from 'react-router';
+import {LOGIN_URL} from './urls';
 
 function mapStateToProps(state) {
     return {
@@ -15,7 +16,7 @@ const PrivateRoute = ({component: Component, auth, ...rest}) => (
             if (auth.isLoading) {
                 return <h2>Loading...</h2>;
             } else if (!auth.isAuthenticated) {
-                return <Redirect to={'/login'}/>;
+                return <Redirect to={LOGIN_URL}/>;
             } else {
                 return <Component {...props}/>;
             }

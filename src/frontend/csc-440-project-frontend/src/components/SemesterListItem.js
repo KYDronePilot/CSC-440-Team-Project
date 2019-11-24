@@ -8,6 +8,7 @@ import {Link, Redirect} from 'react-router-dom';
 import DeleteWarning from './DeleteWarning';
 import {removeStudentSemesterRelationship} from '../actions/semesterActions';
 import {setDataLoaded, setDataNotLoaded} from '../actions/commonActions';
+import {SEMESTER_URL} from '../routes/urls';
 
 // Semester constants
 const FALL = 'fall';
@@ -84,7 +85,7 @@ class SemesterListItem extends Component {
                 </DeleteWarning>
                 <div className={'d-flex w-100 justify-content-between'}>
                     <h5 className={'mb-1'}>
-                        <Link to={`/semester/${this.props.semester.id}`}>{this.name()}</Link>
+                        <Link to={`${SEMESTER_URL}${this.props.semester.id}`}>{this.name()}</Link>
                         {/*<a onClick={this.handleSemesterSelect}>{this.name()}</a>*/}
                     </h5>
                     <small>

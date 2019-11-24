@@ -9,6 +9,7 @@ import {fetchCourseInstances} from '../actions/courseInstanceActions';
 import {fetchGradeEntries} from '../actions/gradeEntryActions';
 import {fetchCategories} from '../actions/categoryActions';
 import {fetchCSRs} from '../actions/csrActions';
+import {LOGIN_URL} from './urls';
 
 function mapStateToProps(state) {
     return {
@@ -73,7 +74,7 @@ class GradeTrackerRoute extends Component {
                     if (auth.isLoading) {
                         return <h2>Loading...</h2>;
                     } else if (!auth.isAuthenticated) {
-                        return <Redirect to={'/login'}/>;
+                        return <Redirect to={LOGIN_URL}/>;
                     } else if (!this.props.dataLoaded || this.props.forceDataReloadState) {
                         return <h2>Data loading</h2>;
                     } else {

@@ -12,6 +12,13 @@ import SemesterView from './views/SemesterView';
 import CourseInstanceView from './views/CourseInstanceView';
 import GradeTrackerRoute from './routes/GradeTrackerRoute';
 import ConcentrationProgressView from './views/ConcentrationProgressView';
+import {
+    CONCENTRATION_PROGRESS_URL_DEF,
+    COURSE_URL_DEF, LOGIN_URL_DEF,
+    REGISTER_URL_DEF,
+    ROOT_URL,
+    SEMESTER_URL_DEF
+} from './routes/urls';
 
 class App extends Component {
     componentDidMount() {
@@ -28,13 +35,13 @@ class App extends Component {
                             <div>
                                 <Switch>
                                     {/*<PrivateRoute exact path={'/'} component={CategoryView}/>*/}
-                                    <GradeTrackerRoute exact path={'/'} component={SemestersView}/>
+                                    <GradeTrackerRoute exact path={ROOT_URL} component={SemestersView}/>
                                     {/*<PrivateRoute path={'/courses'} component={CourseInstances}/>*/}
-                                    <GradeTrackerRoute path={'/semester/:semesterId'} component={SemesterView}/>
-                                    <GradeTrackerRoute path={'/course/:courseId'} component={CourseInstanceView}/>
-                                    <GradeTrackerRoute path={'/concentration-progress'} component={ConcentrationProgressView}/>
-                                    <Route exact path={'/register'} component={Register}/>
-                                    <Route exact path={'/login'} component={Login}/>
+                                    <GradeTrackerRoute path={SEMESTER_URL_DEF} component={SemesterView}/>
+                                    <GradeTrackerRoute path={COURSE_URL_DEF} component={CourseInstanceView}/>
+                                    <GradeTrackerRoute path={CONCENTRATION_PROGRESS_URL_DEF} component={ConcentrationProgressView}/>
+                                    <Route exact path={REGISTER_URL_DEF} component={Register}/>
+                                    <Route exact path={LOGIN_URL_DEF} component={Login}/>
                                 </Switch>
                             </div>
                         </Fragment>

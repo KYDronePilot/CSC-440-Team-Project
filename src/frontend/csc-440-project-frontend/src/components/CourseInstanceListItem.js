@@ -7,6 +7,7 @@ import {withRouter} from 'react-router';
 import {Link} from 'react-router-dom';
 import DeleteWarning from './DeleteWarning';
 import {removeStudentCourseInstanceRelationship} from '../actions/courseInstanceActions';
+import {COURSE_URL} from '../routes/urls';
 
 function mapStateToProps(state) {
     return {
@@ -77,7 +78,7 @@ class CourseInstanceListItem extends Component {
                 </DeleteWarning>
                 <div className={'d-flex w-100 justify-content-between'}>
                     <h5 className={'mb-1'}>
-                        <Link to={`/course/${this.props.courseInstance.id}`}>{course.name}</Link>
+                        <Link to={`${COURSE_URL}${this.props.courseInstance.id}`}>{course.name}</Link>
                         {/*<a onClick={this.handleCourseInstanceSelected}>{course.name}</a>*/}
                     </h5>
                     <small>

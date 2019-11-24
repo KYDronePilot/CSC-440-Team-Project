@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import * as PropTypes from 'prop-types';
-import {MDBBtn, MDBContainer} from 'mdbreact';
+import {MDBContainer} from 'mdbreact';
 import GradeEntries from '../containers/GradeEntryList';
 import {allInstances} from '../utils/objectification_utils';
 import {editCategory} from '../actions/categoryActions';
