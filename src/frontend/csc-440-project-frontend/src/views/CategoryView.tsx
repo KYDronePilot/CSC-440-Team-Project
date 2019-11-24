@@ -3,8 +3,8 @@ import {MDBContainer} from 'mdbreact';
 import GradeEntries from '../containers/GradeEntryList';
 import ScoreBar from '../components/ScoreBar';
 import {Category, GradeEntry} from '../api/types';
-import {formatScore, gradeEntryStatistics} from '../api/gradeEntry';
-import {PointCategoryStats, WeightCategoryStats} from '../api/courseInstance';
+import {formatScore} from '../api/gradeEntry';
+import {CategoryStats} from '../api/courseInstance';
 
 interface CategoryViewProps {
     category: Category;
@@ -12,7 +12,7 @@ interface CategoryViewProps {
     // editCategory: (categoryId: number) => void;
     editGradeEntry: (gradeEntryId: number, categoryId: number) => void;
     openCreateGradeEntryForm: (categoryId: number) => void;
-    categoryStats: PointCategoryStats | WeightCategoryStats;
+    categoryStats: CategoryStats;
 }
 
 class CategoryView extends Component<CategoryViewProps, {}> {
@@ -24,17 +24,6 @@ class CategoryView extends Component<CategoryViewProps, {}> {
         this.emptyCategory = this.emptyCategory.bind(this);
         this.categoryDetails = this.categoryDetails.bind(this);
     }
-
-    /**
-     * Check if there are no grade entries.
-     */
-    private noGradeEntries() {
-        return this.props.gradeEntries.length === 0;
-    }
-
-    // editCategory(e: SyntheticEvent) {
-    //     this.props.editCategory(this.props.category.id);
-    // }
 
     /**
      * What to show for a category that doesn't have any grade entries.
@@ -49,6 +38,10 @@ class CategoryView extends Component<CategoryViewProps, {}> {
             </>
         );
     }
+
+    // editCategory(e: SyntheticEvent) {
+    //     this.props.editCategory(this.props.category.id);
+    // }
 
     /**
      * What to show for a category with grade entries.
@@ -94,6 +87,13 @@ class CategoryView extends Component<CategoryViewProps, {}> {
                 {category}
             </MDBContainer>
         );
+    }
+
+    /**
+     * Check if there are no grade entries.
+     */
+    private noGradeEntries() {
+        return this.props.gradeEntries.length === 0;
     }
 }
 

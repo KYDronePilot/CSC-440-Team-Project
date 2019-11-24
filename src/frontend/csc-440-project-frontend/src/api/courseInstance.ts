@@ -42,20 +42,13 @@ export interface GradeEntryStats extends CommonGradeStats {
 // CATEGORY STATS
 
 /**
- * Point based grade statistics for a category.
+ * Grade statistics for a category.
  */
-export interface PointCategoryStats extends CommonGradeStats {
+export interface CategoryStats extends CommonGradeStats {
     gradeEntryStats: GradeEntryStats[];
     // Max points in a particular group (category or course instance) and the score based on those points
-    groupMaxPoints: number;
-    groupScore: number;
-}
-
-/**
- * Weight based grade statistics for a category.
- */
-export interface WeightCategoryStats extends CommonGradeStats {
-    gradeEntryStats: GradeEntryStats[];
+    groupMaxPoints?: number;
+    groupScore?: number;
     // Weight of category
     weight: number;
 }
@@ -63,22 +56,14 @@ export interface WeightCategoryStats extends CommonGradeStats {
 // COURSE INSTANCE STATS
 
 /**
- * Point based grade statistics for a course instance.
+ * Grade statistics for a course instance.
  */
-export interface PointCourseInstanceStats extends CommonGradeStats {
-    categoryStats: PointCategoryStats[];
+export interface CourseInstanceStats extends CommonGradeStats {
+    categoryStats: CategoryStats[];
     // Max points in a particular group (category or course instance) and the score based on those points
-    groupMaxPoints: number;
-    groupScore: number;
+    groupMaxPoints?: number;
+    groupScore?: number;
 }
-
-/**
- * Weight based grade statistics for a course instance.
- */
-export interface WeightCourseInstanceStats extends CommonGradeStats {
-    categoryStats: WeightCategoryStats[];
-}
-
 
 // RAW GRADE ENTRIES
 
@@ -93,32 +78,25 @@ export interface RawGradeEntry {
 // RAW CATEGORIES
 
 /**
- * Raw point based category information needed for scoring.
+ * Raw category information needed for scoring.
  */
-export interface RawPointCategory {
+export interface RawCategory {
     gradeEntries: RawGradeEntry[];
     // Max points obtainable in category
-    maxPoints: number;
-}
-
-/**
- * Raw weight based category information needed for scoring.
- */
-export interface RawWeightCategory {
-    gradeEntries: RawGradeEntry[];
+    maxPoints?: number;
     // Weight of category
-    weight: number;
+    weight?: number;
 }
 
 // RAW COURSE INSTANCES
 
 /**
- * Raw point based course instance information needed for scoring.
+ * Raw course instance information needed for scoring.
  */
-export interface RawPointCourseInstance {
-    categories: RawPointCategory[];
+export interface RawCourseInstance {
+    categories: RawCategory[];
     // Max points obtainable in course instance
-    maxPoints: number;
+    maxPoints?: number;
     // Minimum scores for grades
     minA: number;
     minB: number;
@@ -127,29 +105,34 @@ export interface RawPointCourseInstance {
 }
 
 /**
- * Raw weight based course instance information needed for scoring.
+ * Get grade statistics for a course instance.
  */
-export interface RawWeightCourseInstance {
-    categories: RawWeightCategory[];
-    // Minimum scores for grades
-    minA: number;
-    minB: number;
-    minC: number;
-    minD: number;
-}
-
-/**
- * Get point based grade statistics for a course instance.
- */
-export const pointCourseInstanceStats = (courseInstance: RawPointCourseInstance): PointCourseInstanceStats => {
+export const courseInstanceStats = (courseInstance: RawCourseInstance): CourseInstanceStats => {
     // Calculate grade for each category
-    const categoryStats = courseInstance.categories.map(category => getPointCategoryStats(
-        category,
-        courseInstance.minA,
-        courseInstance.minB,
-        courseInstance.minC,
-        courseInstance.minD
-    ));
+    const categoryStats = courseInstance.categories.map(category => {
+        let weight;
+        if (
+            category.weight === undefined
+            && category.maxPoints !== undefined
+            && courseInstance.maxPoints !== undefined) {
+            // If weight based, calculate weight from category max points and course instance max points.
+            weight = category.maxPoints / courseInstance.maxPoints;
+        } else if (category.weight !== undefined) {
+            // Else, just use category weight
+            weight = category.weight;
+        } else {
+            throw Error('Raw Category data is malformed.');
+        }
+
+        return getCategoryStats(
+            category,
+            weight,
+            courseInstance.minA,
+            courseInstance.minB,
+            courseInstance.minC,
+            courseInstance.minD
+        )
+    });
 
     // Calculate grade for entire course instance
     let points = 0, maxPoints = 0;
@@ -172,50 +155,10 @@ export const pointCourseInstanceStats = (courseInstance: RawPointCourseInstance)
         categoryStats,
         ...gradeAndRange,
         groupMaxPoints: courseInstance.maxPoints,
-        groupScore: points / courseInstance.maxPoints,
+        groupScore: courseInstance.maxPoints !== undefined ? points / courseInstance.maxPoints : undefined,
         points,
         maxPoints,
-        score
-    };
-};
-
-/**
- * Get weight based grade statistics for a course instance.
- */
-export const weightCourseInstanceStats = (courseInstance: RawWeightCourseInstance): WeightCourseInstanceStats => {
-    // Calculate grade for each category
-    const categoryStats = courseInstance.categories.map(category => getWeightCategoryStats(
-        category,
-        category.weight,
-        courseInstance.minA,
-        courseInstance.minB,
-        courseInstance.minC,
-        courseInstance.minD
-    ));
-
-    // Calculate grade for entire course instance
-    let points = 0, maxPoints = 0;
-    for (const category of categoryStats) {
-        points += category.points;
-        maxPoints += category.maxPoints;
-    }
-    const score = points / maxPoints;
-    const gradeAndRange = letterGradeScoreRange(
         score,
-        courseInstance.minA,
-        courseInstance.minB,
-        courseInstance.minC,
-        courseInstance.minD,
-        0.00,
-        1.00
-    );
-
-    return {
-        categoryStats,
-        ...gradeAndRange,
-        points,
-        maxPoints,
-        score
     };
 };
 
@@ -225,7 +168,7 @@ export const weightCourseInstanceStats = (courseInstance: RawWeightCourseInstanc
  * @private
  */
 const _categoryStats = (
-    category: RawWeightCategory | RawPointCategory,
+    category: RawCategory,
     minA: number,
     minB: number,
     minC: number,
@@ -267,15 +210,16 @@ const _categoryStats = (
 };
 
 /**
- * Get point based grade statistics for a category.
+ * Get grade statistics for a category.
  */
-export const getPointCategoryStats = (
-    category: RawPointCategory,
+export const getCategoryStats = (
+    category: RawCategory,
+    weight: number,
     minA: number,
     minB: number,
     minC: number,
     minD: number
-): PointCategoryStats => {
+): CategoryStats => {
     const stats = _categoryStats(
         category,
         minA,
@@ -287,35 +231,10 @@ export const getPointCategoryStats = (
     return {
         ...stats,
         groupMaxPoints: category.maxPoints,
-        groupScore: stats.points / category.maxPoints
-    };
-};
-
-/**
- * Get weight based grade statistics for a category.
- */
-export const getWeightCategoryStats = (
-    category: RawWeightCategory,
-    weight: number,
-    minA: number,
-    minB: number,
-    minC: number,
-    minD: number
-): WeightCategoryStats => {
-    const stats = _categoryStats(
-        category,
-        minA,
-        minB,
-        minC,
-        minD
-    );
-
-    return {
-        ...stats,
+        groupScore: category.maxPoints !== undefined ? stats.points / category.maxPoints : undefined,
         weight
     };
 };
-
 
 /**
  * Get grade statistics for a grade entry.
@@ -347,18 +266,15 @@ export const getGradeEntryStats = (
 };
 
 /**
- * Generate a raw point based course instance structure for doing grade calculations.
+ * Generate a raw course instance structure for doing grade calculations.
  */
-export const generateRawPointCourseInstanceStructure = (
+export const generateRawCourseInstanceStructure = (
     courseInstance: CourseInstance,
     categories: Category[],
     gradeEntries: GradeEntry[]
-): RawPointCourseInstance => {
-    if (courseInstance.max_points === undefined || courseInstance.max_points === null)
-        throw Error('Course instance must be point based.');
-
+): RawCourseInstance => {
     const categoryStructures = getCourseInstanceCategories(categories, courseInstance.id)
-        .map(category => generateRawPointCategoryStructure(category, gradeEntries));
+        .map(category => generateRawCategoryStructure(category, gradeEntries));
     return {
         categories: categoryStructures,
         maxPoints: courseInstance.max_points,
@@ -370,58 +286,16 @@ export const generateRawPointCourseInstanceStructure = (
 };
 
 /**
- * Generate a raw weight based course instance structure for doing grade calculations.
+ * Generate a raw category structure for doing grade calculations.
  */
-export const generateRawWeightCourseInstanceStructure = (
-    courseInstance: CourseInstance,
-    categories: Category[],
-    gradeEntries: GradeEntry[]
-): RawWeightCourseInstance => {
-    const categoryStructures = getCourseInstanceCategories(categories, courseInstance.id)
-        .map(category => generateRawWeightCategoryStructure(category, gradeEntries));
-    return {
-        categories: categoryStructures,
-        minA: courseInstance.min_a,
-        minB: courseInstance.min_b,
-        minC: courseInstance.min_c,
-        minD: courseInstance.min_d
-    };
-};
-
-const _generateRawCategoryStructure = (
+export const generateRawCategoryStructure = (
     category: Category,
     gradeEntries: GradeEntry[]
-) => {
-    return getCategoryGradeEntries(gradeEntries, category.id)
-        .map(gradeEntry => extractRawGradeEntryData(gradeEntry));
-};
-
-/**
- * Generate a raw point based category structure for doing grade calculations.
- */
-export const generateRawPointCategoryStructure = (
-    category: Category,
-    gradeEntries: GradeEntry[]
-): RawPointCategory => {
-    if (category.max_points === undefined || category.max_points === null)
-        throw Error('Category must be point based.');
+): RawCategory => {
     return {
-        gradeEntries: _generateRawCategoryStructure(category, gradeEntries),
-        maxPoints: category.max_points
-    };
-};
-
-/**
- * Generate a raw weight based category structure for doing grade calculations.
- */
-export const generateRawWeightCategoryStructure = (
-    category: Category,
-    gradeEntries: GradeEntry[]
-): RawWeightCategory => {
-    if (category.weight === undefined || category.weight === null)
-        throw Error('Category must be weight based.');
-    return {
-        gradeEntries: _generateRawCategoryStructure(category, gradeEntries),
+        gradeEntries: getCategoryGradeEntries(gradeEntries, category.id)
+            .map(gradeEntry => extractRawGradeEntryData(gradeEntry)),
+        maxPoints: category.max_points,
         weight: category.weight
     };
 };

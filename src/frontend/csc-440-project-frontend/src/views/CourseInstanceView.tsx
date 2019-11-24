@@ -9,10 +9,10 @@ import {Category, Course, CourseInstance, GradeEntry} from '../api/types';
 import {getCourseInstanceCategories} from '../api/category';
 import {formatScore, getCategoryGradeEntries, getCourseInstanceGradeEntries} from '../api/gradeEntry';
 import {
-    generateRawPointCourseInstanceStructure,
-    generateRawWeightCourseInstanceStructure,
-    POINT_BASED_GRADING, PointCourseInstanceStats, pointCourseInstanceStats,
-    WEIGHT_BASED_GRADING, WeightCourseInstanceStats, weightCourseInstanceStats
+    CourseInstanceStats,
+    courseInstanceStats,
+    generateRawCourseInstanceStructure,
+    POINT_BASED_GRADING
 } from '../api/courseInstance';
 import {editGradeEntry, openCreateGradeEntryForm} from '../actions/gradeEntryActions';
 
@@ -27,7 +27,7 @@ interface MapStateToPropsTypes {
     gradeEntries: GradeEntry[];
     // TODO: This is a big hack and should be handled in another way
     gradeEntriesMap: { [key: number]: GradeEntry };
-    courseInstanceStats: PointCourseInstanceStats | WeightCourseInstanceStats;
+    courseInstanceStats: CourseInstanceStats;
 }
 
 interface CourseInstanceViewProps extends RouteComponentProps<MatchParams>, MapStateToPropsTypes {
@@ -46,29 +46,17 @@ function mapStateToProps(state: any, ownProps: CourseInstanceViewProps): MapStat
         courseInstance.id
     );
 
-    // Get raw data structure of course instance
-    let courseInstanceStats;
-    if (courseInstance.grading_strategy === WEIGHT_BASED_GRADING) {
-        courseInstanceStats = weightCourseInstanceStats(generateRawWeightCourseInstanceStructure(
-            courseInstance,
-            categories,
-            gradeEntries
-        ));
-    } else {
-        courseInstanceStats = pointCourseInstanceStats(generateRawPointCourseInstanceStructure(
-            courseInstance,
-            categories,
-            gradeEntries
-        ));
-    }
-
     return {
         courseInstance,
         course: state.course.courses[courseInstance.course],
         categories,
         gradeEntries,
         gradeEntriesMap: state.gradeEntry.gradeEntries,
-        courseInstanceStats
+        courseInstanceStats: courseInstanceStats(generateRawCourseInstanceStructure(
+            courseInstance,
+            categories,
+            gradeEntries
+        ))
     };
 }
 
