@@ -1,6 +1,7 @@
 import {Concentration} from './types';
 import axios, {AxiosRequestConfig} from 'axios';
 import {OptionsType, OptionTypeBase} from 'react-select/src/types';
+import {CONCENTRATIONS_URL} from './urls';
 
 interface ConcentrationResponse extends Array<Concentration> {
 }
@@ -33,7 +34,7 @@ export const loadConcentrations = (params: object) => (
         }
     };
 
-    axios.get<ConcentrationResponse>('http://localhost:8000/api/concentrations/', config)
+    axios.get<ConcentrationResponse>(CONCENTRATIONS_URL, config)
         .then(res => {
             const options: ConcentrationOptions = res.data.map(concentration => ({
                 label: concentrationToString(concentration),

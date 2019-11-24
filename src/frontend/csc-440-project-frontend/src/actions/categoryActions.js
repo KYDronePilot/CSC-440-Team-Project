@@ -19,6 +19,7 @@ import {
     REPLACE_CATEGORY
 } from './types';
 import {tokenConfig} from './auth';
+import {CATEGORIES_URL} from '../api/urls';
 
 export const createCategory = (name, weight, max_points, course_instance_id,
                                category_score_requirements) => (dispatch, getState) => {
@@ -36,7 +37,7 @@ export const createCategory = (name, weight, max_points, course_instance_id,
         category_score_requirements
     });
 
-    axios.post('http://localhost:8000/api/categories/', body, config)
+    axios.post(CATEGORIES_URL, body, config)
         .then(res => {
             dispatch({
                 type: CATEGORY_FORM_CLOSE
@@ -60,7 +61,7 @@ export const createCategory = (name, weight, max_points, course_instance_id,
 };
 
 export const fetchCategories = () => (dispatch, getState) => {
-    return axios.get('http://localhost:8000/api/categories/', tokenConfig(getState))
+    return axios.get(CATEGORIES_URL, tokenConfig(getState))
         .then(res =>
             dispatch({
                 type: FETCH_CATEGORIES,
@@ -80,7 +81,7 @@ export const updateCategory = category => (dispatch, getState) => {
         ...category
     };
 
-    axios.patch(`http://localhost:8000/api/categories/${category.id}/`, body, config)
+    axios.patch(`${CATEGORIES_URL}${category.id}/`, body, config)
         .then(res => {
             dispatch({
                 type: CATEGORY_FORM_CLOSE
@@ -108,7 +109,7 @@ export const deleteCategory = category => (dispatch, getState) => {
         type: CATEGORY_FORM_SUBMITTED
     });
 
-    axios.delete(`http://localhost:8000/api/categories/${category.id}/`, tokenConfig(getState))
+    axios.delete(`${CATEGORIES_URL}${category.id}/`, tokenConfig(getState))
         .then(res => {
             dispatch({
                 type: CATEGORY_FORM_CLOSE

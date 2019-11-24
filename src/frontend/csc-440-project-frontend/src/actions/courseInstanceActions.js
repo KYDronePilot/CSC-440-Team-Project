@@ -1,9 +1,10 @@
 import {DATA_NOT_LOADED, FETCH_COURSE_INSTANCES} from './types';
 import {tokenConfig} from './auth';
 import axios from 'axios';
+import {COURSE_INSTANCES_URL} from '../api/urls';
 
 export const fetchCourseInstances = () => (dispatch, getState) => {
-    return axios.get('http://localhost:8000/api/course-instances/', tokenConfig(getState))
+    return axios.get(COURSE_INSTANCES_URL, tokenConfig(getState))
         .then(res =>
             dispatch({
                 type: FETCH_COURSE_INSTANCES,
@@ -21,7 +22,7 @@ export const removeStudentCourseInstanceRelationship = (courseInstance) => (disp
         student_relationship: ''
     };
 
-    axios.delete(`http://localhost:8000/api/course-instances/${courseInstance.id}/`, config)
+    axios.delete(`${COURSE_INSTANCES_URL}${courseInstance.id}/`, config)
         .then(res => {
             // Trigger state reload
             dispatch({

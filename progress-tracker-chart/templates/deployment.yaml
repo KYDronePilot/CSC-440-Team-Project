@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "progress-tracker-chart.fullname" . }}
+  labels:
+{{ include "progress-tracker-chart.labels" . | indent 4 }}
+  annotations:
+    keel.sh/policy: major
+    keel.sh/trigger: poll
+    keel.sh/pollSchedule: '@every 30s'
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "progress-tracker-chart.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "progress-tracker-chart.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ template "progress-tracker-chart.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        
+        - name: {{ .Values.backend.name }}
+          image: "{{ .Values.backend.image.repo }}:{{ .Values.backend.image.tag }}"
+          imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
+          env:
+            - name: SECRET_KEY
+              value: {{ .Values.backendSecrets.secretKey | quote }}
+            - name: DATABASE_URL
+              value: 'postgres://{{ .Values.backendSecrets.databaseUser }}:{{ .Values.backendSecrets.databasePassword }}@{{ .Release.Name }}-postgresql:{{ .Values.backendSecrets.databasePort }}/{{ .Values.backendSecrets.database }}'
+            - name: DEBUG
+              value: {{ .Values.backend.env.debug | quote }}
+            - name: ALLOWED_HOSTS
+              value: {{ .Values.backend.env.allowedHosts | quote }}
+            - name: CORS_ORIGIN_ALLOW_ALL
+              value: {{ .Values.backend.env.corsOriginAllowAll | quote }}
+            - name: GUNICORN_CONFIG
+              value: /etc/config/gunicorn/gunicorn_config.py
+          volumeMounts:
+            - name: gunicorn-config-volume
+              mountPath: /etc/config/gunicorn
+          command: ['/src/entrypoint.sh']
+
+        - name: {{ .Values.frontend.name }}
+          image: "{{ .Values.frontend.image.repo }}:{{ .Values.frontend.image.tag }}"
+          imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
+          volumeMounts:
+            - name: nginx-config-volume
+              mountPath: /etc/config/nginx
+          command: ['nginx']
+          args: ['-c', '/etc/config/nginx/nginx.conf', '-g', 'daemon off;']
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+
+      volumes:
+        - name: gunicorn-config-volume
+          configMap:
+            name: {{ include "progress-tracker-chart.fullname" . }}-gunicorn-configmap
+        - name: nginx-config-volume
+          configMap:
+            name: {{ include "progress-tracker-chart.fullname" . }}-nginx-configmap
+
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

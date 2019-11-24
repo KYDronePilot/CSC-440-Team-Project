@@ -1,5 +1,6 @@
 import axios, {AxiosRequestConfig} from 'axios';
 import {College} from './types';
+import {COLLEGES_URL} from './urls';
 
 interface CollegeResponse extends Array<College> {
 }
@@ -30,7 +31,7 @@ export function loadColleges(inputValue: string, callback: CallableFunction) {
         }
     };
 
-    axios.get<CollegeResponse>('http://localhost:8000/api/colleges/', config)
+    axios.get<CollegeResponse>(COLLEGES_URL, config)
         .then(res => {
             const options: Array<CollegeOption> = res.data.map(college => ({
                 label: collegeToString(college),

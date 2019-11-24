@@ -19,11 +19,12 @@ import {
     SET_EDITED_GRADE_ENTRY
 } from './types';
 import {tokenConfig} from './auth';
+import {GRADE_ENTRIES_URL} from '../api/urls';
 
 export const fetchGradeEntries = category_id => (dispatch, getState) => {
     const config = tokenConfig(getState);
 
-    return axios.get('http://localhost:8000/api/grade-entries/', config)
+    return axios.get(GRADE_ENTRIES_URL, config)
         .then(res =>
             dispatch({
                 type: FETCH_GRADE_ENTRIES,
@@ -46,7 +47,7 @@ export const createGradeEntry = (name, points, max_points, category_id) => (disp
         category: category_id
     });
 
-    axios.post('http://localhost:8000/api/grade-entries/', body, config)
+    axios.post(GRADE_ENTRIES_URL, body, config)
         .then(res => {
             dispatch({
                 type: GRADE_ENTRY_FORM_SUCCESS
@@ -179,7 +180,7 @@ export const updateGradeEntry = gradeEntry => (dispatch, getState) => {
         category: gradeEntry.category
     });
 
-    axios.patch(`http://localhost:8000/api/grade-entries/${gradeEntry.id}/`, body, config)
+    axios.patch(`${GRADE_ENTRIES_URL}${gradeEntry.id}/`, body, config)
         .then(res => {
             dispatch({
                 type: GRADE_ENTRY_FORM_SUCCESS
@@ -211,7 +212,7 @@ export const deleteGradeEntry = gradeEntry => (dispatch, getState) => {
         type: GRADE_ENTRY_FORM_SUBMITTED
     });
 
-    axios.delete(`http://localhost:8000/api/grade-entries/${gradeEntry.id}/`, tokenConfig(getState))
+    axios.delete(`${GRADE_ENTRIES_URL}${gradeEntry.id}/`, tokenConfig(getState))
         .then(res => {
             dispatch({
                 type: GRADE_ENTRY_FORM_SUCCESS

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {tokenConfig} from './auth';
 import {FETCH_CSRS} from './types';
+import {CATEGORY_SCORE_REQUIREMENTS_URL} from '../api/urls';
 
 /**
  * Get a name for a CSR.
@@ -15,7 +16,7 @@ export function csrName(csr, categories) {
 }
 
 export const fetchCSRs = () => (dispatch, getState) => {
-    return axios.get('http://localhost:8000/api/category-score-requirements/', tokenConfig(getState))
+    return axios.get(CATEGORY_SCORE_REQUIREMENTS_URL, tokenConfig(getState))
         .then(res =>
             dispatch({
                 type: FETCH_CSRS,
