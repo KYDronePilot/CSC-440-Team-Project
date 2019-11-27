@@ -114,14 +114,17 @@ class CourseInstanceView extends Component<CourseInstanceViewProps, {}> {
                 />
                 <h1 className={'text-center'}>{this.props.course.code}: {this.props.course.name}</h1>
                 <p className={'text-center'}>
-                    Credit Hours: {this.props.course.credit_hours} | Section: {this.props.courseInstance.section} | Grade: {this.props.courseInstanceStats.letterGrade} ({formatScore(this.props.courseInstanceStats.score)})
+                    Credit Hours: {this.props.course.credit_hours}
+                    &nbsp;| Section: {this.props.courseInstance.section}
+                    &nbsp;| Grade: {this.props.courseInstanceStats.letterGrade}
+                    &nbsp;({formatScore(this.props.courseInstanceStats.score)})
                 </p>
                 <CategoryScoreChart
                     containerClassName={'text-center'}
                     height={300}
                     width={300}
                     categories={this.props.courseInstanceStats.categoryStats.map((category, i) => ({
-                        name: `test ${i}`,
+                        name: this.props.categories[i].name,
                         score: category.score,
                         grade: category.letterGrade
                     }))}

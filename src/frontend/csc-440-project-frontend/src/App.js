@@ -1,6 +1,7 @@
 /// <reference types="react-vis-types" />
 import React, {Component, Fragment} from 'react';
 import './App.css';
+import 'react-vis/dist/style.css';
 import {Provider} from 'react-redux';
 import store from './store';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
@@ -15,7 +16,8 @@ import GradeTrackerRoute from './routes/GradeTrackerRoute';
 import ConcentrationProgressView from './views/ConcentrationProgressView';
 import {
     CONCENTRATION_PROGRESS_URL_DEF,
-    COURSE_URL_DEF, LOGIN_URL_DEF,
+    COURSE_URL_DEF,
+    LOGIN_URL_DEF,
     REGISTER_URL_DEF,
     ROOT_URL,
     SEMESTER_URL_DEF
@@ -40,7 +42,8 @@ class App extends Component {
                                     {/*<PrivateRoute path={'/courses'} component={CourseInstances}/>*/}
                                     <GradeTrackerRoute path={SEMESTER_URL_DEF} component={SemesterView}/>
                                     <GradeTrackerRoute path={COURSE_URL_DEF} component={CourseInstanceView}/>
-                                    <GradeTrackerRoute path={CONCENTRATION_PROGRESS_URL_DEF} component={ConcentrationProgressView}/>
+                                    <GradeTrackerRoute path={CONCENTRATION_PROGRESS_URL_DEF}
+                                                       component={ConcentrationProgressView}/>
                                     <Route exact path={REGISTER_URL_DEF} component={Register}/>
                                     <Route exact path={LOGIN_URL_DEF} component={Login}/>
                                 </Switch>

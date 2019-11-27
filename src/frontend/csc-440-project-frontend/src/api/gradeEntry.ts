@@ -162,3 +162,37 @@ export const gradeEntryStatistics = (
         score: points / maxPoints
     }
 };
+
+/**
+ * Get bootstrap color class for a letter grade.
+ * @param letterGrade - Letter grade
+ * @return Color class for letter grade
+ */
+export const getLetterGradeColorClass = (letterGrade: LetterGrade) => {
+    switch (letterGrade) {
+        case GRADE_A:
+            return 'success';
+        case GRADE_B:
+        case GRADE_C:
+            return 'warning';
+        default:
+            return 'danger';
+    }
+};
+
+/**
+ * Get hex color for a letter grade.
+ * @param letterGrade - Letter grade
+ * @return Hex color for letter grade
+ */
+export const getLetterGradeColor = (letterGrade: LetterGrade) => {
+    switch (letterGrade) {
+        case GRADE_A:
+            return '#5CB85C';
+        case GRADE_B:
+        case GRADE_C:
+            return '#F0AD4E';
+        default:
+            return '#D9534F';
+    }
+};
