@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, FC} from 'react';
 import {connect} from 'react-redux';
 import {allInstances} from '../utils/objectification_utils';
 import CategoryView from './CategoryView';
@@ -7,7 +7,7 @@ import {CourseInstanceBreadcrumb} from '../components/layout/breadcrumbs';
 import {RouteComponentProps} from 'react-router';
 import {Category, Course, CourseInstance, GradeEntry} from '../api/types';
 import {getCourseInstanceCategories} from '../api/category';
-import {formatScore, getCategoryGradeEntries, getCourseInstanceGradeEntries} from '../api/gradeEntry';
+import {formatScore, getCategoryGradeEntries, getCourseInstanceGradeEntries, LetterGrade} from '../api/gradeEntry';
 import {
     CourseInstanceStats,
     courseInstanceStats,
@@ -16,6 +16,9 @@ import {
 } from '../api/courseInstance';
 import {editGradeEntry, openCreateGradeEntryForm} from '../actions/gradeEntryActions';
 import CategoryScoreChart from '../components/CategoryScoreChart';
+import PercentDonutChart from '../components/PercentDonutChart';
+import {MDBCol, MDBRow} from 'mdbreact';
+import {WeightDonutChart} from '../components/WeightDonutChart';
 
 interface MatchParams {
     courseId: string;
@@ -60,6 +63,58 @@ function mapStateToProps(state: any, ownProps: CourseInstanceViewProps): MapStat
         ))
     };
 }
+
+interface ChartsHeaderProps {
+    courseScore: number;
+    courseLetterGrade: LetterGrade;
+    categories: {
+        name: string;
+        score: number;
+        grade: LetterGrade;
+        weight: number;
+    }[];
+}
+
+/**
+ * Course stats charts at beginning of view.
+ */
+const ChartsHeader: FC<ChartsHeaderProps> = props => {
+    const {
+        courseScore,
+        courseLetterGrade,
+        categories
+    } = props;
+    return (
+        <MDBRow>
+            <MDBCol lg={'4'}>
+                <PercentDonutChart
+                    score={courseScore}
+                    name={'Course Total'}
+                    letterGrade={courseLetterGrade}
+                    height={350}
+                />
+            </MDBCol>
+            <MDBCol lg={'4'}>
+                <CategoryScoreChart
+                    height={350}
+                    categories={categories.map(category => ({
+                        name: category.name,
+                        score: category.score,
+                        grade: category.grade
+                    }))}
+                />
+            </MDBCol>
+            <MDBCol lg={'4'}>
+                <WeightDonutChart
+                    categories={categories.map(category => ({
+                        name: category.name,
+                        weight: category.weight
+                    }))}
+                />
+            </MDBCol>
+        </MDBRow>
+    );
+};
 
 class CourseInstanceView extends Component<CourseInstanceViewProps, {}> {
     constructor(props: CourseInstanceViewProps) {
@@ -119,14 +174,14 @@ class CourseInstanceView extends Component<CourseInstanceViewProps, {}> {
                     &nbsp;| Grade: {this.props.courseInstanceStats.letterGrade}
                     &nbsp;({formatScore(this.props.courseInstanceStats.score)})
                 </p>
-                <CategoryScoreChart
-                    containerClassName={'text-center'}
-                    height={300}
-                    width={300}
+                <ChartsHeader
+                    courseLetterGrade={this.props.courseInstanceStats.letterGrade}
+                    courseScore={this.props.courseInstanceStats.score}
                     categories={this.props.courseInstanceStats.categoryStats.map((category, i) => ({
                         name: this.props.categories[i].name,
                         score: category.score,
-                        grade: category.letterGrade
+                        grade: category.letterGrade,
+                        weight: category.weight
                     }))}
                 />
                 {/*<MDBBtn color={'secondary'} onClick={this.openCreateCategoryForm}>*/}

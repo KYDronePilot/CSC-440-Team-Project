@@ -83,7 +83,7 @@ class CategoryView extends Component<CategoryViewProps, {}> {
             category = this.categoryDetails();
 
         return (
-            <MDBContainer className={'my-5'}>
+            <MDBContainer className={'my-4'}>
                 {category}
             </MDBContainer>
         );

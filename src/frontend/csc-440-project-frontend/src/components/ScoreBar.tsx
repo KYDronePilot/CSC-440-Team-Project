@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {MDBProgress} from 'mdbreact';
-import {getLetterGradeColorClass, GRADE_A, GRADE_B, GRADE_C, GRADE_D, LetterGrade} from '../api/gradeEntry';
+import {getLetterGradeColorClass, LetterGrade} from '../api/gradeEntry';
 
 interface ScoreBarProps {
     score: number;
@@ -19,14 +19,6 @@ class ScoreBar extends Component<ScoreBarProps, {}> {
         this.progressFormat = this.progressFormat.bind(this);
     }
 
-    /**
-     * Format decimal score to whole progress number.
-     * @return Formatted progress number
-     */
-    private progressFormat() {
-        return Math.round(this.props.score * 100);
-    }
-
     render() {
         return (
             <div className={this.props.className}>
@@ -40,6 +32,14 @@ class ScoreBar extends Component<ScoreBarProps, {}> {
                 </MDBProgress>
             </div>
         );
+    }
+
+    /**
+     * Format decimal score to whole progress number.
+     * @return Formatted progress number
+     */
+    private progressFormat() {
+        return Math.round(this.props.score * 100);
     }
 }
 
