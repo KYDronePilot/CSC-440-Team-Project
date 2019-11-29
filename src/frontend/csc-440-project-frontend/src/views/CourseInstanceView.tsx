@@ -10,7 +10,7 @@ import {getCourseInstanceCategories} from '../api/category';
 import {formatScore, getCategoryGradeEntries, getCourseInstanceGradeEntries, LetterGrade} from '../api/gradeEntry';
 import {
     CourseInstanceStats,
-    courseInstanceStats,
+    getCourseInstanceStats,
     generateRawCourseInstanceStructure,
     POINT_BASED_GRADING
 } from '../api/courseInstance';
@@ -56,7 +56,7 @@ function mapStateToProps(state: any, ownProps: CourseInstanceViewProps): MapStat
         categories,
         gradeEntries,
         gradeEntriesMap: state.gradeEntry.gradeEntries,
-        courseInstanceStats: courseInstanceStats(generateRawCourseInstanceStructure(
+        courseInstanceStats: getCourseInstanceStats(generateRawCourseInstanceStructure(
             courseInstance,
             categories,
             gradeEntries

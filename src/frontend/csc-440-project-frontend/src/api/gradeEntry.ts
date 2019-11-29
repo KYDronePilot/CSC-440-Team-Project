@@ -196,3 +196,11 @@ export const getLetterGradeColor = (letterGrade: LetterGrade) => {
             return '#D9534F';
     }
 };
+
+export const GRADE_POINT_MAP = {
+    GRADE_A: 4.0,
+    GRADE_B: 3.0,
+    GRADE_C: 2.0,
+    GRADE_D: 1.0,
+    GRADE_F: 0.0
+};

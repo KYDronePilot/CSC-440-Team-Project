@@ -5,11 +5,16 @@ import {MDBBtn, MDBContainer, MDBListGroup} from 'mdbreact';
 import CourseInstanceListItem from '../components/CourseInstanceListItem';
 import AddCourseInstanceForm from '../containers/AddCourseInstanceForm';
 import {SemesterBreadcrumb} from '../components/layout/breadcrumbs';
-import {getSemesterCourseInstances} from '../api/courseInstance';
+import {
+    generateRawCourseInstanceStructure,
+    generateRawSemesterStructure,
+    getSemesterCourseInstances
+} from '../api/courseInstance';
 import {getCourseInstanceGradeEntries} from '../api/gradeEntry';
-import {Course, CourseInstance, GradeEntry} from '../api/types';
+import {Category, Course, CourseInstance, GradeEntry, Semester} from '../api/types';
 import {RouteComponentProps} from 'react-router';
 import {removeStudentCourseInstanceRelationship} from '../actions/courseInstanceActions';
+import {getCourseInstanceCategories} from '../api/category';
 
 /**
  * Denormalized course instance info.
@@ -41,12 +46,19 @@ interface SemesterViewState {
 }
 
 function mapStateToProps(state: any, ownProps: SemesterViewProps): mapStateToPropsTypes {
+    // Get the semester ID and instance
     const semesterId = parseInt(ownProps.match.params.semesterId);
+    const semester: Semester = state.semester.semesters[semesterId];
     const courseInstances = getSemesterCourseInstances(
         allInstances(state.courseInstance.courseInstances),
         semesterId
     );
+    // TODO: Shrinking scope of categories and grade entries could give a speed improvement
+    const categories: Category[] = allInstances(state.category.categories);
+    const gradeEntries: GradeEntry[] = allInstances(state.gradeEntry.gradeEntries);
     const courses = state.course.courses;
+
+    const semesterStructure = generateRawSemesterStructure(semester, courseInstances, categories, gradeEntries);
 
     // Merge courses, course instances, and grade entries
     return {

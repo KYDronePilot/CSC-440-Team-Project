@@ -1,4 +1,4 @@
-import {Category, CourseInstance, GradeEntry} from './types';
+import {Category, CourseInstance, GradeEntry, Semester} from './types';
 import {getCategoryGradeEntries, LetterGrade, letterGradeScoreRange} from './gradeEntry';
 import {getCourseInstanceCategories} from './category';
 
@@ -65,6 +65,15 @@ export interface CourseInstanceStats extends CommonGradeStats {
     groupScore?: number;
 }
 
+/**
+ * Grade statistics for a semester.
+ */
+export interface SemesterStats extends CommonGradeStats {
+    courseInstanceStats: CourseInstanceStats[];
+    // GPA for the semester based on scores in courses
+    gpa: number;
+}
+
 // RAW GRADE ENTRIES
 
 /**
@@ -105,9 +114,26 @@ export interface RawCourseInstance {
 }
 
 /**
+ * Raw semester information needed for scoring.
+ */
+export interface RawSemester {
+    courseInstances: RawCourseInstance[];
+}
+
+export const semesterStats = (semester: RawSemester): SemesterStats => {
+    const courseInstanceStats = semester.courseInstances.map(courseInstance => getCourseInstanceStats(courseInstance));
+
+    // Calculate GPA
+    let totalGpa = 0;
+    for (const courseInstance of courseInstanceStats) {
+        totalGpa
+    }
+};
+
+/**
  * Get grade statistics for a course instance.
  */
-export const courseInstanceStats = (courseInstance: RawCourseInstance): CourseInstanceStats => {
+export const getCourseInstanceStats = (courseInstance: RawCourseInstance): CourseInstanceStats => {
     // Calculate grade for each category
     const categoryStats = courseInstance.categories.map(category => {
         let weight;
@@ -135,12 +161,12 @@ export const courseInstanceStats = (courseInstance: RawCourseInstance): CourseIn
     });
 
     // Calculate grade for entire course instance
-    let points = 0, maxPoints = 0;
+    let points = 0, maxPoints = 0, score = 0;
     for (const category of categoryStats) {
         points += category.points;
         maxPoints += category.maxPoints;
+        score += category.score * category.weight;
     }
-    const score = points / maxPoints;
     const gradeAndRange = letterGradeScoreRange(
         score,
         courseInstance.minA,
@@ -262,6 +288,27 @@ export const getGradeEntryStats = (
         points: gradeEntry.points,
         maxPoints: gradeEntry.maxPoints,
         score
+    };
+};
+
+/**
+ * Generate a raw semester structure for doing grade calculations.
+ * @param semester - The semester instance
+ * @param courseInstances - All possible course instances to search through
+ * @param categories - All possible categories to search through
+ * @param gradeEntries - All possible grade entries to search through
+ */
+export const generateRawSemesterStructure = (
+    semester: Semester,
+    courseInstances: CourseInstance[],
+    categories: Category[],
+    gradeEntries: GradeEntry[]
+): RawSemester => {
+    const courseInstanceStructures = getSemesterCourseInstances(courseInstances, semester.id)
+        .map(courseInstance => generateRawCourseInstanceStructure(courseInstance, categories, gradeEntries));
+
+    return {
+        courseInstances: courseInstanceStructures
     };
 };
 
