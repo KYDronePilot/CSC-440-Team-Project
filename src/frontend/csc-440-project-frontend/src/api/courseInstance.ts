@@ -1,5 +1,5 @@
 import {Category, CourseInstance, GradeEntry, Semester} from './types';
-import {getCategoryGradeEntries, LetterGrade, letterGradeScoreRange} from './gradeEntry';
+import {getCategoryGradeEntries, GRADE_POINT_MAP, LetterGrade, letterGradeScoreRange} from './gradeEntry';
 import {getCourseInstanceCategories} from './category';
 
 // Grading strategies
@@ -68,7 +68,7 @@ export interface CourseInstanceStats extends CommonGradeStats {
 /**
  * Grade statistics for a semester.
  */
-export interface SemesterStats extends CommonGradeStats {
+export interface SemesterStats {
     courseInstanceStats: CourseInstanceStats[];
     // GPA for the semester based on scores in courses
     gpa: number;
@@ -120,14 +120,22 @@ export interface RawSemester {
     courseInstances: RawCourseInstance[];
 }
 
-export const semesterStats = (semester: RawSemester): SemesterStats => {
+/**
+ * Get grade statistics for a semester.
+ * @param semester - Semester information
+ */
+export const getSemesterStats = (semester: RawSemester): SemesterStats => {
     const courseInstanceStats = semester.courseInstances.map(courseInstance => getCourseInstanceStats(courseInstance));
 
     // Calculate GPA
-    let totalGpa = 0;
-    for (const courseInstance of courseInstanceStats) {
-        totalGpa
-    }
+    const gpa = courseInstanceStats.reduce((total, courseInstance) => (
+        GRADE_POINT_MAP[courseInstance.letterGrade] + total
+    ), 0) / courseInstanceStats.length;
+
+    return {
+        courseInstanceStats,
+        gpa
+    };
 };
 
 /**

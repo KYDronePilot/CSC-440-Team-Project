@@ -8,7 +8,7 @@ import {SemesterBreadcrumb} from '../components/layout/breadcrumbs';
 import {
     generateRawCourseInstanceStructure,
     generateRawSemesterStructure,
-    getSemesterCourseInstances
+    getSemesterCourseInstances, getSemesterStats, SemesterStats
 } from '../api/courseInstance';
 import {getCourseInstanceGradeEntries} from '../api/gradeEntry';
 import {Category, Course, CourseInstance, GradeEntry, Semester} from '../api/types';
@@ -35,6 +35,7 @@ interface MatchParams {
 interface mapStateToPropsTypes {
     semesterId: number;
     courses: CourseInfo[];
+    semesterStats: SemesterStats;
 }
 
 interface SemesterViewProps extends RouteComponentProps<MatchParams>, mapStateToPropsTypes {
@@ -58,8 +59,6 @@ function mapStateToProps(state: any, ownProps: SemesterViewProps): mapStateToPro
     const gradeEntries: GradeEntry[] = allInstances(state.gradeEntry.gradeEntries);
     const courses = state.course.courses;
 
-    const semesterStructure = generateRawSemesterStructure(semester, courseInstances, categories, gradeEntries);
-
     // Merge courses, course instances, and grade entries
     return {
         semesterId,
@@ -71,7 +70,13 @@ function mapStateToProps(state: any, ownProps: SemesterViewProps): mapStateToPro
                 allInstances(state.category.categories),
                 courseInstance.id
             )
-        }))
+        })),
+        semesterStats: getSemesterStats(generateRawSemesterStructure(
+            semester,
+            courseInstances,
+            categories,
+            gradeEntries
+        ))
     };
 }
 
@@ -102,7 +107,7 @@ class SemesterView extends Component<SemesterViewProps, SemesterViewState> {
                 <SemesterBreadcrumb semesterId={this.props.semesterId}/>
                 <MDBContainer>
                     <MDBListGroup>
-                        {this.props.courses.map(course => (
+                        {this.props.courses.map((course, i) => (
                             <CourseInstanceListItem
                                 key={course.course.id}
                                 code={course.course.code}
