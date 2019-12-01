@@ -10,15 +10,15 @@ import {getCourseInstanceCategories} from '../api/category';
 import {formatScore, getCategoryGradeEntries, getCourseInstanceGradeEntries, LetterGrade} from '../api/gradeEntry';
 import {
     CourseInstanceStats,
-    getCourseInstanceStats,
     generateRawCourseInstanceStructure,
+    getCourseInstanceStats,
     POINT_BASED_GRADING
 } from '../api/courseInstance';
 import {editGradeEntry, openCreateGradeEntryForm} from '../actions/gradeEntryActions';
 import CategoryScoreChart from '../components/CategoryScoreChart';
-import PercentDonutChart from '../components/PercentDonutChart';
 import {MDBCol, MDBRow} from 'mdbreact';
 import {WeightDonutChart} from '../components/WeightDonutChart';
+import {GradeScoreDonutChart} from '../components/DonutCharts';
 
 interface MatchParams {
     courseId: string;
@@ -87,7 +87,7 @@ const ChartsHeader: FC<ChartsHeaderProps> = props => {
     return (
         <MDBRow>
             <MDBCol lg={'4'}>
-                <PercentDonutChart
+                <GradeScoreDonutChart
                     score={courseScore}
                     name={'Course Total'}
                     letterGrade={courseLetterGrade}

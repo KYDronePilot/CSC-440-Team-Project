@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {HomeBreadcrumb} from '../components/layout/breadcrumbs';
 import {MDBContainer, MDBNav, MDBNavItem, MDBNavLink} from 'mdbreact';
 import {GRADE_TRACKER_ROOT_URL} from '../routes/urls';
-import GpaDonutChart from '../components/GPADonutChart';
+import {GpaDonutChart} from '../components/DonutCharts';
 
 interface MapStateToPropsTypes {
 
@@ -38,7 +38,7 @@ class GradeTrackerDashboard extends Component<GradeTrackerDashboardProps, GradeT
                         </MDBNavItem>
                     </MDBNav>
 
-                    <GpaDonutChart name={'Semester GPA'} height={250} gpa={3.6}/>
+                    <GpaDonutChart name={'Semester GPA'} height={350} gpa={3.6}/>
                 </MDBContainer>
             </div>
         );
