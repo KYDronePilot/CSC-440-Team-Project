@@ -147,6 +147,7 @@ class CourseInstanceView extends Component<CourseInstanceViewProps, {}> {
         }
 
         return <CategoryView
+            key={category.id}
             openCreateGradeEntryForm={this.props.openCreateGradeEntryForm}
             editGradeEntry={(gradeEntryId: number, categoryId: number) => (
                 this.props.editGradeEntry(this.props.gradeEntriesMap[gradeEntryId], categoryId)

@@ -1,3 +1,5 @@
+import {Season} from '../components/SemesterListItem';
+
 type POINT_BASED = 'point_based';
 type WEIGHT_BASED = 'weight_based';
 
@@ -42,7 +44,7 @@ export interface Course extends GenericDjangoRestObject {
 
 export interface Semester extends GenericDjangoRestObject {
     year: number;
-    season: FALL | WINTER | SPRING | SUMMER;
+    season: Season;
     colleges: number[]
 }
 

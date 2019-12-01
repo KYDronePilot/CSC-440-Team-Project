@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import TimeAgo from 'react-timeago';
 import {MDBBtn, MDBCol, MDBListGroupItem, MDBRow} from 'mdbreact';
-import {RouteComponentProps, withRouter} from 'react-router';
 import {Link} from 'react-router-dom';
 import DeleteWarning from './DeleteWarning';
 import {COURSE_URL} from '../routes/urls';
 import {GradeEntry} from '../api/types';
+import {formatScore, LetterGrade} from '../api/gradeEntry';
 
 // function mapStateToProps(state: any) {
 //     return {
@@ -13,14 +13,17 @@ import {GradeEntry} from '../api/types';
 //     };
 // }
 
-interface CourseInstanceListItemProps extends RouteComponentProps {
+interface CourseInstanceListItemProps {
     name: string;
     code: string;
     courseInstanceId: number;
     lastUpdated: string;
     removeCourseInstance: (courseInstanceId: number) => void;
     gradeEntries: GradeEntry[];
-    gpa: number;
+    letterGrade: LetterGrade;
+    score: number;
+    points: number;
+    maxPoints: number;
 }
 
 interface CourseInstanceListItemState {
@@ -62,6 +65,8 @@ class CourseInstanceListItem extends Component<CourseInstanceListItemProps, Cour
     }
 
     render() {
+        const props = this.props;
+
         return (
             <MDBListGroupItem>
                 <DeleteWarning
@@ -73,26 +78,31 @@ class CourseInstanceListItem extends Component<CourseInstanceListItemProps, Cour
                     is irreversible.
                 </DeleteWarning>
                 <MDBRow>
-                    <MDBCol md={'12'} className={'d-flex w-100'}>
+                    <MDBCol md={'8'} className={'d-flex w-100 justify-content-between'}>
                         <h5 className={'mb-1'}>
-                            <Link to={`${COURSE_URL}${this.props.courseInstanceId}`}>{this.props.name}</Link>
+                            <Link to={`${COURSE_URL}${props.courseInstanceId}`}>{props.name}</Link>
                         </h5>
+                    </MDBCol>
+                    <MDBCol md={'4'} className={'text-left text-md-right'}>
+                        <small>
+                            <TimeAgo date={props.lastUpdated}/>
+                        </small>
                     </MDBCol>
                 </MDBRow>
                 <MDBRow>
-                    <MDBCol md={'12'} className={'d-flex w-100 justify-content-between'}>
-                        <p className={'mb-1'}>
-                            GPA: {this.props.gpa}
+                    <MDBCol md={'8'} className={'d-flex w-100 justify-content-between'}>
+                        <p className={'mb-1 font-weight-bold'}>
+                            Grade:&nbsp;{props.letterGrade}&nbsp;({formatScore(props.score)})
+                            | Points:&nbsp;{props.points}&nbsp;/&nbsp;{props.maxPoints}
                         </p>
-                        <MDBBtn onClick={this.toggleDeleteWarningVisible} className={'btn-link'}>
+                    </MDBCol>
+                    <MDBCol md={'4'} className={'text-left text-md-right'}>
+                        <MDBBtn color={''} onClick={this.toggleDeleteWarningVisible} className={'btn-link p-1'}>
                             Delete
                         </MDBBtn>
                     </MDBCol>
                 </MDBRow>
                 <div className={'d-flex w-100 justify-content-between'}>
-                    <small>
-                        <TimeAgo date={this.props.lastUpdated}/>
-                    </small>
                     {/*<MDBBtn onClick={this.toggleDeleteWarningVisible}>Delete</MDBBtn>*/}
                 </div>
                 {/*<div className="d-flex w-100 justify-content-between">*/}
@@ -103,4 +113,4 @@ class CourseInstanceListItem extends Component<CourseInstanceListItemProps, Cour
     }
 }
 
-export default withRouter<CourseInstanceListItemProps, typeof CourseInstanceListItem>(CourseInstanceListItem);
+export default CourseInstanceListItem;

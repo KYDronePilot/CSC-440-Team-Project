@@ -2,6 +2,7 @@ import {
     ADD_SEMESTER_TO_STUDENT,
     APPEND_SEMESTER,
     CATEGORY_FORM_ERROR,
+    DATA_NOT_LOADED,
     FETCH_SEMESTERS,
     REPLACE_CATEGORY
 } from '../actions/types';
@@ -95,16 +96,19 @@ export const addStudentSemesterRelationship = (semester, callback = () => null) 
         });
 };
 
-export const removeStudentSemesterRelationship = (semester, callback = () => null) => (dispatch, getState) => {
+export const removeStudentSemesterRelationship = (semesterId, callback = () => null) => (dispatch, getState) => {
     const config = tokenConfig(getState);
     config.params = {
         student_relationship: ''
     };
 
-    axios.delete(`${SEMESTERS_URL}${semester.id}/`, config)
+    axios.delete(`${SEMESTERS_URL}${semesterId}/`, config)
         .then(res => {
+            dispatch({
+                type: DATA_NOT_LOADED
+            });
             // Trigger entire state reload
-            callback();
+            // callback();
         })
         .catch(err => {
             console.log(`Error occurred when removing student semester relationship:`);

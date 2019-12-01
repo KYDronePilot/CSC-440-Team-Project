@@ -7,7 +7,7 @@ import Login from './views/LoginView';
 import Register from './views/RegisterView';
 import {loadUser} from './actions/auth';
 import Header from './components/layout/Header';
-import SemestersView from './views/SemestersView';
+import SemestersView from './views/GradeTrackerView';
 import SemesterView from './views/SemesterView';
 import CourseInstanceView from './views/CourseInstanceView';
 import GradeTrackerRoute from './routes/GradeTrackerRoute';

@@ -1,4 +1,4 @@
-import {Category, CourseInstance, GradeEntry} from './types';
+import {Category, GradeEntry} from './types';
 import {getCourseInstanceCategories} from './category';
 
 
@@ -200,7 +200,7 @@ export const getLetterGradeColor = (letterGrade: LetterGrade) => {
 export interface GradePointMapType {
 }
 
-export const GRADE_POINT_MAP: {[key in LetterGrade]: number} = {
+export const GRADE_POINT_MAP: { [key in LetterGrade]: number } = {
     [GRADE_A]: 4.0,
     [GRADE_B]: 3.0,
     [GRADE_C]: 2.0,

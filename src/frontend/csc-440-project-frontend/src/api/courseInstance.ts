@@ -1,6 +1,7 @@
 import {Category, CourseInstance, GradeEntry, Semester} from './types';
 import {getCategoryGradeEntries, GRADE_POINT_MAP, LetterGrade, letterGradeScoreRange} from './gradeEntry';
 import {getCourseInstanceCategories} from './category';
+import {NO_GPA} from './semester';
 
 // Grading strategies
 export const POINT_BASED_GRADING = 'point_based';
@@ -74,6 +75,15 @@ export interface SemesterStats {
     gpa: number;
 }
 
+/**
+ * Grade statistics for all grade tracker data.
+ */
+export interface GradeTrackerStats {
+    semesterStats: SemesterStats[];
+    // Overall GPA for all of user's grades
+    gpa: number;
+}
+
 // RAW GRADE ENTRIES
 
 /**
@@ -121,6 +131,33 @@ export interface RawSemester {
 }
 
 /**
+ * Raw grade tracker information of a student needed for scoring.
+ */
+export interface RawGradeTrackerInfo {
+    semesters: RawSemester[];
+}
+
+/**
+ * Get overall grade statistics for a user.
+ * @param info - Raw grade tracker info for user
+ */
+export const getOverallStats = (info: RawGradeTrackerInfo): GradeTrackerStats => {
+    const semesterStats = info.semesters.map(semester => getSemesterStats(semester));
+
+    // Calculate GPA, filter filtering out semesters with no GPA
+    let gpa = semesterStats.filter(semester => semester.gpa !== -1).reduce((total, semester) => (
+        semester.gpa + total
+    ), 0) / semesterStats.length;
+    // Set to -1 if no GPA
+    gpa = gpa === 0 ? NO_GPA : gpa / semesterStats.length;
+
+    return {
+        semesterStats,
+        gpa
+    };
+};
+
+/**
  * Get grade statistics for a semester.
  * @param semester - Semester information
  */
@@ -128,9 +165,11 @@ export const getSemesterStats = (semester: RawSemester): SemesterStats => {
     const courseInstanceStats = semester.courseInstances.map(courseInstance => getCourseInstanceStats(courseInstance));
 
     // Calculate GPA
-    const gpa = courseInstanceStats.reduce((total, courseInstance) => (
+    let gpa = courseInstanceStats.reduce((total, courseInstance) => (
         GRADE_POINT_MAP[courseInstance.letterGrade] + total
-    ), 0) / courseInstanceStats.length;
+    ), 0);
+    // Set to -1 if no GPA
+    gpa = gpa === 0 ? NO_GPA : gpa / courseInstanceStats.length;
 
     return {
         courseInstanceStats,
@@ -296,6 +335,28 @@ export const getGradeEntryStats = (
         points: gradeEntry.points,
         maxPoints: gradeEntry.maxPoints,
         score
+    };
+};
+
+/**
+ * Generate a raw grade tracker info structure for doing grade calculations.
+ * @param semesters - All semesters the student is in
+ * @param courseInstances - All possible course instances to search through
+ * @param categories - All possible categories to search through
+ * @param gradeEntries - All possible grade entries to search through
+ */
+export const generateRawGradeTrackerInfoStructure = (
+    semesters: Semester[],
+    courseInstances: CourseInstance[],
+    categories: Category[],
+    gradeEntries: GradeEntry[]
+): RawGradeTrackerInfo => {
+    const semesterStructures = semesters.map(semester => (
+        generateRawSemesterStructure(semester, courseInstances, categories, gradeEntries)
+    ));
+
+    return {
+        semesters: semesterStructures
     };
 };
 

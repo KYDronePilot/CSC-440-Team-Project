@@ -6,15 +6,17 @@ import CourseInstanceListItem from '../components/CourseInstanceListItem';
 import AddCourseInstanceForm from '../containers/AddCourseInstanceForm';
 import {SemesterBreadcrumb} from '../components/layout/breadcrumbs';
 import {
-    generateRawCourseInstanceStructure,
+    CourseInstanceStats,
     generateRawSemesterStructure,
-    getSemesterCourseInstances, getSemesterStats, SemesterStats
+    getSemesterCourseInstances,
+    getSemesterStats,
+    SemesterStats
 } from '../api/courseInstance';
 import {getCourseInstanceGradeEntries} from '../api/gradeEntry';
 import {Category, Course, CourseInstance, GradeEntry, Semester} from '../api/types';
 import {RouteComponentProps} from 'react-router';
 import {removeStudentCourseInstanceRelationship} from '../actions/courseInstanceActions';
-import {getCourseInstanceCategories} from '../api/category';
+import {zip} from '../utils';
 
 /**
  * Denormalized course instance info.
@@ -97,25 +99,33 @@ class SemesterView extends Component<SemesterViewProps, SemesterViewState> {
     }
 
     render() {
+        const props = this.props;
+        // @ts-ignore
+        const course_instance__stats: [CourseInfo, CourseInstanceStats][] = zip([props.courses, props.semesterStats.courseInstanceStats]);
+
         return (
             <div>
                 <AddCourseInstanceForm
                     visible={this.state.addFormVisible}
                     toggleVisible={this.toggleAddFormVisible}
-                    semesterId={this.props.semesterId}
+                    semesterId={props.semesterId}
                 />
-                <SemesterBreadcrumb semesterId={this.props.semesterId}/>
+                <SemesterBreadcrumb semesterId={props.semesterId}/>
                 <MDBContainer>
                     <MDBListGroup>
-                        {this.props.courses.map((course, i) => (
+                        {course_instance__stats.map(([course, stats]) => (
                             <CourseInstanceListItem
                                 key={course.course.id}
                                 code={course.course.code}
                                 courseInstanceId={course.courseInstance.id}
                                 name={course.course.name}
                                 lastUpdated={course.courseInstance.last_updated}
-                                removeCourseInstance={this.props.removeStudentCourseInstanceRelationship}
+                                removeCourseInstance={props.removeStudentCourseInstanceRelationship}
                                 gradeEntries={course.gradeEntries}
+                                letterGrade={stats.letterGrade}
+                                score={stats.score}
+                                points={stats.points}
+                                maxPoints={stats.maxPoints}
                             />
                         ))}
                     </MDBListGroup>
