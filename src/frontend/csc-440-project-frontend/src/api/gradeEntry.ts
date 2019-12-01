@@ -197,6 +197,19 @@ export const getLetterGradeColor = (letterGrade: LetterGrade) => {
     }
 };
 
+/**
+ * Get color representation for a GPA value.
+ * @param gpa - GPA to get color for
+ * @return Color corresponding to GPA value
+ */
+export const getGpaColor = (gpa: number) => {
+    if (gpa > 3.0)
+        return '#5CB85C';
+    if (gpa > 1.0)
+        return '#F0AD4E';
+    return '#D9534F';
+};
+
 export interface GradePointMapType {
 }
 

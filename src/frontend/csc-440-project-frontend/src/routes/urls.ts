@@ -2,12 +2,15 @@
 
 export const ROOT_URL = '/';
 
-export const SEMESTER_URL = `${ROOT_URL}semester/`;
+export const GRADE_TRACKER_ROOT_URL = `${ROOT_URL}grade-tracker/`;
+export const SEMESTER_URL = `${GRADE_TRACKER_ROOT_URL}semester/`;
 export const SEMESTER_URL_DEF = `${SEMESTER_URL}:semesterId`;
-export const COURSE_URL = `${ROOT_URL}course/`;
+export const COURSE_URL = `${GRADE_TRACKER_ROOT_URL}course/`;
 export const COURSE_URL_DEF = `${COURSE_URL}:courseId`;
+
 export const CONCENTRATION_PROGRESS_URL = `${ROOT_URL}concentration-progress/`;
 export const CONCENTRATION_PROGRESS_URL_DEF = CONCENTRATION_PROGRESS_URL;
+
 export const REGISTER_URL = `${ROOT_URL}register/`;
 export const REGISTER_URL_DEF = REGISTER_URL;
 export const LOGIN_URL = `${ROOT_URL}login/`;
@@ -24,7 +27,7 @@ export const GRADE_TRACKER_URLS = {
 };
 
 export const isGradeTrackingURL: (arg0: string) => boolean = url => {
-    if (url === ROOT_URL)
+    if (url === ROOT_URL || url === GRADE_TRACKER_ROOT_URL)
         return true;
     if (url.match(new RegExp(`${SEMESTER_URL}[0-9]+`)))
         return true;

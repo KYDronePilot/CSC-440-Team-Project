@@ -1,5 +1,6 @@
 import React from 'react';
 import {BreadcrumbItem} from './common';
+import {GRADE_TRACKER_ROOT_URL} from '../../../routes/urls';
 
 interface GradeTrackerItemProps {
     active: boolean
@@ -12,7 +13,7 @@ interface GradeTrackerItemProps {
 export default function GradeTrackerItem({active = false}: GradeTrackerItemProps) {
     return (
         <BreadcrumbItem
-            link={'/'}
+            link={GRADE_TRACKER_ROOT_URL}
             active={active}
             key={'gradeTracker'}
         >

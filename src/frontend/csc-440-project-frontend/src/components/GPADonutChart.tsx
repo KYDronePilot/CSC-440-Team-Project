@@ -1,21 +1,28 @@
 import React, {FC} from 'react';
-import Chart from 'react-apexcharts';
+import {getGpaColor} from '../api/gradeEntry';
 import {ApexOptions} from 'apexcharts';
-import {formatScore, getLetterGradeColor, LetterGrade} from '../api/gradeEntry';
+import {formatGpa} from '../api/semester';
+import Chart from 'react-apexcharts';
 
-interface PercentDonutChartProps {
+interface GpaDonutChartProps {
     name: string;
-    score: number;
-    letterGrade: LetterGrade;
     height: number;
+    gpa: number;
 }
 
-const PercentDonutChart: FC<PercentDonutChartProps> = props => {
+/**
+ * Convert GPA to percentage.
+ * @param gpa - GPA to convert
+ */
+const gpaToPercent = (gpa: number) => {
+    return (gpa / 4.0) * 100;
+};
+
+export const GpaDonutChart: FC<GpaDonutChartProps> = (props) => {
     const {
         name,
-        score,
-        letterGrade,
-        height
+        height,
+        gpa
     } = props;
 
     const options: ApexOptions = {
@@ -42,7 +49,7 @@ const PercentDonutChart: FC<PercentDonutChartProps> = props => {
                         fontSize: '12pt'
                     },
                     value: {
-                        formatter: (val: number) => formatScore(val / 100),
+                        formatter: () => formatGpa(gpa),
                         color: '#111111',
                         fontSize: '20pt',
                         show: true
@@ -65,16 +72,17 @@ const PercentDonutChart: FC<PercentDonutChartProps> = props => {
         tooltip: {
             enabled: true,
             y: {
-                formatter: (value: number) => formatScore(value / 100)
+                formatter: () => formatGpa(gpa)
             }
         },
         labels: [name],
-        colors: [getLetterGradeColor(letterGrade)]
+        colors: [getGpaColor(gpa)]
     };
 
     return (
-        <Chart options={options} series={[score * 100]} type={'radialBar'} height={height}/>
+        <Chart options={options} series={[gpaToPercent(gpa)]} type={'radialBar'} height={height}/>
     );
+
 };
 
-export default PercentDonutChart;
+export default GpaDonutChart;

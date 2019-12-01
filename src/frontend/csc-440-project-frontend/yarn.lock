@@ -1805,10 +1805,9 @@ anymatch@^2.0.0:
     micromatch "^3.1.4"
     normalize-path "^2.1.1"
 
-apexcharts@^3.10.1:
+"apexcharts@https://github.com/apexcharts/apexcharts.js.git":
   version "3.10.1"
-  resolved "https://registry.yarnpkg.com/apexcharts/-/apexcharts-3.10.1.tgz#ac85b08796f0fef656ecc0458cf0362f75f63bad"
-  integrity sha512-gwxCvzQSNIVBhGHr31Ha+bmUsA3qWw6atMflVCIqZXBqcRvG1iMoxNV6GnhG975KpFErca5FFDg3xVHYQJRW/A==
+  resolved "https://github.com/apexcharts/apexcharts.js.git#b39f3f8bc182180486810ba4ac2b965432a288a0"
   dependencies:
     promise-polyfill "8.1.0"
     svg.draggable.js "^2.2.2"
