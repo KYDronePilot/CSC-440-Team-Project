@@ -1,5 +1,6 @@
 import {Category, GradeEntry} from './types';
 import {getCourseInstanceCategories} from './category';
+import {max} from 'moment';
 
 
 // Letter grade constants
@@ -10,6 +11,8 @@ export const GRADE_D = 'D';
 export const GRADE_F = 'F';
 
 export type LetterGrade = typeof GRADE_A | typeof GRADE_B | typeof GRADE_C | typeof GRADE_D | typeof GRADE_F;
+
+export const NO_SCORE = -1;
 
 /**
  * Get grade entries for a category ID.
@@ -219,4 +222,16 @@ export const GRADE_POINT_MAP: { [key in LetterGrade]: number } = {
     [GRADE_C]: 2.0,
     [GRADE_D]: 1.0,
     [GRADE_F]: 0.0
+};
+
+/**
+ * Calculate score from points out of max points.
+ * @param points - Points received
+ * @param maxPoints - Possible points
+ * @return Score or NO_SCORE if no possible points
+ */
+export const getScore = (points: number, maxPoints: number) => {
+    if (maxPoints === 0)
+        return NO_SCORE;
+    return points / maxPoints;
 };

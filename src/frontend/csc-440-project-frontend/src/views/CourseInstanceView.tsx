@@ -15,7 +15,7 @@ import {
     POINT_BASED_GRADING
 } from '../api/courseInstance';
 import {editGradeEntry, openCreateGradeEntryForm} from '../actions/gradeEntryActions';
-import CategoryScoreChart from '../components/CategoryScoreChart';
+import ScoreChart from '../components/ScoreChart';
 import {MDBCol, MDBRow} from 'mdbreact';
 import {WeightDonutChart} from '../components/WeightDonutChart';
 import {GradeScoreDonutChart} from '../components/DonutCharts';
@@ -95,9 +95,9 @@ const ChartsHeader: FC<ChartsHeaderProps> = props => {
                 />
             </MDBCol>
             <MDBCol lg={'4'}>
-                <CategoryScoreChart
+                <ScoreChart
                     height={350}
-                    categories={categories.map(category => ({
+                    chartItems={categories.map(category => ({
                         name: category.name,
                         score: category.score,
                         grade: category.grade
@@ -123,6 +123,7 @@ class CourseInstanceView extends Component<CourseInstanceViewProps, {}> {
 
         // this.openCreateCategoryForm = this.openCreateCategoryForm.bind(this);
         this.categoryView = this.categoryView.bind(this);
+        this.summaryInfo = this.summaryInfo.bind(this);
     }
 
     /**
@@ -132,6 +133,15 @@ class CourseInstanceView extends Component<CourseInstanceViewProps, {}> {
     //     e.preventDefault();
     //     this.props.openCreateCategoryForm(this.props.courseInstance.id);
     // }
+
+    private summaryInfo() {
+        const props = this.props;
+        let info = `Credit Hours: ${props.course.credit_hours} | Section: ${props.courseInstance.section}`;
+        if (props.courseInstanceStats.score === 0)
+            return info;
+        return `${info} | Grade: ${props.courseInstanceStats.letterGrade} `
+               + `(${formatScore(props.courseInstanceStats.score)})`;
+    }
 
     categoryView(category: Category, i: number) {
         let gradeCutoffs;
@@ -170,10 +180,7 @@ class CourseInstanceView extends Component<CourseInstanceViewProps, {}> {
                 />
                 <h1 className={'text-center'}>{this.props.course.code}: {this.props.course.name}</h1>
                 <p className={'text-center'}>
-                    Credit Hours: {this.props.course.credit_hours}
-                    &nbsp;| Section: {this.props.courseInstance.section}
-                    &nbsp;| Grade: {this.props.courseInstanceStats.letterGrade}
-                    &nbsp;({formatScore(this.props.courseInstanceStats.score)})
+                    {this.summaryInfo()}
                 </p>
                 <ChartsHeader
                     courseLetterGrade={this.props.courseInstanceStats.letterGrade}

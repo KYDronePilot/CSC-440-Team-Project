@@ -10,26 +10,6 @@ import {tokenConfig} from './auth';
 import axios from 'axios';
 import {SEMESTERS_URL} from '../api/urls';
 
-const FALL = 'fall';
-const WINTER = 'winter';
-const SPRING = 'spring';
-const SUMMER = 'summer';
-const SEASON_LABELS = {
-    [FALL]: 'Fall',
-    [WINTER]: 'Winter',
-    [SPRING]: 'Spring',
-    [SUMMER]: 'Summer'
-};
-
-/**
- * String representation of semester.
- * @param semester {Object} - Semester to represent
- * @return {string} String representation
- */
-export function semesterToString(semester) {
-    return `${SEASON_LABELS[semester.season]}, ${semester.year}`;
-}
-
 export const fetchSemesters = () => (dispatch, getState) => {
     const config = {
         ...tokenConfig(getState),

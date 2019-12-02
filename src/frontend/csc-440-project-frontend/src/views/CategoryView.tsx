@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {MDBContainer} from 'mdbreact';
+import {MDBBtn, MDBContainer} from 'mdbreact';
 import GradeEntries from '../containers/GradeEntryList';
 import ScoreBar from '../components/ScoreBar';
 import {Category, GradeEntry} from '../api/types';
@@ -35,6 +35,14 @@ class CategoryView extends Component<CategoryViewProps, {}> {
                     {this.props.category.name}
                 </h2>
                 <p>No grade entries for this category</p>
+                <MDBBtn
+                    color={'secondary'}
+                    onClick={() => this.props.openCreateGradeEntryForm(this.props.category.id)}
+                    className={'mr-0 btn heavy-rain-gradient'}
+                    style={{fontSize: '16px', color: 'black'}}
+                >
+                    Add Grade Entry
+                </MDBBtn>
             </>
         );
     }
@@ -48,9 +56,6 @@ class CategoryView extends Component<CategoryViewProps, {}> {
      */
     categoryDetails() {
         const stats = this.props.categoryStats;
-
-        if (stats === null)
-            return this.emptyCategory();
 
         return (
             <>

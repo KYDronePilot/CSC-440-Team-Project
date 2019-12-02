@@ -12,7 +12,6 @@ import {
     getSemesterStats,
     SemesterStats
 } from '../api/courseInstance';
-import {getCourseInstanceGradeEntries} from '../api/gradeEntry';
 import {Category, Course, CourseInstance, GradeEntry, Semester} from '../api/types';
 import {RouteComponentProps} from 'react-router';
 import {removeStudentCourseInstanceRelationship} from '../actions/courseInstanceActions';
@@ -24,7 +23,6 @@ import {zip} from '../utils';
 interface CourseInfo {
     courseInstance: CourseInstance;
     course: Course;
-    gradeEntries: GradeEntry[];
 }
 
 /**
@@ -66,12 +64,7 @@ function mapStateToProps(state: any, ownProps: SemesterViewProps): mapStateToPro
         semesterId,
         courses: courseInstances.map(courseInstance => ({
             courseInstance: courseInstance,
-            course: courses[courseInstance.course],
-            gradeEntries: getCourseInstanceGradeEntries(
-                allInstances(state.gradeEntry.gradeEntries),
-                allInstances(state.category.categories),
-                courseInstance.id
-            )
+            course: courses[courseInstance.course]
         })),
         semesterStats: getSemesterStats(generateRawSemesterStructure(
             semester,
@@ -121,7 +114,6 @@ class SemesterView extends Component<SemesterViewProps, SemesterViewState> {
                                 name={course.course.name}
                                 lastUpdated={course.courseInstance.last_updated}
                                 removeCourseInstance={props.removeStudentCourseInstanceRelationship}
-                                gradeEntries={course.gradeEntries}
                                 letterGrade={stats.letterGrade}
                                 score={stats.score}
                                 points={stats.points}

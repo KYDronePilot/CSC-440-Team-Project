@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import Chart from 'react-apexcharts';
 import {cloneDeep} from 'lodash';
 import {formatScore, getGpaColor, getLetterGradeColor, LetterGrade} from '../api/gradeEntry';
-import {formatGpa} from '../api/semester';
+import {formatGpa, NO_GPA} from '../api/semester';
 
 const chartOptions = {
     plotOptions: {
@@ -127,11 +127,16 @@ export const GpaDonutChart: FC<GpaDonutChartProps> = (props) => {
         height,
         gpa
     } = props;
+    let value;
+    if (gpa === NO_GPA)
+        value = 0;
+    else
+        value = (gpa / 4.0) * 100;
 
     return (
         <DonutChart
             name={name}
-            value={(gpa / 4.0) * 100}
+            value={value}
             color={getGpaColor(gpa)}
             height={height}
             valueFormatter={() => formatGpa(gpa)}

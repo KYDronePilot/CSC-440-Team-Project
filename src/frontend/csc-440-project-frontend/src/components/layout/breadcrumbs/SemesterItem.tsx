@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {BreadcrumbItem} from './common';
-import {semesterToString} from '../../../actions/semesterActions';
 import {Semester} from '../../../api/types';
 import {SEMESTER_URL} from '../../../routes/urls';
+import {semesterToString} from '../../../api/semester';
 
 function mapStateToProps(state: any) {
     return {

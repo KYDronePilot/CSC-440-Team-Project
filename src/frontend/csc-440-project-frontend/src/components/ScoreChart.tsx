@@ -3,15 +3,15 @@ import {formatScore, getLetterGradeColor, LetterGrade} from '../api/gradeEntry';
 import Chart from 'react-apexcharts';
 import {ApexOptions} from 'apexcharts';
 
-export interface CategoryChartItem {
+export interface ChartItem {
     name: string;
     score: number;
     grade: LetterGrade;
 }
 
-interface CategoryScoreChartProps {
+interface ScoreChartProps {
     height: number;
-    categories: CategoryChartItem[];
+    chartItems: ChartItem[];
 }
 
 /**
@@ -25,22 +25,22 @@ const maxScore = (scores: number[]) => {
 };
 
 /**
- * Bar chart for visualizing scores in different categories.
+ * Bar chart for visualizing scores.
  */
-const CategoryScoreChart: FC<CategoryScoreChartProps> = props => {
+const ScoreChart: FC<ScoreChartProps> = props => {
     const {
         height,
-        categories
+        chartItems
     } = props;
 
-    const scores = categories.map(category => category.score * 100);
+    const scores = chartItems.map(item => item.score * 100);
 
     const options: ApexOptions = {
         chart: {
             height: 350,
             type: 'bar'
         },
-        colors: categories.map(category => getLetterGradeColor(category.grade)),
+        colors: chartItems.map(item => getLetterGradeColor(item.grade)),
         plotOptions: {
             bar: {
                 columnWidth: '60%',
@@ -62,7 +62,7 @@ const CategoryScoreChart: FC<CategoryScoreChartProps> = props => {
             labels: {
                 rotate: -45
             },
-            categories: categories.map(category => category.name)
+            categories: chartItems.map(item => item.name)
         },
         yaxis: {
             title: {
@@ -83,4 +83,4 @@ const CategoryScoreChart: FC<CategoryScoreChartProps> = props => {
     return <Chart options={options} series={series} type={'bar'} height={height}/>
 };
 
-export default CategoryScoreChart;
+export default ScoreChart;

@@ -1,5 +1,12 @@
 import {Category, CourseInstance, GradeEntry, Semester} from './types';
-import {getCategoryGradeEntries, GRADE_POINT_MAP, LetterGrade, letterGradeScoreRange} from './gradeEntry';
+import {
+    getCategoryGradeEntries,
+    getScore,
+    GRADE_POINT_MAP,
+    LetterGrade,
+    letterGradeScoreRange,
+    NO_SCORE
+} from './gradeEntry';
 import {getCourseInstanceCategories} from './category';
 import {NO_GPA} from './semester';
 
@@ -145,11 +152,12 @@ export const getOverallStats = (info: RawGradeTrackerInfo): GradeTrackerStats =>
     const semesterStats = info.semesters.map(semester => getSemesterStats(semester));
 
     // Calculate GPA, filter filtering out semesters with no GPA
-    let gpa = semesterStats.filter(semester => semester.gpa !== -1).reduce((total, semester) => (
+    const semesterStatsWithGpa = semesterStats.filter(semester => semester.gpa !== NO_GPA);
+    let gpa = semesterStatsWithGpa.reduce((total, semester) => (
         semester.gpa + total
-    ), 0) / semesterStats.length;
-    // Set to -1 if no GPA
-    gpa = gpa === 0 ? NO_GPA : gpa / semesterStats.length;
+    ), 0);
+    // Set to NO_GPA if no GPA
+    gpa = gpa === 0 ? NO_GPA : gpa / semesterStatsWithGpa.length;
 
     return {
         semesterStats,
@@ -208,12 +216,16 @@ export const getCourseInstanceStats = (courseInstance: RawCourseInstance): Cours
     });
 
     // Calculate grade for entire course instance
-    let points = 0, maxPoints = 0, score = 0;
+    let points = 0, maxPoints = 0, score = 0, totalWeight = 0;
     for (const category of categoryStats) {
         points += category.points;
         maxPoints += category.maxPoints;
-        score += category.score * category.weight;
+        score += category.score === NO_SCORE ? 0 : category.score * category.weight;
+        totalWeight += category.score === NO_SCORE ? 0 : category.weight;
     }
+    // Normalize score on total weight of categories with at least one grade entry
+    if (totalWeight !== 1 && totalWeight !== 0)
+        score = score / totalWeight;
     const gradeAndRange = letterGradeScoreRange(
         score,
         courseInstance.minA,
@@ -228,7 +240,7 @@ export const getCourseInstanceStats = (courseInstance: RawCourseInstance): Cours
         categoryStats,
         ...gradeAndRange,
         groupMaxPoints: courseInstance.maxPoints,
-        groupScore: courseInstance.maxPoints !== undefined ? points / courseInstance.maxPoints : undefined,
+        groupScore: courseInstance.maxPoints !== undefined ? getScore(points, courseInstance.maxPoints) : undefined,
         points,
         maxPoints,
         score,
@@ -262,7 +274,7 @@ const _categoryStats = (
         points += gradeEntry.points;
         maxPoints += gradeEntry.maxPoints;
     }
-    const score = points / maxPoints;
+    const score = getScore(points, maxPoints);
     const gradeAndRange = letterGradeScoreRange(
         score,
         minA,
@@ -304,7 +316,7 @@ export const getCategoryStats = (
     return {
         ...stats,
         groupMaxPoints: category.maxPoints,
-        groupScore: category.maxPoints !== undefined ? stats.points / category.maxPoints : undefined,
+        groupScore: category.maxPoints !== undefined ? getScore(stats.points, category.maxPoints) : undefined,
         weight
     };
 };
@@ -319,7 +331,7 @@ export const getGradeEntryStats = (
     minC: number,
     minD: number
 ): GradeEntryStats => {
-    const score = gradeEntry.points / gradeEntry.maxPoints;
+    const score = getScore(gradeEntry.points, gradeEntry.maxPoints);
     const gradeAndRange = letterGradeScoreRange(
         score,
         minA,
