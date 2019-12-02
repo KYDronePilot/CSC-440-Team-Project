@@ -22,6 +22,7 @@ import {
     SEMESTER_URL_DEF
 } from './routes/urls';
 import GradeTrackerDashboard from './views/GradeTrackerDashboard';
+import Footer from './components/layout/Footer';
 
 class App extends Component {
     componentDidMount() {
@@ -53,6 +54,7 @@ class App extends Component {
                                     <Route exact path={LOGIN_URL_DEF} component={Login}/>
                                 </Switch>
                             </div>
+                            <Footer/>
                         </Fragment>
                     </Router>
                 </div>
