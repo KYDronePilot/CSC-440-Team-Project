@@ -1,6 +1,5 @@
 import {Category, GradeEntry} from './types';
 import {getCourseInstanceCategories} from './category';
-import {max} from 'moment';
 
 
 // Letter grade constants

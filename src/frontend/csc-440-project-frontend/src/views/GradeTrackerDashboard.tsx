@@ -131,6 +131,7 @@ class GradeTrackerDashboard extends Component<GradeTrackerDashboardProps, GradeT
                 <MDBListGroup>
                     {props.currentSemesterInfo.courses.map(({course, courseInstance, stats}) => (
                         <CourseInstanceListItem
+                            key={courseInstance.id}
                             name={course.name}
                             code={course.code}
                             courseInstanceId={courseInstance.id}
@@ -153,7 +154,7 @@ class GradeTrackerDashboard extends Component<GradeTrackerDashboardProps, GradeT
             <div>
                 <HomeBreadcrumb/>
                 <MDBContainer>
-                    <h1 className={'text-center font-weight-bold'}>Dashboard</h1>
+                    <h1 className={'font-weight-bold'}>Dashboard</h1>
                     <MDBNav className={'nav-pills nav-fill'}>
                         <MDBNavItem>
                             <MDBNavLink to={GRADE_TRACKER_ROOT_URL} active>Grade Tracker Home</MDBNavLink>
@@ -161,7 +162,7 @@ class GradeTrackerDashboard extends Component<GradeTrackerDashboardProps, GradeT
                     </MDBNav>
                     <GpaDonutChart name={'Overall GPA'} height={350} gpa={props.overallGpa}/>
 
-                    <h2 className={'text-center font-weight-bold'}>
+                    <h2 className={'font-weight-bold'}>
                         Current Semester: {formatYearSeason(this.props.season, this.props.year)}
                     </h2>
                     <div>
