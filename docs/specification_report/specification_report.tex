@@ -765,46 +765,46 @@ organizations to quickly set it up and use it.
 
 \section{Dictionary}
 \begin{dictionary}{Data Elements}
-    \dictitem{username}{Username of a user}
-    \dictitem{password}{Password of a user}
-    \dictitem{email}{Email of a user}
-    \dictitem{user_id}{The integer ID of a user instance}
     \dictitem{college_id}{The integer ID of a college instance}
-    \dictitem{major_id}{The integer ID of a major instance}
     \dictitem{concentration_id}{The integer ID of a concentration instance}
-    \dictitem{semester_id}{The integer ID of a semester instance}
-    \dictitem{course_instance_id}{The integer ID of a course instance, instance}
     \dictitem{course_id}{The integer ID of a course instance}
-    \dictitem{grade_entry_id}{The integer ID of a grade entry instance}
-    \dictitem{fulfillment_status/fulfillment_result}{Boolean return value, determining whether a
-    requirement is fulfilled}
+    \dictitem{course_instance_id}{The integer ID of a course instance, instance}
     \dictitem{course_requirement_result}{Boolean return value, determining whether the course
     requirements are fulfilled}
-    \dictitem{sub_requirement_result}{Boolean return value, determining whether the
-    sub-requirements are fulfilled}
+    \dictitem{email}{Email of a user}
+    \dictitem{fulfillment_status/fulfillment_result}{Boolean return value, determining whether a
+    requirement is fulfilled}
+    \dictitem{grade_entry_id}{The integer ID of a grade entry instance}
+    \dictitem{major_id}{The integer ID of a major instance}
+    \dictitem{password}{Password of a user}
+    \dictitem{semester_id}{The integer ID of a semester instance}
     \dictitem{sub_requirement_course_count_result}{Boolean return value, determining whether the
     sub-requirement course count requirement is fulfilled}
+    \dictitem{sub_requirement_result}{Boolean return value, determining whether the
+    sub-requirements are fulfilled}
+    \dictitem{user_id}{The integer ID of a user instance}
+    \dictitem{username}{Username of a user}
 \end{dictionary}
 
 \begin{dictionary}{Data Structures}
-    \dictitem{user}{User instance representing authenticated user}
+    \dictitem{auth_token}{Authentication token used by the frontend to authenticate requests}
+    \dictitem{category}{A grading category in a course (e.g. Homework)}
+    \dictitem{college}{A college where majors are offered}
+    \dictitem{concentration}{A concentration of a single major}
+    \dictitem{course}{An immutable definition of a course (what would appear in a course catalog)}
+    \dictitem{course_instance}{An offering of a particular course, related to only one semester}
+    \dictitem{grade_entry}{An individual entry of a graded assignment in a category}
+    \dictitem{logout_confirmation}{Confirmation that a new user has been logged out}
+    \dictitem{major}{A major in a single college containing concentrations}
+    \dictitem{registration_confirmation}{Confirmation that a new user has been registered}
     \dictitem{requirement}{A course requirement, assignable to a concentration or other
     requirements}
     \dictitem{requirement_structure}{Recursive representation of the requirements for a
     concentration, including the student's completion of requirements and courses}
-    \dictitem{semester}{A college semester, represented by a season and year}
-    \dictitem{course}{An immutable definition of a course (what would appear in a course catalog)}
-    \dictitem{course_instance}{An offering of a particular course, related to only one semester}
-    \dictitem{category}{A grading category in a course (e.g. Homework)}
-    \dictitem{grade_entry}{An individual entry of a graded assignment in a category}
-    \dictitem{college}{A college where majors are offered}
-    \dictitem{major}{A major in a single college containing concentrations}
-    \dictitem{concentration}{A concentration of a single major}
-    \dictitem{registration_confirmation}{Confirmation that a new user has been registered}
-    \dictitem{logout_confirmation}{Confirmation that a new user has been logged out}
-    \dictitem{auth_token}{Authentication token used by the frontend to authenticate requests}
     \dictitem{root_requirement}{The root requirement for a concentration, from which all other
     sub-requirements emanate}
+    \dictitem{semester}{A college semester, represented by a season and year}
+    \dictitem{user}{User instance representing authenticated user}
 \end{dictionary}
 
 % \begin{dictionary}{Data Flows}
@@ -812,29 +812,29 @@ organizations to quickly set it up and use it.
 % \end{dictionary}
 
 \begin{dictionary}{Processes}
-    \dictitem{Grade/Progress Tracking System}{Backend API for grade/progress tracking system}
-    \dictitem{Register User}{Registers an account for a new user}
     \dictitem{Authenticate Student}{Authenticates a student's credentials and creates and returns an
     auth\_token to the student}
-    \dictitem{Logout Student}{Logout a student and destroy their auth token}
+    \dictitem{Authenticate Student}{Verify that a student's auth token is valid}
     \dictitem{Calculate Concentration Progress}{Calculate a student's progress in a concentration
     by computing a requirement structure}
-    \dictitem{Manage Semesters}{Create, retrieve, update and delete semesters}
-    \dictitem{Manage Courses}{Create, retrieve, update and delete course instances}
-    \dictitem{Manage Categories}{Create, retrieve, update and delete categories}
-    \dictitem{Manage Grade Entries}{Create, retrieve, update and delete grade entries}
-    \dictitem{Retrieve Requirement}{Retrieves the root requirement, given a college\_id, major\_id,
-    and concentration\_id}
-    \dictitem{Authenticate Student}{Verify that a student's auth token is valid}
-    \dictitem{Generate Requirement Structure}{Recurse through the requirement tree, generating a
-    requirement structure representing the requirements and the student's progress}
-    \dictitem{Check Fulfillment}{Check whether a requirement is fulfilled}
     \dictitem{Check Course Requirements}{Checks whether the course requirement for a requirement
     is fulfilled}
+    \dictitem{Check Fulfillment}{Check whether a requirement is fulfilled}
     \dictitem{Check Sub-Requirements}{Checks whether the sub-requirements requirement for a
     requirement is fulfilled}
     \dictitem{Check Sub-requirement Course Count}{Checks whether the minimum number of courses in
     directly related sub-requirements are fulfilled}
+    \dictitem{Generate Requirement Structure}{Recurse through the requirement tree, generating a
+    requirement structure representing the requirements and the student's progress}
+    \dictitem{Grade/Progress Tracking System}{Backend API for grade/progress tracking system}
+    \dictitem{Logout Student}{Logout a student and destroy their auth token}
+    \dictitem{Manage Categories}{Create, retrieve, update and delete categories}
+    \dictitem{Manage Courses}{Create, retrieve, update and delete course instances}
+    \dictitem{Manage Grade Entries}{Create, retrieve, update and delete grade entries}
+    \dictitem{Manage Semesters}{Create, retrieve, update and delete semesters}
+    \dictitem{Register User}{Registers an account for a new user}
+    \dictitem{Retrieve Requirement}{Retrieves the root requirement, given a college\_id, major\_id,
+    and concentration\_id}
 \end{dictionary}
 
 % \begin{dictionary}{Glossary}
