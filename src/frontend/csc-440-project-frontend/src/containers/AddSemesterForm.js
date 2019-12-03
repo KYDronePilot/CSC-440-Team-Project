@@ -5,9 +5,10 @@ import {MDBBtn, MDBContainer, MDBModal, MDBModalBody, MDBModalFooter, MDBModalHe
 import {tokenConfig} from '../actions/auth';
 import AsyncSelect from 'react-select/async';
 import axios from 'axios';
-import {addStudentSemesterRelationship, semesterToString} from '../actions/semesterActions';
+import {addStudentSemesterRelationship} from '../actions/semesterActions';
 import {objectIsEmpty} from '../utils';
 import {SEMESTERS_URL} from '../api/urls';
+import {semesterToString} from '../api/semester';
 
 function mapStateToProps(state) {
     return {

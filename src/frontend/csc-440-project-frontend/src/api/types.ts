@@ -1,3 +1,5 @@
+import {Season} from '../components/SemesterListItem';
+
 type POINT_BASED = 'point_based';
 type WEIGHT_BASED = 'weight_based';
 
@@ -14,11 +16,11 @@ declare global {
 
 export interface GenericDjangoRestObject {
     id: number;
-    notes: string;
+    notes: string | null;
     last_updated: string;
 }
 
-export interface CourseInstance {
+export interface CourseInstance extends GenericDjangoRestObject {
     grading_strategy: POINT_BASED | WEIGHT_BASED;
     min_a: number;
     min_b: number;
@@ -31,7 +33,7 @@ export interface CourseInstance {
     students: number[];
 }
 
-export interface Course {
+export interface Course extends GenericDjangoRestObject {
     code: string;
     name: string;
     credit_hours: number;
@@ -40,13 +42,13 @@ export interface Course {
     is_gen_ed: boolean;
 }
 
-export interface Semester {
+export interface Semester extends GenericDjangoRestObject {
     year: number;
-    season: FALL | WINTER | SPRING | SUMMER;
+    season: Season;
     colleges: number[]
 }
 
-export interface Category {
+export interface Category extends GenericDjangoRestObject {
     name: string;
     weight?: number;
     max_points?: number;
@@ -54,7 +56,7 @@ export interface Category {
     category_score_requirements: number[];
 }
 
-export interface CategoryScoreRequirement {
+export interface CategoryScoreRequirement extends GenericDjangoRestObject {
     min_a: number;
     min_b: number;
     min_c: number;
@@ -62,7 +64,7 @@ export interface CategoryScoreRequirement {
     course_instance: number;
 }
 
-export interface GradeEntry {
+export interface GradeEntry extends GenericDjangoRestObject {
     name: string;
     points: number;
     max_points: number;

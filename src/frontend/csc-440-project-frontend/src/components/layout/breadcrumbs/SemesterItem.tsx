@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {BreadcrumbItem} from './common';
-import {semesterToString} from '../../../actions/semesterActions';
 import {Semester} from '../../../api/types';
+import {SEMESTER_URL} from '../../../routes/urls';
+import {semesterToString} from '../../../api/semester';
 
 function mapStateToProps(state: any) {
     return {
@@ -34,7 +35,7 @@ class SemesterItem extends Component<SemesterItemProps, {}> {
     render() {
         return (
             <BreadcrumbItem
-                link={`/semester/${this.props.semesterId}/`}
+                link={`${SEMESTER_URL}${this.props.semesterId}/`}
                 active={this.props.active}
                 key={'semester'}
             >

@@ -1,5 +1,6 @@
 import {
     APPEND_GRADE_ENTRY,
+    CLEAR_GRADE_ENTRIES,
     DELETE_GRADE_ENTRY,
     FETCH_GRADE_ENTRIES,
     GRADE_ENTRY_FORM_CLEAR,
@@ -47,7 +48,7 @@ const defaultFormFieldState = {
 const initialState = {
     activeGradeEntries: [],
     editedGradeEntry: {},
-    gradeEntries: {},
+    gradeEntries: {ids: []},
     form: {
         fields: defaultFormFieldState,
         isLoading: false,
@@ -205,6 +206,11 @@ export default (state = initialState, action) => produce(state, draft => {
         case DELETE_GRADE_ENTRY:
             removeInstance(draft.gradeEntries, action.payload);
             break;
+        case CLEAR_GRADE_ENTRIES:
+            return {
+                ...state,
+                gradeEntries: {ids: []}
+            };
         case GRADE_ENTRY_SET_ACTIVE_CATEGORY_ID:
             draft.form.activeCategoryId = action.payload;
             break;

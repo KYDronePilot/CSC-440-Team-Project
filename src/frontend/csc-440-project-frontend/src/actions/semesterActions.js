@@ -2,32 +2,13 @@ import {
     ADD_SEMESTER_TO_STUDENT,
     APPEND_SEMESTER,
     CATEGORY_FORM_ERROR,
+    DATA_NOT_LOADED,
     FETCH_SEMESTERS,
     REPLACE_CATEGORY
 } from '../actions/types';
 import {tokenConfig} from './auth';
 import axios from 'axios';
 import {SEMESTERS_URL} from '../api/urls';
-
-const FALL = 'fall';
-const WINTER = 'winter';
-const SPRING = 'spring';
-const SUMMER = 'summer';
-const SEASON_LABELS = {
-    [FALL]: 'Fall',
-    [WINTER]: 'Winter',
-    [SPRING]: 'Spring',
-    [SUMMER]: 'Summer'
-};
-
-/**
- * String representation of semester.
- * @param semester {Object} - Semester to represent
- * @return {string} String representation
- */
-export function semesterToString(semester) {
-    return `${SEASON_LABELS[semester.season]}, ${semester.year}`;
-}
 
 export const fetchSemesters = () => (dispatch, getState) => {
     const config = {
@@ -91,20 +72,23 @@ export const addStudentSemesterRelationship = (semester, callback = () => null) 
         })
         .catch(err => {
             console.log(`Error occurred when adding student-semester relationship:`);
-            console.log(err.response);
+            console.log(err);
         });
 };
 
-export const removeStudentSemesterRelationship = (semester, callback = () => null) => (dispatch, getState) => {
+export const removeStudentSemesterRelationship = (semesterId, callback = () => null) => (dispatch, getState) => {
     const config = tokenConfig(getState);
     config.params = {
         student_relationship: ''
     };
 
-    axios.delete(`${SEMESTERS_URL}${semester.id}/`, config)
+    axios.delete(`${SEMESTERS_URL}${semesterId}/`, config)
         .then(res => {
+            dispatch({
+                type: DATA_NOT_LOADED
+            });
             // Trigger entire state reload
-            callback();
+            // callback();
         })
         .catch(err => {
             console.log(`Error occurred when removing student semester relationship:`);

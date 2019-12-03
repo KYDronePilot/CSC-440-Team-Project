@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {BreadcrumbItem} from './common';
 import {Course, CourseInstance} from '../../../api/types';
+import {COURSE_URL} from '../../../routes/urls';
 
 function mapStateToProps(state: any) {
     return {
@@ -45,7 +46,7 @@ class CourseInstanceItem extends Component<CourseInstanceItemProps, {}> {
     render() {
         return (
             <BreadcrumbItem
-                link={`/course/${this.props.courseInstanceId}/`}
+                link={`${COURSE_URL}${this.props.courseInstanceId}/`}
                 active={this.props.active}
                 key={'courseInstance'}
             >

@@ -3,6 +3,7 @@ export const NEW_SEMESTER = 'NEW_SEMESTER';
 export const SET_ACTIVE_SEMESTER = 'SET_ACTIVE_SEMESTER';
 export const APPEND_SEMESTER = 'APPEND_SEMESTER';
 export const DELETE_SEMESTER = 'DELETE_SEMESTER';
+export const CLEAR_SEMESTERS = 'CLEAR_SEMESTERS';
 
 
 export const FETCH_GRADE_ENTRIES = 'FETCH_GRADE_ENTRIES';
@@ -10,6 +11,7 @@ export const ADD_GRADE_ENTRY = 'ADD_GRADE_ENTRY';
 export const APPEND_GRADE_ENTRY = 'APPEND_GRADE_ENTRY';
 export const REPLACE_GRADE_ENTRY = 'REPLACE_GRADE_ENTRY';
 export const DELETE_GRADE_ENTRY = 'DELETE_GRADE_ENTRY';
+export const CLEAR_GRADE_ENTRIES = 'CLEAR_GRADE_ENTRIES';
 export const SET_EDITED_GRADE_ENTRY = 'SET_EDITED_GRADE_ENTRY';
 
 // Grade entry form
@@ -33,6 +35,7 @@ export const GRADE_ENTRY_FORM_ENABLE_EDIT_MODE = 'GRADE_ENTRY_FORM_ENABLE_EDIT_M
 
 // Course instance actions
 export const FETCH_COURSE_INSTANCES = 'FETCH_COURSE_INSTANCES';
+export const CLEAR_COURSE_INSTANCES = 'CLEAR_COURSE_INSTANCES';
 export const SET_ACTIVE_COURSE_INSTANCE = 'SET_ACTIVE_COURSE_INSTANCE';
 
 // Special course instance constants
@@ -41,6 +44,7 @@ export const WEIGHT_BASED = 'weight_based';
 
 // Course actions
 export const FETCH_COURSES = 'FETCH_COURSES';
+export const CLEAR_COURSES = 'CLEAR_COURSES';
 
 export const USER_LOADING = 'USER_LOADING';
 export const USER_LOADED = 'USER_LOADED';
@@ -54,6 +58,7 @@ export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAIL = 'REGISTER_FAIL';
 
 export const FETCH_CATEGORIES = 'FETCH_CATEGORIES';
+export const CLEAR_CATEGORIES = 'CLEAR_CATEGORIES';
 
 // Common actions
 export const DATA_LOADED = 'DATA_LOADED';
@@ -80,6 +85,7 @@ export const DELETE_CATEGORY = 'DELETE_CATEGORY';
 
 // Category score requirement actions
 export const FETCH_CSRS = 'FETCH_CSRS';
+export const CLEAR_CSRS = 'CLEAR_CSRS';
 
 // User specific actions
 export const ADD_SEMESTER_TO_STUDENT = 'ADD_SEMESTER_TO_STUDENT';

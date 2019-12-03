@@ -1,5 +1,6 @@
 import React from 'react';
 import {BreadcrumbItem} from './common';
+import {ROOT_URL} from '../../../routes/urls';
 
 interface HomeItemProps {
     active: boolean
@@ -11,7 +12,7 @@ interface HomeItemProps {
  */
 export default function HomeItem({active = false}: HomeItemProps) {
     return (
-        <BreadcrumbItem link={'/'} active={active}>
+        <BreadcrumbItem link={ROOT_URL} active={active}>
             Home
         </BreadcrumbItem>
     );
