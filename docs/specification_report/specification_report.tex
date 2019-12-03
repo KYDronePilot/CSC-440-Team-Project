@@ -744,6 +744,35 @@ colored green and sub-requirement shall be expandable/collapsible.
 }
 \end{algorithm}
 
+\subsection{Authenticate Student}
+\begin{algorithm}[H]
+\newcommand{\request}{request}
+\newcommand{\UserIsValid}{user\_is\_valid}
+
+\SetKwFunction{AuthenticateStudent}{authenticate\_student}
+\Fn{\AuthenticateStudent{\request}}{
+  \KwData{HTTP request instance containing authentication credentials}
+
+  \KwResult{Exception if credentials are invalid, else, auth token}
+  \tcc{Validate the user. Throws exception if invalid}
+  validate\_user($\request.data$)\\
+  \tcc{Create and return token}
+  \Return{\{$token$: create\_token($\request.user$)\}}
+}
+\end{algorithm}
+
+\subsection{Retrieve Requirement}
+\begin{algorithm}[H]
+
+\SetKwFunction{RetrieveRequirement}{retrieve\_requirement}
+\Fn{\RetrieveRequirement{concentration}}{
+  \KwData{Concentration instance that the requirement structure belongs to}
+  \KwResult{Root requirement of concentration}
+  \tcc{Query requirement using the Django ORM}
+  \Return{Requirement.objects.get($concentration\_id=concentration.id$)}
+}
+\end{algorithm}
+
 \section{Conclusion}
 As a result of developing this software system, we hope to have a direct effect on other college
 student's lives, making it significantly easier for them to monitor and keep track of their grades.
