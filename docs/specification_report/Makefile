@@ -1,6 +1,6 @@
 SHELL = /bin/bash
 
-DOCUMENT=requirements_specification_report
+DOCUMENT=specification_report
 DIST=dist
 CI_DIST=${DIST}
 BUILD=build
