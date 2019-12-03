@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {MDBBtn, MDBContainer, MDBListGroup} from 'mdbreact';
+import {MDBContainer, MDBListGroup} from 'mdbreact';
 import {allInstances, indexInstances} from '../utils/objectification_utils';
 import SemesterListItem from '../components/SemesterListItem';
 import AddSemesterForm from '../containers/AddSemesterForm';

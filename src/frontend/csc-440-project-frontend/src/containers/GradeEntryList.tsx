@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {MDBBtn, MDBListGroup} from 'mdbreact';
+import {MDBListGroup} from 'mdbreact';
 import GradeEntryListItem from '../components/GradeEntryListItem';
 import {GradeEntry} from '../api/types';
 import {GradeEntryStats} from '../api/courseInstance';

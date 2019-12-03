@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {MDBBtn, MDBContainer} from 'mdbreact';
+import {MDBContainer} from 'mdbreact';
 import AsyncSelect from 'react-select/async';
 import {CollegeOption, loadColleges} from '../api/college';
 import {College, RequirementStructureNode} from '../api/types';
@@ -164,8 +164,7 @@ class ConcentrationProgressView extends Component<ConcentrationProgressViewProps
                 concentrationOption: null,
                 requirementStructure: null
             });
-        }
-        else if (!Array.isArray(option)) {
+        } else if (!Array.isArray(option)) {
             this.setState({majorOption: option}, () => {
                 this.loadMajorConcentrations()('', options => {
                     this.setState({
@@ -208,12 +207,13 @@ class ConcentrationProgressView extends Component<ConcentrationProgressViewProps
         if (concentrationOption !== null
             && concentrationOption !== undefined
             && !Array.isArray(concentrationOption)
-        )
-        loadRequirementStructure(concentrationOption.value.id)
-            .then(res => {
-                if (res !== undefined)
-                    this.setState({requirementStructure: res})
-            });
+        ) {
+            loadRequirementStructure(concentrationOption.value.id)
+                .then(res => {
+                    if (res !== undefined)
+                        this.setState({requirementStructure: res})
+                });
+        }
     }
 }
 

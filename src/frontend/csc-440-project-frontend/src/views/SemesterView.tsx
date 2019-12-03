@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {allInstances} from '../utils/objectification_utils';
-import {MDBBtn, MDBContainer, MDBListGroup} from 'mdbreact';
+import {MDBContainer, MDBListGroup} from 'mdbreact';
 import CourseInstanceListItem from '../components/CourseInstanceListItem';
 import AddCourseInstanceForm from '../containers/AddCourseInstanceForm';
 import {SemesterBreadcrumb} from '../components/layout/breadcrumbs';
