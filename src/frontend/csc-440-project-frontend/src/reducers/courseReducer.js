@@ -1,8 +1,8 @@
-import {FETCH_COURSES} from '../actions/types';
+import {CLEAR_COURSES, FETCH_COURSES} from '../actions/types';
 import {objectify} from '../utils/objectification_utils';
 
 const initialRootState = {
-    courses: {}
+    courses: {ids: []}
 };
 
 export default function (state = initialRootState, action) {
@@ -11,6 +11,11 @@ export default function (state = initialRootState, action) {
             return {
                 ...state,
                 courses: objectify(action.payload)
+            };
+        case CLEAR_COURSES:
+            return {
+                ...state,
+                courses: {ids: []}
             };
         default:
             return state;

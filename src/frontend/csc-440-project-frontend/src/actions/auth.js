@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {
     AUTH_ERROR,
-    FORCE_DATA_RELOAD,
+    DATA_NOT_LOADED,
     LOGIN_FAIL,
     LOGIN_SUCCESS,
     LOGOUT_SUCCESS,
@@ -11,6 +11,7 @@ import {
     USER_LOADING
 } from './types';
 import {LOGIN_URL, LOGOUT_URL, REGISTER_URL, USER_URL} from '../api/urls';
+import {clearState} from './commonActions';
 
 /**
  * Check token and load user
@@ -50,14 +51,14 @@ export const login = (username, password) => dispatch => {
 
     axios.post(LOGIN_URL, body, config)
         .then(res => {
+            // Force state reload
+            dispatch({
+                type: DATA_NOT_LOADED
+            });
+
             dispatch({
                 type: LOGIN_SUCCESS,
                 payload: res.data
-            });
-
-            // Force state reload
-            dispatch({
-                type: FORCE_DATA_RELOAD
             });
         })
         .catch(err => {
@@ -107,9 +108,12 @@ export const register = ({firstName, lastName, username, email, password}) => di
 export const logout = () => (dispatch, getState) => {
     axios.post(LOGOUT_URL, null, tokenConfig(getState))
         .then(res => {
+            // Clear state
             dispatch({
                 type: LOGOUT_SUCCESS
             });
+
+            clearState()(dispatch);
         })
         .catch(err => {
             console.log('Auth error: CHANGE THIS MESSAGE!!!');

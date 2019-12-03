@@ -1,8 +1,7 @@
-import React, {Component} from 'react';
+import React, {Component, ComponentType} from 'react';
 import {connect} from 'react-redux';
 import {Redirect, Route} from 'react-router';
-import * as PropTypes from 'prop-types';
-import {forceDataReload, forceDataReloadReset, setDataLoaded} from '../actions/commonActions';
+import {clearState, forceDataReload, forceDataReloadReset, setDataLoaded} from '../actions/commonActions';
 import {fetchSemesters} from '../actions/semesterActions';
 import {fetchCourses} from '../actions/courseActions';
 import {fetchCourseInstances} from '../actions/courseInstanceActions';
@@ -11,7 +10,26 @@ import {fetchCategories} from '../actions/categoryActions';
 import {fetchCSRs} from '../actions/csrActions';
 import {LOGIN_URL} from './urls';
 
-function mapStateToProps(state) {
+interface StateProps {
+    auth: any;
+    dataLoaded: boolean;
+    forceDataReloadState: boolean;
+}
+
+interface DispatchProps {
+    clearState: () => void;
+    setDataLoaded: () => void;
+    fetchSemesters: () => void;
+    fetchCourses: () => void;
+    fetchCourseInstances: () => void;
+    fetchGradeEntries: () => void;
+    fetchCategories: () => void;
+    fetchCSRs: () => void;
+    forceDataReload: () => void;
+    forceDataReloadReset: () => void;
+}
+
+function mapStateToProps(state: any) {
     return {
         auth: state.auth,
         dataLoaded: state.common.dataLoaded,
@@ -19,26 +37,20 @@ function mapStateToProps(state) {
     };
 }
 
-class GradeTrackerRoute extends Component {
-    static propTypes = {
-        component: PropTypes.elementType.isRequired,
-        auth: PropTypes.object.isRequired,
-        setDataLoaded: PropTypes.func.isRequired,
-        dataLoaded: PropTypes.bool.isRequired,
-        fetchSemesters: PropTypes.func.isRequired,
-        fetchCourses: PropTypes.func.isRequired,
-        fetchCourseInstances: PropTypes.func.isRequired,
-        fetchGradeEntries: PropTypes.func.isRequired,
-        fetchCategories: PropTypes.func.isRequired,
-        fetchCSRs: PropTypes.func.isRequired,
-        forceDataReloadState: PropTypes.bool.isRequired,
-        forceDataReload: PropTypes.func.isRequired,
-        forceDataReloadReset: PropTypes.func.isRequired
-    };
+interface GradeTrackerRouteProps extends StateProps, DispatchProps {
+    component: ComponentType<{ [key: string]: any }>;
+}
 
-    constructor(props) {
+interface GradeTrackerRoutState {
+
+}
+
+class GradeTrackerRoute extends Component<GradeTrackerRouteProps, GradeTrackerRoutState> {
+    constructor(props: GradeTrackerRouteProps) {
         super(props);
+
         this.loadData = this.loadData.bind(this);
+        this.ensureDataLoaded = this.ensureDataLoaded.bind(this);
     }
 
     async loadData() {
@@ -54,7 +66,7 @@ class GradeTrackerRoute extends Component {
         ]);
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    ensureDataLoaded() {
         if (!this.props.dataLoaded) {
             this.loadData()
                 .then(() => {
@@ -63,6 +75,14 @@ class GradeTrackerRoute extends Component {
                 })
                 .catch(err => console.log(`Error while loading data: ${err}`));
         }
+    }
+
+    componentDidUpdate(prevProps: GradeTrackerRouteProps, prevState: GradeTrackerRoutState) {
+        this.ensureDataLoaded();
+    }
+
+    componentDidMount() {
+        this.ensureDataLoaded();
     }
 
     render() {
@@ -89,6 +109,7 @@ class GradeTrackerRoute extends Component {
 export default connect(
     mapStateToProps,
     {
+        clearState,
         setDataLoaded,
         fetchSemesters,
         fetchCourses,

@@ -72,7 +72,7 @@ export const addStudentSemesterRelationship = (semester, callback = () => null) 
         })
         .catch(err => {
             console.log(`Error occurred when adding student-semester relationship:`);
-            console.log(err.response);
+            console.log(err);
         });
 };
 

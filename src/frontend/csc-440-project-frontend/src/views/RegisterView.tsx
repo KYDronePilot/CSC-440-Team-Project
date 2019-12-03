@@ -116,6 +116,7 @@ class RegisterView extends Component<RegisterViewProps, RegisterViewState> {
                                 name={'firstName'}
                                 onChange={this.onChange}
                                 value={state.firstName}
+                                autoComplete={'given-name'}
                             />
                         </div>
                         <div className={'form-group'}>
@@ -126,6 +127,7 @@ class RegisterView extends Component<RegisterViewProps, RegisterViewState> {
                                 name={'lastName'}
                                 onChange={this.onChange}
                                 value={state.lastName}
+                                autoComplete={'family-name'}
                             />
                         </div>
                         <div className={'form-group'}>
@@ -136,6 +138,7 @@ class RegisterView extends Component<RegisterViewProps, RegisterViewState> {
                                 name={'username'}
                                 onChange={this.onChange}
                                 value={state.username}
+                                autoComplete={'username'}
                             />
                         </div>
                         <div className={'form-group'}>
@@ -146,6 +149,7 @@ class RegisterView extends Component<RegisterViewProps, RegisterViewState> {
                                 name={'email'}
                                 onChange={this.onChange}
                                 value={state.email}
+                                autoComplete={'email'}
                             />
                         </div>
                         <div className={'form-group'}>
@@ -156,6 +160,7 @@ class RegisterView extends Component<RegisterViewProps, RegisterViewState> {
                                 name={'password'}
                                 onChange={this.onChange}
                                 value={state.password}
+                                autoComplete={'new-password'}
                             />
                         </div>
                         <div className={'form-group'}>
@@ -166,6 +171,7 @@ class RegisterView extends Component<RegisterViewProps, RegisterViewState> {
                                 name={'passwordConfirmation'}
                                 onChange={this.onChange}
                                 value={state.passwordConfirmation}
+                                autoComplete={'new-password'}
                             />
                         </div>
                         <div className={'form-group'}>

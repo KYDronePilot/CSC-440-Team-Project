@@ -76,6 +76,7 @@ class LoginView extends Component<LoginViewProps, LoginViewState> {
                                 name={'username'}
                                 onChange={this.onChange}
                                 value={username}
+                                autoComplete={'username'}
                             />
                         </div>
                         <div className={'form-group'}>
@@ -86,6 +87,7 @@ class LoginView extends Component<LoginViewProps, LoginViewState> {
                                 name={'password'}
                                 onChange={this.onChange}
                                 value={password}
+                                autoComplete={'current-password'}
                             />
                         </div>
                         <div className={'form-group text-center'}>

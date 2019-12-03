@@ -12,6 +12,7 @@ import {
     CATEGORY_FORM_SUBMITTED,
     CATEGORY_FORM_UPDATE_FIELD,
     CATEGORY_FORM_UPDATE_STATE,
+    CLEAR_CATEGORIES,
     DELETE_CATEGORY,
     FETCH_CATEGORIES,
     REPLACE_CATEGORY
@@ -57,7 +58,7 @@ const initialFormState = {
 };
 
 const initialState = {
-    categories: {},
+    categories: {ids: []},
     form: initialFormState
 };
 
@@ -141,6 +142,9 @@ export default (state = initialState, action) => produce(state, draft => {
             break;
         case DELETE_CATEGORY:
             removeInstance(draft.categories, action.payload);
+            break;
+        case CLEAR_CATEGORIES:
+            draft.categories = {ids: []};
             break;
         default:
             formReducer(action, draft.form);

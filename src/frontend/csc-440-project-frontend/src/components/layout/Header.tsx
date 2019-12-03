@@ -27,9 +27,15 @@ const NavBarText: FC<NavBarTextProps> = ({children, className}) => {
     return <span className={`navbar-text ${className}`}>{children}</span>;
 };
 
-interface HeaderProps extends RouteComponentProps {
-    logout: (event: any) => void;
+interface StateProps {
     auth: any;
+}
+
+interface DispatchProps {
+    logout: () => void;
+}
+
+interface HeaderProps extends RouteComponentProps, DispatchProps, StateProps {
 }
 
 interface HeaderState {
@@ -113,4 +119,4 @@ export class Header extends Component<HeaderProps, HeaderState> {
 export default connect(
     mapStateToProps,
     {logout}
-)(withRouter<any, any>(Header));
+)(withRouter<HeaderProps, typeof Header>(Header));
