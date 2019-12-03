@@ -178,7 +178,7 @@ class CourseInstanceView extends Component<CourseInstanceViewProps, {}> {
                     semesterId={this.props.courseInstance.semester}
                     courseInstanceId={this.props.courseInstance.id}
                 />
-                <h1 className={'text-center'}>{this.props.course.code}: {this.props.course.name}</h1>
+                <h1 className={'text-center font-weight-bold'}>{this.props.course.code}: {this.props.course.name}</h1>
                 <p className={'text-center'}>
                     {this.summaryInfo()}
                 </p>

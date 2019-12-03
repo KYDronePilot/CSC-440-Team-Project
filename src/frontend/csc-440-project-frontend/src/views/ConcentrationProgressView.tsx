@@ -9,6 +9,7 @@ import {loadMajors, MajorOption, MajorOptions} from '../api/major';
 import {ConcentrationOption, ConcentrationOptions, loadConcentrations} from '../api/concentration';
 import RequirementTree from '../components/RequirementTree';
 import {loadRequirementStructure} from '../api/requirement';
+import {GradeTrackerButton} from '../components/Common';
 
 function mapStateToProps(state: any) {
     return {};
@@ -55,6 +56,7 @@ class ConcentrationProgressView extends Component<ConcentrationProgressViewProps
     public render() {
         return (
             <MDBContainer>
+                <h1 className={'font-weight-bold my-4'}>Concentration Progress Tracker</h1>
                 <AsyncSelect
                     cacheOptions
                     isClearable
@@ -62,28 +64,39 @@ class ConcentrationProgressView extends Component<ConcentrationProgressViewProps
                     placeholder={'Select College...'}
                     loadOptions={loadColleges}
                     onChange={this.onCollegeSelectChange}
+                    className={'my-2'}
                 />
-                <AsyncSelect
-                    isClearable
-                    placeholder={'Select Major...'}
-                    value={this.state.majorOption}
-                    defaultOptions={this.state.defaultMajorOptions}
-                    isDisabled={this.state.college === null}
-                    loadOptions={this.loadCollegeMajors()}
-                    onChange={this.onMajorSelectChange}
-                />
-                <AsyncSelect
-                    isClearable
-                    placeholder={'Select Concentration...'}
-                    value={this.state.concentrationOption}
-                    defaultOptions={this.state.defaultConcentrationOptions}
-                    isDisabled={this.state.majorOption === null}
-                    loadOptions={this.loadMajorConcentrations()}
-                    onChange={this.onConcentrationSelectChange}
-                />
-                <MDBBtn disabled={!this.areOptionsSet()} onClick={this.loadRequirementStructure}>
-                    Load Progress
-                </MDBBtn>
+                <div className={'pl-4'}>
+                    <hr/>
+                    <AsyncSelect
+                        isClearable
+                        placeholder={'Select Major...'}
+                        value={this.state.majorOption}
+                        defaultOptions={this.state.defaultMajorOptions}
+                        isDisabled={this.state.college === null}
+                        loadOptions={this.loadCollegeMajors()}
+                        onChange={this.onMajorSelectChange}
+                        className={'my-2'}
+                    />
+                    <div className={'pl-4'}>
+                        <hr/>
+                        <AsyncSelect
+                            isClearable
+                            placeholder={'Select Concentration...'}
+                            value={this.state.concentrationOption}
+                            defaultOptions={this.state.defaultConcentrationOptions}
+                            isDisabled={this.state.majorOption === null}
+                            loadOptions={this.loadMajorConcentrations()}
+                            onChange={this.onConcentrationSelectChange}
+                            className={'my-2'}
+                        />
+                    </div>
+                </div>
+                <div className={'text-right'}>
+                    <GradeTrackerButton onClick={this.loadRequirementStructure} className={'mr-0'}>
+                        Load Progress
+                    </GradeTrackerButton>
+                </div>
                 {this.state.requirementStructure !== null &&
                 <RequirementTree rootRequirement={this.state.requirementStructure}/>
                 }
