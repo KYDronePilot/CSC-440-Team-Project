@@ -6,6 +6,7 @@ from rest_framework.response import Response
 
 from grades.models import Course, CourseInstance, GradeEntry, Category, CategoryScoreRequirement, Semester, \
     Requirement, College, Major, Concentration
+from grades.models.requirement import get_requirements_structure
 from grades.serializers import CourseSerializer, CourseInstanceSerializer, GradeEntrySerializer, CategorySerializer, \
     CollegeSerializer, CategoryScoreRequirementSerializer, SemesterSerializer, CourseInstanceSearchSerializer, \
     RequirementStructureSerializer, MajorSerializer, ConcentrationSerializer
@@ -203,7 +204,7 @@ class RequirementStructureViewSet(viewsets.ReadOnlyModelViewSet):
         #     return Response(status=status.HTTP_404_NOT_FOUND)
         queryset = Requirement.objects.get(concentration_id=self.kwargs['pk'])
         # queryset = Requirement.objects.get(concentration_id=self.request.query_params['concentration'])
-        data = queryset.get_requirements_structure(self.request.user)
+        data = get_requirements_structure(queryset, self.request.user)
         serializer = RequirementStructureSerializer(data)
         return Response(serializer.data)
 

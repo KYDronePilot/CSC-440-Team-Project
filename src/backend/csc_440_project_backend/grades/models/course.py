@@ -28,20 +28,22 @@ class Course(Common):
         default=False
     )
 
-    def is_completed(self, student):
-        """
-        Check if the course was completed by a student.
-
-        Notes:
-            TODO: This method should not be used. It is highly inefficient for course completion checking
-
-        Args:
-            student: Student to check
-
-        Returns:
-            Whether the student completed the course
-        """
-        return self.course_instances.filter(students=student).exists()
-
     def __str__(self):
         return f'{self.code}{", deprecated" if self.is_deprecated else ""}'
+
+
+def is_completed(course: Course, student):
+    """
+    Check if a course was completed by a student.
+
+    Notes:
+        TODO: This method should not be used. It is highly inefficient for course completion checking
+
+    Args:
+        course: Course instance
+        student: Student to check
+
+    Returns:
+        Whether the student completed the course
+    """
+    return course.course_instances.filter(students=student).exists()

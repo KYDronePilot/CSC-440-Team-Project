@@ -3,6 +3,7 @@ from typing import Union, Dict
 from django.db import models
 from django.db.models import QuerySet
 
+from grades.models.course import is_completed
 from .common import Common
 
 
@@ -69,160 +70,193 @@ class Requirement(Common):
         default=True
     )
 
-    def is_sub_requirement(self) -> bool:
-        """
-        Check whether requirement is a sub-requirement.
-
-        Returns:
-            Whether the requirement is a sub-requirement
-        """
-        return self.super_requirement is not None
-
-    @property
-    def course_instances(self) -> QuerySet:
-        """
-        All course instances of directly related courses.
-        """
-        from grades.models import CourseInstance
-        return CourseInstance.objects.filter(course__requirements=self)
-
-    def get_completed_courses(self, student) -> QuerySet:
-        """
-        Get courses that the student has completed.
-
-        Args:
-            student: Student who completed the courses
-
-        Returns:
-            Courses completed by the student
-        """
-        from grades.models import Course
-
-        course_instances = self.course_instances.filter(students=student)
-        return Course.objects.filter(course_instances__in=course_instances)
-
-    def get_completed_sub_requirement_courses(self, student) -> QuerySet:
-        """
-        Get courses that are completed in directly related sub-requirements.
-
-        Args:
-            student: Student being checked
-
-        Returns:
-            Courses completed in directly related sub-requirements
-        """
-        from grades.models import Course
-
-        all_courses = Course.objects.filter(requirements__in=self.sub_requirements.all())
-        return all_courses.filter(course_instances__students=student)
-
-    def are_course_requirements_fulfilled(self, student) -> bool:
-        """
-        Check if directly related course requirements are fulfilled.
-        Returns True if no course count requirements.
-
-        Args:
-            student: Student being checked
-
-        Returns:
-            Whether the course requirements were fulfilled
-        """
-        if self.course_count is None:
-            return True
-
-        return self.get_completed_courses(student).count() >= self.course_count
-
-    def are_sub_requirements_fulfilled(self, student) -> bool:
-        """
-        Check if sub-requirements are fulfilled.
-
-        Args:
-            student: Student being checked
-
-        Returns:
-            Whether sub-requirements are fulfilled
-        """
-        if self.sub_requirement_count is None:
-            return True
-
-        completed_count = 0
-        for requirement in self.sub_requirements.all():
-            if requirement.is_fulfilled(student):
-                completed_count += 1
-
-        return completed_count >= self.sub_requirement_count
-
-    def is_sub_requirement_course_count_fulfilled(self, student) -> bool:
-        """
-        Check if the sub-requirement course count requirement is fulfilled.
-
-        Args:
-            student: Student being checked
-
-        Returns:
-            Whether the sub-requirement course count requirement is fulfilled
-        """
-        if self.sub_requirement_course_count is None:
-            return True
-
-        return self.get_completed_sub_requirement_courses(student).count() >= self.sub_requirement_course_count
-
-    def is_fulfilled(self, student) -> bool:
-        """
-        Check if the requirement is fulfilled recursively.
-
-        Returns:
-            Whether the requirement is fulfilled or not
-        """
-        return (
-                self.are_course_requirements_fulfilled(student)
-                and self.are_sub_requirements_fulfilled(student)
-                and self.is_sub_requirement_course_count_fulfilled(student)
-        )
-
-    def get_requirements_structure(self, student) -> Dict[str, Union[bool, list]]:
-        """
-        Get the structure of requirements recursively. Uses dicts and
-        lists to produce a JSON representation. The structure is as
-        follows:
-
-            struct = {
-                'fulfilled': True,
-                'courses': [
-                    {
-                        'fulfilled': True,
-                        'course': CourseInstance
-                    }
-                ],
-                'sub_requirements': [
-                    {
-                        'fulfilled': True,
-                        ...
-                    }
-                ]
-            }
-
-        Returns:
-            Requirement structure
-        """
-        return {
-            'name': self.name,
-            'fulfilled': self.is_fulfilled(student),
-            'courses': [
-                {
-                    'name': course.name,
-                    'code': course.code,
-                    'credit_hours': course.credit_hours,
-                    'fulfilled': course.is_completed(student)
-                } for course in self.courses.order_by('code').all()
-            ],
-            'sub_requirements': [
-                requirement.get_requirements_structure(student)
-                for requirement in self.sub_requirements.order_by('name').all()
-            ]
-        }
-
     def __str__(self) -> str:
         if self.super_requirement is not None:
             return f'{self.name} - Parent: {self.super_requirement.name}'
         return self.name
+
+
+def is_requirement_sub_requirement(requirement: Requirement) -> bool:
+    """
+    Check whether a requirement is a sub-requirement.
+
+    Args:
+        requirement: Requirement instance
+
+    Returns:
+        Whether the requirement is a sub-requirement
+    """
+    return requirement.super_requirement is not None
+
+
+def get_course_instances(requirement: Requirement) -> QuerySet:
+    """
+    Get all course instances of courses directly related to a requirement.
+
+    Args:
+        requirement: Requirement instance
+
+    Returns:
+        Course instances of courses directly related to the requirement
+    """
+    from grades.models import CourseInstance
+    return CourseInstance.objects.filter(course__requirements=requirement)
+
+
+def get_completed_courses(requirement: Requirement, student) -> QuerySet:
+    """
+    Get courses of a requirement that the student has completed.
+
+    Args:
+        requirement: Requirement instance
+        student: Student who completed the courses
+
+    Returns:
+        Courses of the requirement completed by the student
+    """
+    from grades.models import Course
+
+    course_instances = get_course_instances(requirement).filter(students=student)
+    return Course.objects.filter(course_instances__in=course_instances)
+
+
+def get_completed_sub_requirement_courses(requirement: Requirement, student) -> QuerySet:
+    """
+    Get courses that are completed in sub-requirements directly related to a requirement.
+
+    Args:
+        requirement: Requirement instance
+        student: Student being checked
+
+    Returns:
+        Courses completed in sub-requirements directly related to the requirement
+    """
+    from grades.models import Course
+
+    all_courses = Course.objects.filter(requirements__in=requirement.sub_requirements.all())
+    return all_courses.filter(course_instances__students=student)
+
+
+def are_course_requirements_fulfilled(requirement: Requirement, student) -> bool:
+    """
+    Check if course requirements directly related to a requirement are fulfilled.
+    Returns True if no course count requirements.
+
+    Args:
+        requirement: Requirement instance
+        student: Student being checked
+
+    Returns:
+        Whether the course requirements were fulfilled
+    """
+    if requirement.course_count is None:
+        return True
+
+    return get_completed_courses(requirement, student).count() >= requirement.course_count
+
+
+def are_sub_requirements_fulfilled(requirement: Requirement, student) -> bool:
+    """
+    Check if sub-requirements of a requirement are fulfilled.
+
+    Args:
+        requirement: Requirement instance
+        student: Student being checked
+
+    Returns:
+        Whether sub-requirements of a requirement are fulfilled
+    """
+    if requirement.sub_requirement_count is None:
+        return True
+
+    completed_count = 0
+    for sub_requirement in requirement.sub_requirements.all():
+        if is_requirement_fulfilled(sub_requirement, student):
+            completed_count += 1
+
+    return completed_count >= requirement.sub_requirement_count
+
+
+def is_sub_requirement_course_count_fulfilled(requirement: Requirement, student) -> bool:
+    """
+    Check if the sub-requirement course count requirement of a requirement is fulfilled.
+
+    Args:
+        requirement: Requirement instance
+        student: Student being checked
+
+    Returns:
+        Whether the sub-requirement course count requirement of a requirement is fulfilled
+    """
+    if requirement.sub_requirement_course_count is None:
+        return True
+
+    return (
+            get_completed_sub_requirement_courses(requirement, student).count()
+            >= requirement.sub_requirement_course_count
+    )
+
+
+def is_requirement_fulfilled(requirement: Requirement, student) -> bool:
+    """
+    Check if a requirement is fulfilled recursively.
+
+    Args:
+        requirement: Requirement instance
+        student: Student being checked
+
+    Returns:
+        Whether the requirement is fulfilled or not
+    """
+    return (
+            are_course_requirements_fulfilled(requirement, student)
+            and are_sub_requirements_fulfilled(requirement, student)
+            and is_sub_requirement_course_count_fulfilled(requirement, student)
+    )
+
+
+def get_requirements_structure(requirement: Requirement, student) -> Dict[str, Union[bool, list]]:
+    """
+    Get the structure of requirements and statuses recursively.
+    Uses dicts and lists to produce a JSON representation. The
+    structure is as follows:
+
+        struct = {
+            'name': 'Some Requirement',
+            'fulfilled': True,
+            'courses': [
+                {
+                    'name': 'Applied Software Engineering',
+                    'code': 'CSC 440',
+                    'credit_hours': 3,
+                    'fulfilled': True
+                }
+            ],
+            'sub_requirements': [
+                {
+                    'name': 'Some Sub-Requirement',
+                    'fulfilled': True,
+                    ...
+                }
+            ]
+        }
+
+    Returns:
+        Requirement structure
+    """
+    return {
+        'name': requirement.name,
+        'fulfilled': is_requirement_fulfilled(requirement, student),
+        'courses': [
+            {
+                'name': course.name,
+                'code': course.code,
+                'credit_hours': course.credit_hours,
+                'fulfilled': is_completed(course, student)
+            } for course in requirement.courses.order_by('code').all()
+        ],
+        'sub_requirements': [
+            get_requirements_structure(requirement, student)
+            for requirement in requirement.sub_requirements.order_by('name').all()
+        ]
+    }
