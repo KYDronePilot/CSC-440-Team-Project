@@ -67,7 +67,7 @@
 }
 
 % Set path to all graphics
-\graphicspath{{figures/}{build/diagrams/}}
+\graphicspath{{figures/}{build/diagrams/}{build/screenshots/}}
 
 % Do paragraph indenting after section tags
 \usepackage{indentfirst}
@@ -185,11 +185,29 @@ on courses the student has entered through the grade tracking component.
 \section{System Requirements}
 \subsection{Functional Requirements}
 
+% Screenshot figures
+\newcommand{\screenshot}[2]{
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{#1.png}
+    \caption{#2}
+  \end{figure}
+}
+
+% Item and screenshot in one
+\newcommand{\screenshotstep}[3]{
+  \clearpage
+  \item #1
+    \screenshot{#2}{#3}
+}
+
 % Some common text/sequences that are used a lot...
 \newcommand{\sysshall}{The system shall }
 \newcommand{\stushall}{The student shall }
 \newcommand{\usershall}{The user shall }
-\newcommand{\loginpage}{\sysshall display the login page.}
+\newcommand
+  {\loginpage}
+  {\screenshotstep{\sysshall display the login page.}{login_page}{Login page}}
 \newcommand{\mainmenu}{\sysshall display the main menu.}
 \newcommand{\clickmainmenu}{\stushall click the \textbf{Main Menu} button}
 \newcommand{\redirecthome}{\sysshall redirect the student to the homepage.}
@@ -199,34 +217,45 @@ on courses the student has entered through the grade tracking component.
 }
 
 \begin{requirement}{\sysshall allow a user to register for an account}
-    \item \loginpage
-    \item \usershall click the \textbf{Register} button.
-    \item \sysshall display the \emph{Registration} page.
-    \item \usershall enter the requested information.
-    \item \usershall click the \textbf{Register} button.
-    \item \sysshall validate the information entered by the user.
-    \begin{enumerate}
-        \item If the entered information is invalid, the system shall display warnings next to the
-        relevant fields.
-    \end{enumerate}
-    \item \redirecthome
+    \loginpage
+    \screenshotstep
+      {\usershall click the \textbf{Register} button.}
+      {click_register}{User clicks \emph{Register} button}
+    \screenshotstep
+      {\sysshall display the \emph{Registration} page.}
+      {registration_page}{Registration page}
+    \screenshotstep
+      {\usershall enter the requested information.}
+      {registration_page_filled_out}{Registration page filled out}
+    \screenshotstep
+      {\usershall click the \textbf{Register} button.}
+      {registration_page_click_register}{User clicks \emph{Register} button}
+    \screenshotstep
+      {\redirecthome}
+      {new_user_homepage}{New user homepage}
 \end{requirement}
 
 \begin{requirement}{\sysshall allow a student to login to his/her account}
-    \item \loginpage
-    \item \stushall enter his/her login credentials.
-    \item \sysshall validate the credentials.
-    \begin{enumerate}
-        \item If the credentials are not valid, the system shall display warnings next to the
-        fields with errors.
-    \end{enumerate}
-    \item \redirecthome
+    \loginpage
+    \screenshotstep
+      {\stushall enter his/her login credentials.}
+      {login_page_filled_out}{Login page filled out}
+    \screenshotstep
+      {\stushall click the \textbf{Login} button.}
+      {login_page_click_login}{User clicks \emph{Login} button}
+    \screenshotstep
+      {\redirecthome}
+      {existing_user_homepage}{Existing user homepage}
 \end{requirement}
 
 \begin{requirement}{\sysshall allow a student to logout of his/her account}
-    \item \mainmenu
-    \item \stushall click the \textbf{Logout} button.
-    \item \loginpage
+    \screenshotstep
+      {\mainmenu}
+      {existing_user_homepage}{Existing user homepage}
+    \screenshotstep
+      {\stushall click the \textbf{Logout} button.}
+      {main_menu_click_logout}{User clicks \emph{Logout} button}
+    \loginpage
 \end{requirement}
 
 \begin{requirement}{\sysshall allow a student to view progress in a concentration}

@@ -6,6 +6,8 @@ CI_DIST=${DIST}
 BUILD=build
 DIAGRAM_BUILD=${BUILD}/diagrams
 TEXLIVE_PATH=/tmp/texlive/bin/x86_64-linux
+SELENIUM_SCREENSHOTS_DIR=../../e2e/screenshots
+SCREENSHOTS_BUILD=${BUILD}/screenshots
 
 # Database diagram info
 DATABASE_DESIGN_DIR=$(dir ${CURDIR})database_design
@@ -104,7 +106,7 @@ STATE_DIAGRAM_DIR=$(dir ${CURDIR})state_diagram
 STATE_DIAGRAM_DIST=${STATE_DIAGRAM_DIR}/dist
 
 prepare:
-	mkdir -p ${DIST} ${BUILD} ${DIAGRAM_BUILD}
+	mkdir -p ${DIST} ${BUILD} ${DIAGRAM_BUILD} ${SCREENSHOTS_BUILD}
 
 build-use-case-diagram:
 	$(MAKE) -C ${USE_CASE_DIAGRAM_DIR} clean build
@@ -205,14 +207,20 @@ build-state-diagram:
 build-diagrams: prepare build-state-diagram build-add-edit-remove-grade-entries-activity-diagram build-view-course-details-activity-diagram build-add-remove-courses-activity-diagram build-view-courses-activity-diagram build-add-remove-semesters-activity-diagram build-view-semesters-activity-diagram build-concentration-progress-activity-diagram build-logout-activity-diagram build-login-activity-diagram build-register-activity-diagram build-add-edit-remove-grade-entries-sequence-diagram build-view-course-details-sequence-diagram build-add-remove-courses-sequence-diagram build-view-courses-sequence-diagram build-add-remove-semesters-sequence-diagram build-view-semesters-sequence-diagram build-concentration-progress-sequence-diagram build-logout-sequence-diagram build-use-case-diagram build-class-diagram build-login-sequence-diagram \
 	build-register-sequence-diagram build-database-diagram
 
+clean-selenium-screenshots:
+	rm -f ${SCREENSHOTS_BUILD}/*
+
+copy-selenium-screenshots: clean-selenium-screenshots
+	cp ${SELENIUM_SCREENSHOTS_DIR}/* ${SCREENSHOTS_BUILD}
+
 build-docx: prepare
 	pandoc -s ${DOCUMENT}.tex -o ${DIST}/${DOCUMENT}.docx --toc --reference-doc reference.docx
 
-build-latex: prepare
+build-latex: prepare copy-selenium-screenshots
 	for i in {1..2}; do pdflatex -output-directory=${BUILD} ${DOCUMENT}.tex; done
 	cp ${BUILD}/${DOCUMENT}.pdf ${DIST}
 
-build-latex-ci: prepare
+build-latex-ci: prepare copy-selenium-screenshots
 	for i in {1..2}; do ${TEXLIVE_PATH}/pdflatex -output-directory=${BUILD} ${DOCUMENT}.tex; done
 	cp ${BUILD}/${DOCUMENT}.pdf ${DIST}
 
