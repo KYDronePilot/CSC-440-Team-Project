@@ -208,12 +208,23 @@ on courses the student has entered through the grade tracking component.
 \newcommand
   {\loginpage}
   {\screenshotstep{\sysshall display the login page.}{login_page}{Login page}}
-\newcommand{\mainmenu}{\sysshall display the main menu.}
-\newcommand{\clickmainmenu}{\stushall click the \textbf{Main Menu} button}
+\newcommand{\mainmenu}{
+  \screenshotstep
+    {\sysshall display the main menu.}
+    {existing_user_homepage}{Existing user homepage}
+}
+\newcommand{\clickmainmenu}{\stushall click the \textbf{Grade Tracker} button}
 \newcommand{\redirecthome}{\sysshall redirect the student to the homepage.}
 \newcommand{\gotohome}{
     \item \clickmainmenu
-    \item \mainmenu
+    \mainmenu
+}
+% Screenshot version of gotohome
+\newcommand{\gotohomess}[1]{
+    \screenshotstep
+      {\clickmainmenu}
+      {#1}{User clicks \textbf{Grade Tracker} button}
+    \mainmenu
 }
 
 \begin{requirement}{\sysshall allow a user to register for an account}
@@ -249,9 +260,7 @@ on courses the student has entered through the grade tracking component.
 \end{requirement}
 
 \begin{requirement}{\sysshall allow a student to logout of his/her account}
-    \screenshotstep
-      {\mainmenu}
-      {existing_user_homepage}{Existing user homepage}
+    \mainmenu
     \screenshotstep
       {\stushall click the \textbf{Logout} button.}
       {main_menu_click_logout}{User clicks \emph{Logout} button}
@@ -259,110 +268,243 @@ on courses the student has entered through the grade tracking component.
 \end{requirement}
 
 \begin{requirement}{\sysshall allow a student to view progress in a concentration}
-    \item \mainmenu
-    \item \stushall click the \textbf{Concentration Progress} button.
-    \item \sysshall display the \emph{Concentration Progress} page.
-    \item \stushall select the college which the concentration is in.
-    \item \stushall select the major which the concentration is in.
-    \item \stushall select the concentration.
-    \item \stushall click the \textbf{Load Progress} button.
-    \item \sysshall display the concentration requirement structure.
-    \gotohome
+    \mainmenu
+    \screenshotstep
+      {\stushall click the \textbf{Concentration Progress Tracker} button.}
+      {main_menu_click_concentration_progress_tracker}
+      {User clicks \emph{Concentration Progress Tracker} button}
+    \screenshotstep
+      {\sysshall display the \emph{Concentration Progress} page.}
+      {concentration_progress_page}
+      {Concentration progress page}
+    \screenshotstep
+      {\stushall select the college which the concentration is in.}
+      {concentration_progress_college_select}
+      {User selects college}
+    \screenshotstep
+      {\stushall select the major which the concentration is in.}
+      {concentration_progress_major_select}
+      {User selects major}
+    \screenshotstep
+      {\stushall select the concentration.}
+      {concentration_progress_concentration_select}
+      {User selects concentration}
+    \screenshotstep
+      {\stushall click the \textbf{Load Progress} button.}
+      {concentration_progress_click_load_progress}
+      {User clicks \textbf{Load Progress} button}
+    \screenshotstep
+      {\sysshall display the concentration requirement structure.}
+      {concentration_progress_requirement_structure}
+      {Concentration progress requirement structure}
+    \gotohomess{concentration_progress_click_grade_tracker}
 \end{requirement}
 
 % Shortcut for navigating to semester page
 \newcommand{\navsemesters}{
-    \item \mainmenu
-    \item \stushall click the \textbf{Semesters} button.
-    \item \sysshall display the semesters the student is enrolled in.
+    \mainmenu
+    \screenshotstep
+      {\stushall click the \textbf{Grade Tracker Home} button.}
+      {main_menu_click_grade_tracker_home}
+      {User clicks \textbf{Grade Tracker Home} button}
+    \screenshotstep
+      {\sysshall display the semesters the student is enrolled in.}
+      {grade_tracker_home}
+      {Grade tracker homepage}
 }
 
 \begin{requirement}{\sysshall allow a student to view enrolled semesters}
     \navsemesters
-    \gotohome
+    \gotohomess{grade_tracker_click_grade_tracker}
 \end{requirement}
 
 \begin{requirement}{\sysshall allow a student to add/remove enrolled semesters}
     \navsemesters
-    \item \stushall click the \textbf{Add Semester} button.
-    \item \sysshall display the \emph{Add Semester} form.
-    \item \stushall select the semester to add.
-    \item \stushall click the \textbf{Save} button.
-    \item \sysshall add that semester to the semesters shown.
-    \item \stushall click the \textbf{Delete} button next to one of the semesters.
-    \item \sysshall display a delete confirmation message.
-    \item \stushall click the \textbf{Yes, Delete} button.
-    \item \sysshall remove that semester from the semesters shown.
+    \screenshotstep
+      {\stushall click the \textbf{Add Semester} button.}
+      {click_add_semester}
+      {User clicks \textbf{Add Semester} button}
+    \screenshotstep
+      {\sysshall display the \emph{Add Semester} form.}
+      {add_semester_form}
+      {Add semester form}
+    \screenshotstep
+      {\stushall select the semester to add.}
+      {add_semester_select}
+      {User selects semester}
+    \screenshotstep
+      {\stushall click the \textbf{Save} button.}
+      {add_semester_click_save}
+      {User clicks \textbf{Save} button}
+    \screenshotstep
+      {\sysshall add that semester to the semesters shown.}
+      {newly_added_semester}
+      {Semester added}
+    \screenshotstep
+      {\stushall click the \textbf{Delete} button next to one of the semesters.}
+      {semester_click_delete_button}
+      {User clicks \textbf{Delete} button}
+    \screenshotstep
+      {\sysshall display a delete confirmation message.}
+      {semester_confirm_delete}
+      {Semester delete confirmation message}
+    \screenshotstep
+      {\stushall click the \textbf{Yes, Delete} button.}
+      {semester_click_confirm_delete}
+      {User clicks \textbf{Yes, Delete} button}
+    \screenshotstep
+      {\sysshall remove that semester from the semesters shown.}
+      {removed_deleted_semester}
+      {Semester removed}
     \gotohome
 \end{requirement}
 
 % Shortcut for navigating to enrolled courses
 \newcommand{\navcourses}{
     \navsemesters
-    \item \stushall click the chosen semester.
-    \item \sysshall display the courses the student is enrolled in, in the selected semester.
+    \screenshotstep
+      {\stushall click the chosen semester.}
+      {grade_tracker_view_click_semester}
+      {User clicks semester}
+    \screenshotstep
+      {\sysshall display the courses the student is enrolled in, in the selected semester.}
+      {courses_page}
+      {Courses page}
 }
 
 \begin{requirement}{\sysshall allow a student to view enrolled courses}
     \navcourses
-    \gotohome
+    \gotohomess{courses_click_grade_tracker}
 \end{requirement}
 
 \begin{requirement}{\sysshall allow a student to add/remove enrolled courses}
     \navcourses
-    \item \stushall click the \textbf{Add Course} button.
-    \item \sysshall display the \emph{Add Course} form.
-    \item \stushall select the course to add.
-    \item \stushall click the \textbf{Save} button.
-    \item \sysshall add that course to the courses shown.
-    \item \stushall click the \textbf{Delete} button next to one of the courses.
-    \item \sysshall display a delete confirmation message.
-    \item \stushall click the \textbf{Yes, Delete} button.
-    \item \sysshall remove that course from the courses shown.
-    \gotohome
+    \screenshotstep
+      {\stushall click the \textbf{Add Course} button.}
+      {click_add_course}
+      {User clicks \textbf{Add Course} button}
+    \screenshotstep
+      {\sysshall display the \emph{Add Course} form.}
+      {add_course_form}
+      {Add course form}
+    \screenshotstep
+      {\stushall select the course to add.}
+      {select_course_to_add}
+      {Course to add selected}
+    \screenshotstep
+      {\stushall click the \textbf{Save} button.}
+      {add_course_form_click_save}
+      {User clicks \textbf{Save} button}
+    \screenshotstep
+      {\sysshall add that course to the courses shown.}
+      {newly_added_course}
+      {Course added}
+    \screenshotstep
+      {\stushall click the \textbf{Delete} button next to one of the courses.}
+      {courses_click_delete}
+      {User clicks \textbf{Delete} button}
+    \screenshotstep
+      {\sysshall display a delete confirmation message.}
+      {course_delete_confirmation}
+      {Course delete confirmation}
+    \screenshotstep
+      {\stushall click the \textbf{Yes, Delete} button.}
+      {courses_click_confirm_delete}
+      {User clicks \textbf{Yes, Delete} button}
+    \screenshotstep
+      {\sysshall remove that course from the courses shown.}
+      {course_deleted}
+      {Course removed}
+    \gotohomess{courses_click_grade_tracker}
 \end{requirement}
 
 % Shortcut for navigating to course details
 \newcommand{\navcoursedetails}{
     \navcourses
-    \item \stushall click the chosen course.
-    \item \sysshall display the course details for the selected course.
+    \screenshotstep
+      {\stushall click the chosen course.}
+      {courses_click_course}
+      {User clicks a course}
+    \screenshotstep
+      {\sysshall display the course details for the selected course.}
+      {course_details_page}
+      {Course details page}
 }
 
 \begin{requirement}{\sysshall allow a student to view course details}
     \navcoursedetails
-    \gotohome
+    \gotohomess{course_details_click_grade_tracker}
 \end{requirement}
 
 \begin{requirement}{\sysshall allow a student to add/edit/remove grade entries}
     \navcoursedetails
-    \item \stushall click the \textbf{Add Grade Entry} button under one of the categories.
-    \item \sysshall display the \emph{Grade Entry} form.
-    \item \stushall enter the information required.
-    \item \stushall click the \textbf{Save} button.
-    \begin{enumerate}
-        \item If any of the fields are invalid, the system shall display warnings next to those
-        fields which are invalid.
-    \end{enumerate}
-    \item \sysshall add the new grade entry to the grade entries shown.
-    \item \stushall click the \textbf{Edit} button next to one of the grade entries.
-    \item \sysshall display the \emph{Grade Entry} form, populated with the selected grade entry's
-    information.
-    \item \stushall edit the grade entry information.
-    \item \stushall click the \textbf{Save} button.
-    \begin{enumerate}
-        \item If any of the fields are invalid, the system shall display warnings next to those
-        fields which are invalid.
-    \end{enumerate}
-    \item \sysshall update the grade entry information on the course details page accordingly.
-    \item \stushall click the \textbf{Edit} button next to one of the courses.
-    \item \sysshall display the \emph{Grade Entry} form, populated with the selected grade entry's
-    information.
-    \item \stushall click the \textbf{Delete} button.
-    \item \sysshall display a delete confirmation message.
-    \item \stushall click the \textbf{Yes, Delete} button.
-    \item \sysshall remove that grade entry from the course details page.
-    \gotohome
+    \screenshotstep
+      {\stushall click the \textbf{Add Grade Entry} button under one of the categories.}
+      {click_add_grade_entry}
+      {User clicks \textbf{Add Grade Entry} button under one of the categories}
+    \screenshotstep
+      {\sysshall display the \emph{Grade Entry} form.}
+      {add_grade_entry_form}
+      {Grade entry form}
+    \screenshotstep
+      {\stushall enter the information required.}
+      {grade_entry_form_filled_out}
+      {Filled out grade entry form}
+    \screenshotstep
+      {\stushall click the \textbf{Save} button.}
+      {add_grade_entry_click_save}
+      {User clicks \textbf{Save} button}
+    \screenshotstep
+      {\sysshall add the new grade entry to the grade entries shown.}
+      {newly_added_grade_entry}
+      {Grade entry added}
+    \screenshotstep
+      {\stushall click the \textbf{Edit} button next to one of the grade entries.}
+      {click_edit_grade_entry}
+      {User clicks \textbf{Edit} button next to one of the grade entries}
+    \screenshotstep
+      {\sysshall display the \emph{Grade Entry} form, populated with the selected grade entry's
+      information.}
+      {edit_grade_entry_form}
+      {Grade entry form populated with information}
+    \screenshotstep
+      {\stushall edit the grade entry information.}
+      {edit_grade_entry_form_updated}
+      {User edits grade entry information}
+    \screenshotstep
+      {\stushall click the \textbf{Save} button.}
+      {edit_grade_entry_click_save}
+      {User clicks \textbf{Save} button}
+    \screenshotstep
+      {\sysshall update the grade entry information on the course details page accordingly.}
+      {newly_edited_grade_entry}
+      {Grade entry updated}
+    \screenshotstep
+      {\stushall click the \textbf{Edit} button next to one of the courses.}
+      {click_edit_grade_entry_to_delete}
+      {User clicks \textbf{Edit} button}
+    \screenshotstep
+      {\sysshall display the \emph{Grade Entry} form, populated with the selected grade entry's
+      information.}
+      {edit_grade_entry_to_delete_form}
+      {Grade entry form populated with information}
+    \screenshotstep
+      {\stushall click the \textbf{Delete} button.}
+      {edit_grade_entry_to_delete_click_delete}
+      {User clicks \textbf{Delete} button}
+    \screenshotstep
+      {\sysshall display a delete confirmation message.}
+      {delete_grade_entry_confirmation_popup}
+      {Delete confirmation popup}
+    \screenshotstep
+      {\stushall click the \textbf{Yes, Delete} button.}
+      {delete_grade_entry_click_confirmation}
+      {User clicks \textbf{Yes, Delete} button}
+    \screenshotstep
+      {\sysshall remove that grade entry from the course details page.}
+      {grade_entry_deleted}
+      {Grade entry deleted}
+    \gotohomess{course_details_click_grade_tracker}
 \end{requirement}
 
 % \subsection{Non-functional Requirements}
