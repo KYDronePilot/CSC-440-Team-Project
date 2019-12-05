@@ -105,6 +105,14 @@ export class Header extends Component<HeaderProps, HeaderState> {
                                     Concentration Progress Tracker
                                 </MDBNavLink>
                             </MDBNavItem>
+                            <MDBNavItem className={'mt-2 ml-2'}>
+                                <a
+                                    href={'/vGSZCmHdZHEMkdsyvwIWPIqBuRWxOxFJriNkFIqggAePWpYcDQ'}
+                                    className={'text-white'}
+                                >
+                                    Admin
+                                </a>
+                            </MDBNavItem>
                         </MDBNavbarNav>
                         <MDBNavbarNav right>
                             {isAuthenticated ? authLinks : guestLinks}
