@@ -17,9 +17,12 @@ class Category(Common):
         grades.models.CategoryScoreRequirements has more information on how category-based score requirements work.
     """
 
+    class Meta:
+        verbose_name_plural = 'categories'
+
     name = models.CharField(max_length=50, null=False, verbose_name='Name')
     weight = models.FloatField(null=True, verbose_name='Weight')
-    max_points = models.FloatField(null=True, verbose_name='Max Points')
+    max_points = models.FloatField(null=True, verbose_name='Max Points', blank=True)
     course_instance = models.ForeignKey(
         to='CourseInstance',
         on_delete=models.CASCADE,
@@ -29,4 +32,4 @@ class Category(Common):
     category_score_requirements = models.ManyToManyField(to='CategoryScoreRequirement', related_name='categories')
 
     def __str__(self) -> str:
-        return f'{self.name} category of {self.course_instance}'
+        return f'"{self.name}" of {self.course_instance}'

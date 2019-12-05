@@ -21,4 +21,4 @@ class Concentration(Common):
     )
 
     def __str__(self) -> str:
-        return f'{self.name} concentration, {self.major}'
+        return f'{self.name} - {self.major}'

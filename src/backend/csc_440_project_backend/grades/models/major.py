@@ -21,4 +21,4 @@ class Major(Common):
     )
 
     def __str__(self) -> str:
-        return f'{self.name}, {self.college}'
+        return f'{self.name} - {self.college}'

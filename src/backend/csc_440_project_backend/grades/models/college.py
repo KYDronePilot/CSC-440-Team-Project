@@ -15,4 +15,4 @@ class College(Common):
     location = models.CharField(max_length=70, null=False)
 
     def __str__(self) -> str:
-        return f'{self.name}, {self.location}'
+        return f'{self.name} - {self.location}'

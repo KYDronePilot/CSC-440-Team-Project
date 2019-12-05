@@ -1,16 +1,21 @@
 from django.contrib import admin
 
-from grades.models import Category, CategoryScoreRequirement, College, Concentration, Course, CourseInstance, \
-    GradeEntry, Major, Semester, User, Requirement
+from grades.models import Category, College, Concentration, Course, CourseInstance, \
+    Major, Semester, User, Requirement
 
-admin.site.register(Category)
-admin.site.register(CategoryScoreRequirement)
-admin.site.register(College)
-admin.site.register(Concentration)
-admin.site.register(Course)
-admin.site.register(CourseInstance)
-admin.site.register(GradeEntry)
-admin.site.register(Major)
-admin.site.register(Semester)
-admin.site.register(User)
-admin.site.register(Requirement)
+
+@admin.register(Category, College, Concentration, Course, CourseInstance, Major, Semester, User, Requirement)
+class MainAdmin(admin.ModelAdmin):
+    """
+    Config for admin interface.
+        Removes fields not currently used.
+    """
+    exclude = (
+        'notes',
+        'max_points',
+        'category_score_requirements',
+        'grading_strategy',
+        'is_gen_ed',
+        'is_deprecated',
+        'is_required'
+    )

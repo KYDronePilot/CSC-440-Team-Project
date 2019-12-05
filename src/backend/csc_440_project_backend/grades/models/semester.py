@@ -38,6 +38,13 @@ class Semester(Common):
         (SPRING, 'Spring'),
         (SUMMER, 'Summer')
     ]
+    # Map from constant to text
+    SEASON_TEXT_MAP = {
+        FALL: 'Fall',
+        WINTER: 'Winter',
+        SPRING: 'Spring',
+        SUMMER: 'Summer'
+    }
 
     year = models.SmallIntegerField(null=False, verbose_name='Year')
     season = models.CharField(
@@ -50,4 +57,4 @@ class Semester(Common):
     colleges = models.ManyToManyField(to='College', related_name='semesters')
 
     def __str__(self) -> str:
-        return f'{self.season}, {self.year}'
+        return f'{Semester.SEASON_TEXT_MAP[self.season]}, {self.year}'
