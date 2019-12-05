@@ -74,7 +74,7 @@ class CourseInstance(Common):
         null=False,
         verbose_name='Semester'
     )
-    students = models.ManyToManyField(to='grades.User', related_name='course_instances')
+    students = models.ManyToManyField(to='grades.User', related_name='course_instances', blank=True)
 
     def __str__(self) -> str:
         return f'{self.course} - Section {self.section} - {self.semester}'

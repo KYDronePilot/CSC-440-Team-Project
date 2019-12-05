@@ -16,7 +16,6 @@ class MainAdmin(admin.ModelAdmin):
         'max_points',
         'category_score_requirements',
         'grading_strategy',
-        'is_gen_ed',
         'is_deprecated',
         'is_required'
     )

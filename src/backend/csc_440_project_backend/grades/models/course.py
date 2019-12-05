@@ -24,7 +24,8 @@ class Course(Common):
     is_gen_ed = models.BooleanField(
         null=False,
         verbose_name='Gen Ed',
-        help_text='Whether the course is a general education requirement'
+        help_text='Whether the course is a general education requirement',
+        default=False
     )
 
     def is_completed(self, student):
