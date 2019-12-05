@@ -63,6 +63,7 @@ matrix:
         - docker push $REPO
     - name: 'Build/Distribute Frontend Container'
       language: node_js
+      dist: bionic
       node_js: 'stable'
       cache:
         directories:
@@ -76,6 +77,7 @@ matrix:
         - yarn
       script:
         - yarn build
+        - ../../../utils/collect_backend_static_files.sh $(realpath ../../backend/csc_440_project_backend)
         - docker build -t $REPO:$COMMIT .
       after_success:
         - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD

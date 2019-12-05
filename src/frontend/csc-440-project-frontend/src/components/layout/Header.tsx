@@ -107,7 +107,7 @@ export class Header extends Component<HeaderProps, HeaderState> {
                             </MDBNavItem>
                             <MDBNavItem className={'mt-2 ml-2'}>
                                 <a
-                                    href={'/vGSZCmHdZHEMkdsyvwIWPIqBuRWxOxFJriNkFIqggAePWpYcDQ'}
+                                    href={'/vGSZCmHdZHEMkdsyvwIWPIqBuRWxOxFJriNkFIqggAePWpYcDQ/'}
                                     className={'text-white'}
                                 >
                                     Admin
