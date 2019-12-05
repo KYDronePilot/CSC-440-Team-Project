@@ -30,12 +30,14 @@ class Requirement(Common):
         related_name='requirements',
         null=True,
         verbose_name='Concentration',
-        help_text='Concentration the requirement is for (if not a sub-requirement)'
+        help_text='Concentration the requirement is for (only if root requirement)',
+        blank=True
     )
     course_count = models.PositiveSmallIntegerField(
         null=True,
         verbose_name='Course Count',
-        help_text='Number of directly related courses that must be completed to fulfill the requirement'
+        help_text='Number of directly related courses that must be completed to fulfill the requirement',
+        blank=True
     )
     super_requirement = models.ForeignKey(
         to='Requirement',
@@ -43,23 +45,28 @@ class Requirement(Common):
         related_name='sub_requirements',
         null=True,
         verbose_name='Parent Requirement',
-        help_text='Parent requirement which this requirement is a sub-requirement of (if sub-requirement)'
+        help_text='Parent requirement which this requirement is a sub-requirement of (if sub-requirement)',
+        blank=True
     )
     sub_requirement_count = models.PositiveSmallIntegerField(
         null=True,
         verbose_name='Sub Requirement Count',
-        help_text='Number of sub-requirements which must be completed to fulfill the requirement'
+        help_text='Number of sub-requirements which must be completed to fulfill the requirement',
+        blank=True
     )
     sub_requirement_course_count = models.PositiveSmallIntegerField(
         null=True,
         verbose_name='Sub Requirement Course Count',
         help_text='Number of courses in directly related sub-requirements that must be completed to fulfill the '
-                  'requirement (including courses in sub-requirements that must be fulfilled)'
+                  'requirement (including courses in sub-requirements that must be fulfilled)',
+        blank=True
     )
     is_required = models.BooleanField(
         null=False,
         verbose_name='Required',
-        help_text='Set to false when requirement is one of many sub-requirements which do not all need to be completed'
+        help_text='Set to false when requirement is one of many sub-requirements which do not all need to be completed',
+        blank=True,
+        default=True
     )
 
     def is_sub_requirement(self) -> bool:
@@ -216,8 +223,6 @@ class Requirement(Common):
         }
 
     def __str__(self) -> str:
-        requirement_type = 'Sub-requirement' if self.is_sub_requirement() else 'Requirement'
-        return (
-            f'{requirement_type}: Courses: {list(self.courses.all())}, '
-            f'Sub-requirements: {list(self.sub_requirements.all())}'
-        )
+        if self.super_requirement is not None:
+            return f'{self.name} - Parent: {self.super_requirement.name}'
+        return self.name

@@ -34,7 +34,9 @@ class CourseInstance(Common):
         max_length=20,
         null=False,
         verbose_name='Grading Strategy',
-        choices=GRADING_STRATEGY_OPTIONS
+        choices=GRADING_STRATEGY_OPTIONS,
+        default=WEIGHT_BASED,
+        blank=True
     )
     min_a = models.FloatField(
         null=False,
@@ -56,7 +58,7 @@ class CourseInstance(Common):
         verbose_name='Minimum \'D\' Score',
         help_text='Minimum score to get a \'D\''
     )
-    max_points = models.FloatField(null=True, verbose_name='Maximum number of points attainable')
+    max_points = models.FloatField(null=True, verbose_name='Maximum number of points attainable', blank=True)
     section = models.PositiveSmallIntegerField(null=False, verbose_name='Section Number')
     course = models.ForeignKey(
         to='Course',
@@ -75,12 +77,4 @@ class CourseInstance(Common):
     students = models.ManyToManyField(to='grades.User', related_name='course_instances')
 
     def __str__(self) -> str:
-        return f'{self.course}, section {self.section}, {self.semester}'
-
-    def current_points(self) -> float:
-        """
-        Get the current total number of points the student has.
-
-        Returns:
-            The total number of points
-        """
+        return f'{self.course} - Section {self.section} - {self.semester}'

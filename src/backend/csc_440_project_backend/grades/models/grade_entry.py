@@ -14,6 +14,9 @@ class GradeEntry(Common):
         category: Category that the entry is in
     """
 
+    class Meta:
+        verbose_name_plural = 'grade entries'
+
     name = models.CharField(max_length=50, null=False, verbose_name='Name')
     points = models.FloatField(null=False, verbose_name='Points', help_text='Number of points obtained')
     max_points = models.FloatField(
@@ -38,4 +41,4 @@ class GradeEntry(Common):
     )
 
     def __str__(self) -> str:
-        return f'{self.name}, {self.points} out of {self.max_points}'
+        return f'{self.name} - {self.points} / {self.max_points} ({self.student})'
