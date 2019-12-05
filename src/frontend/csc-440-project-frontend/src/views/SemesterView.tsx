@@ -127,7 +127,7 @@ class SemesterView extends Component<SemesterViewProps, SemesterViewState> {
                         <GradeTrackerButton
                             onClick={this.toggleAddFormVisible}
                             className={'mr-0'}>
-                            Add Course Instance
+                            Add Course
                         </GradeTrackerButton>
                     </div>
                 </MDBContainer>

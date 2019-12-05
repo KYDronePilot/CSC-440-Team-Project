@@ -132,7 +132,7 @@ class AddCourseInstanceForm extends Component {
                     <form
                         noValidate onSubmit={this.handleFormSubmit}
                     >
-                        <MDBModalHeader toggle={this.props.toggleVisible}>Add a Semester</MDBModalHeader>
+                        <MDBModalHeader toggle={this.props.toggleVisible}>Add a Course</MDBModalHeader>
                         <MDBModalBody>
                             <MDBContainer>
                                 <AsyncSelect

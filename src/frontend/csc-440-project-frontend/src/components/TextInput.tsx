@@ -1,5 +1,4 @@
-import React, {Component} from 'react';
-import * as PropTypes from 'prop-types';
+import React, {Component, FormEvent} from 'react';
 import {MDBInput} from 'mdbreact';
 
 // /**
@@ -17,30 +16,34 @@ import {MDBInput} from 'mdbreact';
 //         }, {});
 // }
 
-class TextInput extends Component {
-    static propTypes = {
-        invalidFeedback: PropTypes.oneOfType([
-            PropTypes.array,
-            PropTypes.string
-        ]),
-        validFeedback: PropTypes.oneOfType([
-            PropTypes.array,
-            PropTypes.string
-        ]),
-        valid: PropTypes.bool,
-        displayFeedback: PropTypes.bool,
-        name: PropTypes.string,
-        label: PropTypes.string,
-        onChange: PropTypes.func,
-        value: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.number
-        ]),
-        hint: PropTypes.string
-    };
-    static type = 'text';
+type input = string | number | null;
 
-    constructor(props) {
+interface TextInputProps {
+    invalidFeedback: string[] | string;
+    validFeedback: string[] | string;
+    valid: boolean;
+    displayFeedback: boolean;
+    name: string;
+    label: string;
+    onChange: (e: FormEvent<HTMLInputElement>) => void;
+    value: input | null;
+    hint?: string;
+    password: boolean;
+    autoComplete?: string;
+}
+
+interface TextInputState {
+
+}
+
+class TextInput extends Component<TextInputProps, TextInputState> {
+    static defaultProps = {
+        invalidFeedback: [],
+        validFeedback: [],
+        password: false
+    };
+
+    constructor(props: TextInputProps) {
         super(props);
 
         this.feedbackClass = this.feedbackClass.bind(this);
@@ -59,30 +62,31 @@ class TextInput extends Component {
 
     /**
      * Ensure feedback is always wrapped in an array.
-     * @param feedback {Any} - Feedback to wrap
-     * @return {*[]|*} Wrapped feedback
+     * @param feedback - Feedback to wrap
+     * @return Wrapped feedback
      */
-    formatFeedback(feedback) {
-        if (typeof feedback !== typeof [] || feedback === null)
+    formatFeedback(feedback: string[] | string): string[] {
+        if (!Array.isArray(feedback))
             return [feedback];
         return feedback;
     }
 
     /**
      * Clean the value prop.
-     *  - Ensure it is a blank string instead of null.
+     *  - Ensure a null value is not passed
      */
     cleanValue() {
         return this.props.value === null ? '' : this.props.value;
     }
 
     render() {
+        const props = this.props;
         return (
             <MDBInput
-                name={this.props.name} label={this.props.label}
-                onChange={this.props.onChange} type={TextInput.type}
+                name={props.name} label={props.label}
+                onChange={props.onChange} type={props.password ? 'password' : 'text'}
                 className={`form-control ${this.feedbackClass()}`}
-                value={this.cleanValue()} hint={this.props.hint}
+                value={this.cleanValue()} hint={props.hint} autoComplete={props.autoComplete}
             >
                 {this.formatFeedback(this.props.invalidFeedback).map((feedback, i) => (
                     <div key={i} className={'invalid-feedback text-left'}>
