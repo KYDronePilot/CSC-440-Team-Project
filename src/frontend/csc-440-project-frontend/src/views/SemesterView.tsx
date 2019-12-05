@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {allInstances} from '../utils/objectification_utils';
-import {MDBBtn, MDBContainer, MDBListGroup} from 'mdbreact';
+import {MDBContainer, MDBListGroup} from 'mdbreact';
 import CourseInstanceListItem from '../components/CourseInstanceListItem';
 import AddCourseInstanceForm from '../containers/AddCourseInstanceForm';
 import {SemesterBreadcrumb} from '../components/layout/breadcrumbs';
@@ -16,6 +16,7 @@ import {Category, Course, CourseInstance, GradeEntry, Semester} from '../api/typ
 import {RouteComponentProps} from 'react-router';
 import {removeStudentCourseInstanceRelationship} from '../actions/courseInstanceActions';
 import {zip} from '../utils';
+import {GradeTrackerButton} from '../components/Common';
 
 /**
  * Denormalized course instance info.
@@ -105,6 +106,7 @@ class SemesterView extends Component<SemesterViewProps, SemesterViewState> {
                 />
                 <SemesterBreadcrumb semesterId={props.semesterId}/>
                 <MDBContainer>
+                    <h1 className={'font-weight-bold'}>Enrolled Courses</h1>
                     <MDBListGroup>
                         {course_instance__stats.map(([course, stats]) => (
                             <CourseInstanceListItem
@@ -121,8 +123,14 @@ class SemesterView extends Component<SemesterViewProps, SemesterViewState> {
                             />
                         ))}
                     </MDBListGroup>
+                    <div className={'text-right mt-2'}>
+                        <GradeTrackerButton
+                            onClick={this.toggleAddFormVisible}
+                            className={'mr-0'}>
+                            Add Course
+                        </GradeTrackerButton>
+                    </div>
                 </MDBContainer>
-                <MDBBtn onClick={this.toggleAddFormVisible} className={'primary'}>Add Course Instance</MDBBtn>
             </div>
         );
     }

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {MDBBtn, MDBContainer, MDBListGroup} from 'mdbreact';
+import {MDBContainer, MDBListGroup} from 'mdbreact';
 import {allInstances, indexInstances} from '../utils/objectification_utils';
 import SemesterListItem from '../components/SemesterListItem';
 import AddSemesterForm from '../containers/AddSemesterForm';
@@ -8,6 +8,7 @@ import {GradeTrackerBreadcrumb} from '../components/layout/breadcrumbs';
 import {Category, CourseInstance, GradeEntry, Semester} from '../api/types';
 import {generateRawGradeTrackerInfoStructure, getOverallStats, SemesterStats} from '../api/courseInstance';
 import {removeStudentSemesterRelationship} from '../actions/semesterActions';
+import {GradeTrackerButton} from '../components/Common';
 
 interface mapStateToPropsTypes {
     semesters: {
@@ -67,6 +68,7 @@ class GradeTrackerView extends Component<GradeTrackerViewProps, GradeTrackerView
                 />
                 <GradeTrackerBreadcrumb/>
                 <MDBContainer>
+                    <h1 className={'font-weight-bold'}>Enrolled Semesters</h1>
                     <MDBListGroup>
                         {props.semesters.map(({semester, stats}) => (
                             <SemesterListItem
@@ -80,10 +82,15 @@ class GradeTrackerView extends Component<GradeTrackerViewProps, GradeTrackerView
                             />
                         ))}
                     </MDBListGroup>
+                    <div className={'text-right mt-2'}>
+                        <GradeTrackerButton
+                            onClick={() => this.setState({addFormVisible: true})}
+                            className={'mr-0'}
+                        >
+                            Add Semester
+                        </GradeTrackerButton>
+                    </div>
                 </MDBContainer>
-                <MDBBtn onClick={() => this.setState({addFormVisible: true})} className={'primary'}>
-                    Add Semester
-                </MDBBtn>
             </div>
         );
     }

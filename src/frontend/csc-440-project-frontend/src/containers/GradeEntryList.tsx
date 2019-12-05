@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {MDBBtn, MDBListGroup} from 'mdbreact';
+import {MDBListGroup} from 'mdbreact';
 import GradeEntryListItem from '../components/GradeEntryListItem';
 import {GradeEntry} from '../api/types';
 import {GradeEntryStats} from '../api/courseInstance';
+import {GradeTrackerButton} from '../components/Common';
 
 
 interface GradeEntryListProps {
@@ -32,14 +33,11 @@ class GradeEntryList extends Component<GradeEntryListProps, {}> {
                     ))}
                 </MDBListGroup>
                 <div className={'text-right mt-2'}>
-                    <MDBBtn
-                        color={'secondary'}
+                    <GradeTrackerButton
                         onClick={() => this.props.openCreateGradeEntryForm()}
-                        className={'mr-0 btn heavy-rain-gradient'}
-                        style={{fontSize: '16px', color: 'black'}}
-                    >
+                        className={'mr-0'}>
                         Add Grade Entry
-                    </MDBBtn>
+                    </GradeTrackerButton>
                 </div>
             </div>
         );
