@@ -15,7 +15,7 @@ class User(AbstractUser):
         semesters: Semesters a student is enrolled in
     """
 
-    colleges = models.ManyToManyField(to='College', related_name='students')
-    majors = models.ManyToManyField(to='Major', related_name='students')
-    concentrations = models.ManyToManyField(to='Concentration', related_name='students')
-    semesters = models.ManyToManyField(to='Semester', related_name='students')
+    colleges = models.ManyToManyField(to='College', related_name='students', blank=True)
+    majors = models.ManyToManyField(to='Major', related_name='students', blank=True)
+    concentrations = models.ManyToManyField(to='Concentration', related_name='students', blank=True)
+    semesters = models.ManyToManyField(to='Semester', related_name='students', blank=True)
