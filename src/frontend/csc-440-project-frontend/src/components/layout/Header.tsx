@@ -12,8 +12,9 @@ import {
     MDBNavItem,
     MDBNavLink
 } from 'mdbreact';
-import {CONCENTRATION_PROGRESS_URL, isGradeTrackingURL, LOGIN_URL, REGISTER_URL} from '../../routes/urls';
+import {CONCENTRATION_PROGRESS_URL, isGradeTrackingURL, LOGIN_URL, REGISTER_URL, ROOT_URL} from '../../routes/urls';
 import {RouteComponentProps, withRouter} from 'react-router';
+import {Link} from 'react-router-dom';
 
 function mapStateToProps(state: any) {
     return {auth: state.auth};
@@ -92,7 +93,9 @@ export class Header extends Component<HeaderProps, HeaderState> {
             <MDBContainer fluid className={'mx-0 px-0'}>
                 <MDBNavbar color={'default-color'} dark expand={'md'}>
                     <MDBNavbarBrand>
-                        <strong>College Progress Tracker</strong>
+                        <Link to={ROOT_URL} className={'text-white'}>
+                            <strong>College Progress Tracker</strong>
+                        </Link>
                     </MDBNavbarBrand>
                     <MDBNavbarToggler onClick={this.toggleNavbarOpen}/>
                     <MDBCollapse id={'nav-toggler'} isOpen={this.state.isOpen} navbar>

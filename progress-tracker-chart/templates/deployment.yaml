@@ -5,9 +5,10 @@ metadata:
   labels:
 {{ include "progress-tracker-chart.labels" . | indent 4 }}
   annotations:
-    keel.sh/policy: major
+    keel.sh/policy: force
+    keel.sh/match-tag: 'true'
     keel.sh/trigger: poll
-    keel.sh/pollSchedule: '@every 30s'
+    keel.sh/pollSchedule: '@every 1m'
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
