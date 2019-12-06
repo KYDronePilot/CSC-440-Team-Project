@@ -34,7 +34,7 @@ interface LoginViewState {
     displayFeedback: boolean;
 }
 
-function toKeys<T extends string | number | symbol>(obj: { [key in T]: any }): T[] {
+export function toKeys<T extends string | number | symbol>(obj: { [key in T]: any }): T[] {
     return Object.keys(obj) as T[];
 }
 

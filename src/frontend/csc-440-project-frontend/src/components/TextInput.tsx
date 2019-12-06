@@ -5,6 +5,8 @@ import check from 'check-types';
 interface TextInputProps<Field> {
     /** HTML autocomplete tag for browser value prediction */
     autoComplete?: string;
+    /** Classes passed to input component */
+    className?: string;
     /** Whether to display feedback */
     displayFeedback: boolean;
     /** Faded text that appears inside the input field */
@@ -27,6 +29,8 @@ interface TextInputProps<Field> {
     validFeedback?: string;
     /** Value of field */
     value: string;
+    /** Classes passed to the input wrapper div */
+    wrapperClassName?: string;
 }
 
 interface TextInputState {
@@ -130,19 +134,21 @@ class TextInput<Field extends string> extends Component<TextInputProps<Field>, T
     render() {
         const props = this.props;
         return (
-            <MDBInput
-                name={props.name}
-                label={props.label}
-                // @ts-ignore
-                onChange={this.onChange}
-                type={props.password ? 'password' : 'text'}
-                className={`form-control ${this.feedbackClass()}`}
-                value={this.cleanedValue()}
-                hint={props.hint}
-                autoComplete={props.autoComplete}
-            >
-                {this.feedbackElement()}
-            </MDBInput>
+            <div className={props.wrapperClassName}>
+                <MDBInput
+                    name={props.name}
+                    label={props.label}
+                    // @ts-ignore
+                    onChange={this.onChange}
+                    type={props.password ? 'password' : 'text'}
+                    className={`form-control ${this.feedbackClass()} ${props.className}`}
+                    value={this.cleanedValue()}
+                    hint={props.hint}
+                    autoComplete={props.autoComplete}
+                >
+                    {this.feedbackElement()}
+                </MDBInput>
+            </div>
         );
     }
 

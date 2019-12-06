@@ -3,6 +3,10 @@ import {Link, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {register} from '../actions/auth';
 import {LOGIN_URL} from '../routes/urls';
+import check from 'check-types';
+import validator from 'validator';
+import TextInput from '../components/TextInput';
+import {toKeys} from './LoginView';
 
 export interface NewUser {
     firstName: string;
@@ -30,13 +34,25 @@ interface RegisterViewProps extends StateProps, DispatchProps {
 
 }
 
+const firstName = 'firstName';
+const lastName = 'lastName';
+const username = 'username';
+const email = 'email';
+const password = 'password';
+const passwordConfirmation = 'passwordConfirmation';
+
+type Fields = (
+    typeof firstName | typeof lastName | typeof username
+    | typeof email | typeof password | typeof passwordConfirmation);
+
 interface RegisterViewState {
-    firstName: string;
-    lastName: string;
-    username: string;
-    email: string;
-    password: string;
-    passwordConfirmation: string;
+    [firstName]: string;
+    [lastName]: string;
+    [username]: string;
+    [email]: string;
+    [password]: string;
+    [passwordConfirmation]: string;
+    displayFeedback: boolean;
 }
 
 class RegisterView extends Component<RegisterViewProps, RegisterViewState> {
@@ -46,7 +62,29 @@ class RegisterView extends Component<RegisterViewProps, RegisterViewState> {
         username: '',
         email: '',
         password: '',
-        passwordConfirmation: ''
+        passwordConfirmation: '',
+        displayFeedback: false
+    };
+
+    fields: { [key in Fields]: { invalidFeedback: (value: string) => string | undefined } } = {
+        firstName: {
+            invalidFeedback: RegisterView.firstNameInvalidFeedback
+        },
+        lastName: {
+            invalidFeedback: RegisterView.lastNameInvalidFeedback
+        },
+        username: {
+            invalidFeedback: RegisterView.usernameInvalidFeedback
+        },
+        email: {
+            invalidFeedback: RegisterView.emailInvalidFeedback
+        },
+        password: {
+            invalidFeedback: this.passwordInvalidFeedback
+        },
+        passwordConfirmation: {
+            invalidFeedback: this.passwordConfirmationInvalidFeedback
+        }
     };
 
     constructor(props: RegisterViewProps) {
@@ -54,52 +92,75 @@ class RegisterView extends Component<RegisterViewProps, RegisterViewState> {
 
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.passwordInvalidFeedback = this.passwordInvalidFeedback.bind(this);
+        this.passwordConfirmationInvalidFeedback = this.passwordConfirmationInvalidFeedback.bind(this);
+    }
+
+    private static firstNameInvalidFeedback(value: string) {
+        if (check.emptyString(value))
+            return 'Please enter your first name';
+    }
+
+    private static lastNameInvalidFeedback(value: string) {
+        if (check.emptyString(value))
+            return 'Please enter your last name';
+    }
+
+    private static usernameInvalidFeedback(value: string) {
+        if (check.emptyString(value))
+            return 'Please enter a username';
+        if (!/^[\w.@+-]+$/.test(value))
+            return 'The username may contain only letters, numbers, and @/./+/-/_ characters.';
+    }
+
+    private static emailInvalidFeedback(value: string) {
+        if (check.emptyString(value))
+            return 'Please enter your email address';
+        if (!validator.isEmail(value))
+            return 'Email address is not valid';
+    }
+
+    /**
+     * Check if all fields are valid.
+     * TODO: Should only be one of these
+     * @return Whether all fields are valid
+     */
+    areFieldsValid() {
+        // Ensure each field is valid
+        for (const field of toKeys(this.fields)) {
+            if (!check.undefined(this.fields[field].invalidFeedback(this.state[field])))
+                return false;
+        }
+        return true;
     }
 
     onSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        const {firstName, lastName, username, email, password, passwordConfirmation} = this.state;
-        if (password !== passwordConfirmation) {
-            console.log('Passwords do not match');
-        } else {
-            const newUser = {
-                firstName,
-                lastName,
-                username,
-                email,
-                password
-            };
-            this.props.register(newUser);
+        // TODO: Should only be one of this part
+        // Display feedback if not already and an invalid field
+        if (!this.state.displayFeedback && !this.areFieldsValid()) {
+            this.setState({displayFeedback: true});
+            return;
         }
+        const {firstName, lastName, username, email, password} = this.state;
+        const newUser = {
+            firstName,
+            lastName,
+            username,
+            email,
+            password
+        };
+        this.props.register(newUser);
     }
 
-    onChange(e: FormEvent<HTMLInputElement>) {
-        const value = e.currentTarget.value;
-        switch (e.currentTarget.name) {
-            case 'firstName':
-                this.setState({firstName: value});
-                break;
-            case 'lastName':
-                this.setState({lastName: value});
-                break;
-            case 'username':
-                this.setState({username: value});
-                break;
-            case 'email':
-                this.setState({email: value});
-                break;
-            case 'password':
-                this.setState({password: value});
-                break;
-            case 'passwordConfirmation':
-                this.setState({passwordConfirmation: value});
-                break;
-        }
+    onChange(name: Fields, value: string) {
+        this.setState(state => ({...state, [name]: value}));
     }
 
     render() {
         if (this.props.isAuthenticated) {
             return <Redirect to={'/'}/>;
+
         }
 
         const state = this.state;
@@ -108,73 +169,63 @@ class RegisterView extends Component<RegisterViewProps, RegisterViewState> {
                 <div className={'card card-body mt-5'}>
                     <h2 className={'text-center'}>Register</h2>
                     <form onSubmit={this.onSubmit}>
-                        <div className={'form-group'}>
-                            <label>First Name</label>
-                            <input
-                                type={'text'}
-                                className={'form-control'}
-                                name={'firstName'}
-                                onChange={this.onChange}
-                                value={state.firstName}
-                                autoComplete={'given-name'}
-                            />
-                        </div>
-                        <div className={'form-group'}>
-                            <label>Last Name</label>
-                            <input
-                                type={'text'}
-                                className={'form-control'}
-                                name={'lastName'}
-                                onChange={this.onChange}
-                                value={state.lastName}
-                                autoComplete={'family-name'}
-                            />
-                        </div>
-                        <div className={'form-group'}>
-                            <label>Username</label>
-                            <input
-                                type={'text'}
-                                className={'form-control'}
-                                name={'username'}
-                                onChange={this.onChange}
-                                value={state.username}
-                                autoComplete={'username'}
-                            />
-                        </div>
-                        <div className={'form-group'}>
-                            <label>Email</label>
-                            <input
-                                type={'email'}
-                                className={'form-control'}
-                                name={'email'}
-                                onChange={this.onChange}
-                                value={state.email}
-                                autoComplete={'email'}
-                            />
-                        </div>
-                        <div className={'form-group'}>
-                            <label>Password</label>
-                            <input
-                                type={'password'}
-                                className={'form-control'}
-                                name={'password'}
-                                onChange={this.onChange}
-                                value={state.password}
-                                autoComplete={'new-password'}
-                            />
-                        </div>
-                        <div className={'form-group'}>
-                            <label>Confirm Password</label>
-                            <input
-                                type={'password'}
-                                className={'form-control'}
-                                name={'passwordConfirmation'}
-                                onChange={this.onChange}
-                                value={state.passwordConfirmation}
-                                autoComplete={'new-password'}
-                            />
-                        </div>
-                        <div className={'form-group'}>
+                        <TextInput
+                            label={'First Name'}
+                            value={state.firstName}
+                            name={firstName}
+                            onChange={this.onChange}
+                            displayFeedback={state.displayFeedback}
+                            autoComplete={'given-name'}
+                            invalidFeedback={RegisterView.firstNameInvalidFeedback}
+                        />
+                        <TextInput
+                            label={'Last Name'}
+                            value={state.lastName}
+                            name={lastName}
+                            onChange={this.onChange}
+                            displayFeedback={state.displayFeedback}
+                            autoComplete={'family-name'}
+                            invalidFeedback={RegisterView.lastNameInvalidFeedback}
+                        />
+                        <TextInput
+                            label={'Username'}
+                            value={state.username}
+                            name={username}
+                            onChange={this.onChange}
+                            displayFeedback={state.displayFeedback}
+                            autoComplete={'username'}
+                            invalidFeedback={RegisterView.usernameInvalidFeedback}
+                        />
+                        <TextInput
+                            label={'Email'}
+                            value={state.email}
+                            name={email}
+                            onChange={this.onChange}
+                            displayFeedback={state.displayFeedback}
+                            autoComplete={'email'}
+                            invalidFeedback={RegisterView.emailInvalidFeedback}
+                        />
+                        <TextInput
+                            label={'Password'}
+                            value={state.password}
+                            name={password}
+                            onChange={this.onChange}
+                            displayFeedback={state.displayFeedback}
+                            autoComplete={'new-password'}
+                            invalidFeedback={this.passwordInvalidFeedback}
+                            password
+                        />
+                        <TextInput
+                            label={'Confirm Password'}
+                            value={state.passwordConfirmation}
+                            name={passwordConfirmation}
+                            onChange={this.onChange}
+                            displayFeedback={state.displayFeedback}
+                            autoComplete={'new-password'}
+                            invalidFeedback={this.passwordConfirmationInvalidFeedback}
+                            password
+                        />
+                        <div className={'form-group text-center'}>
                             <button type={'submit'} className={'btn btn-primary'}>
                                 Register
                             </button>
@@ -186,6 +237,20 @@ class RegisterView extends Component<RegisterViewProps, RegisterViewState> {
                 </div>
             </div>
         );
+    }
+
+    private passwordInvalidFeedback(value: string) {
+        if (check.emptyString(value))
+            return 'Please enter a password';
+        if (this.state.passwordConfirmation !== value)
+            return 'Passwords do not match';
+    }
+
+    private passwordConfirmationInvalidFeedback(value: string) {
+        if (check.emptyString(value))
+            return 'Please confirm the password entered above';
+        if (this.state.password !== value)
+            return 'Passwords do not match';
     }
 }
 
