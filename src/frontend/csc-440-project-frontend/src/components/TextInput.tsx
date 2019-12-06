@@ -1,105 +1,188 @@
 import React, {Component, FormEvent} from 'react';
 import {MDBInput} from 'mdbreact';
+import check from 'check-types';
 
-// /**
-//  * Filter by the keys of an object.
-//  * @param obj {Object} - Object to filter
-//  * @param keys {Array} - Keys to filter by
-//  * @param inclusive {boolean} - Whether to include or exclude the specified keys
-//  * @return {Object} Filtered object
-//  */
-// function filterObject(obj, keys, inclusive = false) {
-//     return Object.keys(obj).filter(key => inclusive === keys.includes(key))
-//         .reduce((newObj, key) => {
-//             newObj[key] = obj[key];
-//             return newObj;
-//         }, {});
-// }
-
-type input = string | number | null;
-
-interface TextInputProps {
-    invalidFeedback: string[] | string;
-    validFeedback: string[] | string;
-    valid: boolean;
-    displayFeedback: boolean;
-    name: string;
-    label: string;
-    onChange: (e: FormEvent<HTMLInputElement>) => void;
-    value: input | null;
-    hint?: string;
-    password: boolean;
+interface TextInputProps<Field> {
+    /** HTML autocomplete tag for browser value prediction */
     autoComplete?: string;
+    /** Whether to display feedback */
+    displayFeedback: boolean;
+    /** Faded text that appears inside the input field */
+    hint?: string;
+    /** Feedback if field is invalid. Assumed valid if no return */
+    invalidFeedback?: (value: string) => (string | undefined);
+    /** Temporary override of invalid feedback (useful for a server validation response) */
+    invalidFeedbackOverride?: string;
+    /** Label of input field displayed */
+    label: string;
+    /** Name of the field */
+    name: string;
+    /** Change handler */
+    onChange: (name: Field, value: string) => void;
+    /** Whether the field is a password field */
+    password: boolean;
+    /** Explicitly pass field validity */
+    valid?: boolean | ((value: string) => boolean);
+    /** Feedback when field is valid */
+    validFeedback?: string;
+    /** Value of field */
+    value: string;
 }
 
 interface TextInputState {
-
 }
 
-class TextInput extends Component<TextInputProps, TextInputState> {
+interface FormInputElement<Field extends string> extends HTMLInputElement {
+    name: Field;
+}
+
+class TextInput<Field extends string> extends Component<TextInputProps<Field>, TextInputState> {
     static defaultProps = {
-        invalidFeedback: [],
-        validFeedback: [],
         password: false
     };
 
-    constructor(props: TextInputProps) {
+    constructor(props: TextInputProps<Field>) {
         super(props);
 
         this.feedbackClass = this.feedbackClass.bind(this);
-        this.formatFeedback = this.formatFeedback.bind(this);
-        this.cleanValue = this.cleanValue.bind(this);
+        this.cleanedValue = this.cleanedValue.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.invalidFeedbackElement = this.invalidFeedbackElement.bind(this);
+        this.validFeedbackElement = this.validFeedbackElement.bind(this);
+        this.feedbackElement = this.feedbackElement.bind(this);
+        this.isValid = this.isValid.bind(this);
+        this.invalidFeedback = this.invalidFeedback.bind(this);
     }
 
     /**
      * Get bootstrap class for controlling visibility of field feedback.
      */
     feedbackClass() {
-        if (!this.props.displayFeedback || (this.props.valid && !this.props.validFeedback))
+        if (!this.props.displayFeedback)
             return '';
-        return this.props.valid ? 'is-valid' : 'is-invalid';
+        return this.isValid() ? 'is-valid' : 'is-invalid';
     }
 
     /**
-     * Ensure feedback is always wrapped in an array.
-     * @param feedback - Feedback to wrap
-     * @return Wrapped feedback
+     * Clean value to ensure it is not null.
+     * @return Cleaned value prop
      */
-    formatFeedback(feedback: string[] | string): string[] {
-        if (!Array.isArray(feedback))
-            return [feedback];
-        return feedback;
+    cleanedValue() {
+        return check.null(this.props.value) ? undefined : this.props.value;
     }
 
     /**
-     * Clean the value prop.
-     *  - Ensure a null value is not passed
+     * Pass field changes to the change handler prop.
+     * @param e - Input field change event
      */
-    cleanValue() {
-        return this.props.value === null ? '' : this.props.value;
+    onChange(e: FormEvent<FormInputElement<Field>>) {
+        this.props.onChange(e.currentTarget.name, e.currentTarget.value);
+    }
+
+    /**
+     * Get invalid feedback element.
+     * @return Invalid feedback element or empty element if no feedback
+     */
+    invalidFeedbackElement() {
+        const feedback = this.invalidFeedback();
+
+        if (check.undefined(feedback))
+            return <></>;
+
+        return (
+            <div className={'invalid-feedback text-left'}>
+                {this.invalidFeedback()}
+            </div>
+        );
+    }
+
+    /**
+     * Get valid feedback element.
+     * @return Valid feedback element or empty element if no feedback
+     */
+    validFeedbackElement() {
+        if (check.undefined(this.props.validFeedback))
+            return <></>;
+
+        return (
+            <div className={'valid-feedback text-left'}>
+                {this.props.validFeedback}
+            </div>
+        );
+    }
+
+    /**
+     * Get feedback element, if any, to display.
+     * @return Feedback element, if any, to display
+     */
+    feedbackElement() {
+        // No feedback if specified
+        if (!this.props.displayFeedback)
+            return <></>;
+
+        // Choose type of feedback based on validity
+        if (this.isValid())
+            return this.validFeedbackElement();
+        else
+            return this.invalidFeedbackElement();
     }
 
     render() {
         const props = this.props;
         return (
             <MDBInput
-                name={props.name} label={props.label}
-                onChange={props.onChange} type={props.password ? 'password' : 'text'}
+                name={props.name}
+                label={props.label}
+                // @ts-ignore
+                onChange={this.onChange}
+                type={props.password ? 'password' : 'text'}
                 className={`form-control ${this.feedbackClass()}`}
-                value={this.cleanValue()} hint={props.hint} autoComplete={props.autoComplete}
+                value={this.cleanedValue()}
+                hint={props.hint}
+                autoComplete={props.autoComplete}
             >
-                {this.formatFeedback(this.props.invalidFeedback).map((feedback, i) => (
-                    <div key={i} className={'invalid-feedback text-left'}>
-                        {feedback}
-                    </div>
-                ))}
-                {this.formatFeedback(this.props.validFeedback).map((feedback, i) => (
-                    <div key={i} className={'valid-feedback text-left'}>
-                        {feedback}
-                    </div>
-                ))}
+                {this.feedbackElement()}
             </MDBInput>
         );
+    }
+
+    /**
+     * Determine if field is valid.
+     * @return Whether field is valid or not
+     */
+    private isValid(): boolean {
+        const props = this.props;
+
+        // If an invalid feedback override is specified, field must be invalid
+        if (!check.undefined(props.invalidFeedbackOverride))
+            return false;
+
+        // If validity is explicitly set, use it
+        if (!check.undefined(props.valid))
+            return check.boolean(props.valid) ? props.valid : props.valid(props.value);
+
+        // If invalid feedback, use it to determine validity
+        if (!check.undefined(props.invalidFeedback))
+            return check.undefined(props.invalidFeedback(props.value));
+
+        // If no means of determining validity provided, field is always valid
+        return true;
+    }
+
+    /**
+     * Get invalid feedback for field, if any.
+     * @return Invalid feedback if available, else undefined
+     */
+    private invalidFeedback(): string | undefined {
+        const props = this.props;
+
+        // If override, use it
+        if (!check.undefined(props.invalidFeedbackOverride))
+            return props.invalidFeedbackOverride;
+
+        // If invalid feedback function, use it
+        if (!check.undefined(props.invalidFeedback))
+            return props.invalidFeedback(props.value);
     }
 }
 

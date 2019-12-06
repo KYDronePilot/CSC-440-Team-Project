@@ -4,17 +4,12 @@ import {connect} from 'react-redux';
 import {login} from '../actions/auth';
 import {REGISTER_URL, ROOT_URL} from '../routes/urls';
 import TextInput from '../components/TextInput';
+import check from 'check-types';
 
 function mapStateToProps(state: any) {
     return {
         isAuthenticated: state.auth.isAuthenticated
     };
-}
-
-export interface TextFieldState {
-    value: string;
-    valid: boolean;
-    invalidFeedback: string;
 }
 
 interface StateProps {
@@ -26,107 +21,93 @@ interface DispatchProps {
 }
 
 interface LoginViewProps extends StateProps, DispatchProps {
-
 }
 
+const username = 'username';
+const password = 'password';
+
+type Fields = typeof username | typeof password;
+
 interface LoginViewState {
-    username: TextFieldState;
-    password: TextFieldState;
+    [username]: string;
+    [password]: string;
     displayFeedback: boolean;
+}
+
+function toKeys<T extends string | number | symbol>(obj: { [key in T]: any }): T[] {
+    return Object.keys(obj) as T[];
 }
 
 class LoginView extends Component<LoginViewProps, LoginViewState> {
     state = {
+        username: '',
+        password: '',
+        displayFeedback: false
+    };
+
+    fields: { [key in Fields]: { invalidFeedback: (value: string) => string | undefined } } = {
         username: {
-            value: '',
-            valid: false,
-            invalidFeedback: 'Please enter a username'
+            invalidFeedback: this.usernameInvalidFeedback
         },
         password: {
-            value: '',
-            valid: false,
-            invalidFeedback: 'Please enter a password'
-        },
-        displayFeedback: false
+            invalidFeedback: this.passwordInvalidFeedback
+        }
     };
 
     constructor(props: LoginViewProps) {
         super(props);
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-        this.validateUsername = this.validateUsername.bind(this);
-        this.validatePassword = this.validatePassword.bind(this);
-        this.invalidField = this.invalidField.bind(this);
+        this.usernameInvalidFeedback = this.usernameInvalidFeedback.bind(this);
+        this.passwordInvalidFeedback = this.passwordInvalidFeedback.bind(this);
+        this.areFieldsValid = this.areFieldsValid.bind(this);
     }
 
     /**
-     * Check if at least one field is invalid.
+     * Check if all fields are valid.
+     * @return Whether all fields are valid
      */
-    invalidField() {
-        const {
-            username,
-            password
-        } = this.state;
-        return !username.valid || !password.valid;
+    areFieldsValid() {
+        // Ensure each field is valid
+        for (const field of toKeys(this.fields)) {
+            if (!check.undefined(this.fields[field].invalidFeedback(this.state[field])))
+                return false;
+        }
+        return true;
     }
 
     onSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         // Display feedback if not already and an invalid field
-        if (!this.state.displayFeedback && this.invalidField()) {
+        if (!this.state.displayFeedback && !this.areFieldsValid()) {
             this.setState({displayFeedback: true});
+            return;
         }
 
         // Try to login the user
-        this.props.login(this.state.username.value, this.state.password.value);
+        this.props.login(this.state.username, this.state.password);
     }
 
     /**
-     * Validate a username.
-     * @param value - Value to validate
+     * Invalid feedback for the username field.
+     * @param value - Feedback if invalid, else undefined
      */
-    validateUsername(value: string) {
+    usernameInvalidFeedback(value: string) {
         if (value.length === 0)
             return 'Please enter a username';
-        return '';
     }
 
     /**
-     * Validate a password.
-     * @param value - Value to validate
+     * Invalid feedback for the password field.
+     * @param value - Feedback if invalid, else undefined
      */
-    validatePassword(value: string) {
+    passwordInvalidFeedback(value: string) {
         if (value.length === 0)
             return 'Please enter a password';
-        return '';
     }
 
-    onChange(e: FormEvent<HTMLInputElement>) {
-        let invalidFeedback;
-        switch (e.currentTarget.name) {
-            case 'username':
-                invalidFeedback = this.validateUsername(e.currentTarget.value);
-                this.setState({
-                    username: {
-                        value: e.currentTarget.value,
-                        valid: invalidFeedback === '',
-                        invalidFeedback
-                    }
-                });
-                break;
-            case 'password':
-                invalidFeedback = this.validatePassword(e.currentTarget.value);
-                this.setState({
-                    password: {
-                        value: e.currentTarget.value,
-                        valid: invalidFeedback === '',
-                        invalidFeedback
-                    }
-                });
-                break;
-            default:
-                break;
-        }
+    onChange(name: Fields, value: string) {
+        this.setState(state => ({...state, [name]: value}));
     }
 
     render() {
@@ -144,9 +125,8 @@ class LoginView extends Component<LoginViewProps, LoginViewState> {
                             <TextInput
                                 label={'Username'}
                                 displayFeedback={state.displayFeedback}
-                                valid={state.username.valid}
-                                value={state.username.value}
-                                invalidFeedback={state.username.invalidFeedback}
+                                value={state.username}
+                                invalidFeedback={this.usernameInvalidFeedback}
                                 name={'username'}
                                 onChange={this.onChange}
                                 autoComplete={'username'}
@@ -156,9 +136,8 @@ class LoginView extends Component<LoginViewProps, LoginViewState> {
                             <TextInput
                                 label={'Password'}
                                 displayFeedback={state.displayFeedback}
-                                valid={state.password.valid}
-                                value={state.password.value}
-                                invalidFeedback={state.password.invalidFeedback}
+                                value={state.password}
+                                invalidFeedback={this.passwordInvalidFeedback}
                                 name={'password'}
                                 onChange={this.onChange}
                                 autoComplete={'current-password'}
