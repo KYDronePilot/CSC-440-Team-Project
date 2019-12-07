@@ -7,7 +7,7 @@ class ConcentrationProgressTests(GenericSeleniumTestActions):
     def test_view_concentration_progress(self):
         self.login()
         driver = self.driver
-        concentration_progress_button = driver.find_element_by_link_text('Concentration Progress Tracker')
+        concentration_progress_button = driver.find_element_by_link_text('Concentration Progress')
         self.take_element_screenshot(concentration_progress_button, 'main_menu_click_concentration_progress_tracker')
         concentration_progress_button.click()
         self.take_screenshot('concentration_progress_page')

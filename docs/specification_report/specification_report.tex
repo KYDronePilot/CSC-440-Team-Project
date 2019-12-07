@@ -124,7 +124,7 @@ Information provided through the grade tracking feature, coupled with course req
 will allow students to view their progress across multiple majors and concentrations.
 
 \section{System Description}
-The system shall have a user account management component to keep track of students, including the
+The system shall have an account management component to keep track of students, including the
 ability to register, login, edit account, and logout. When a student logs into the system, the
 student shall see a dashboard containing the most relevant information and navigation links. From
 there, the student will also be able to access the system menu, allowing them to navigate to either
@@ -211,7 +211,7 @@ on courses the student has entered through the grade tracking component.
 \newcommand{\mainmenu}{
   \screenshotstep
     {\sysshall display the main menu.}
-    {existing_user_homepage}{Existing user homepage}
+    {existing_user_homepage}{Existing student homepage}
 }
 \newcommand{\clickmainmenu}{\stushall click the \textbf{Grade Tracker} button}
 \newcommand{\redirecthome}{\sysshall redirect the student to the homepage.}
@@ -219,11 +219,16 @@ on courses the student has entered through the grade tracking component.
     \item \clickmainmenu
     \mainmenu
 }
+
+% For steps where the student/user clicks a button
+\newcommand{\studentclicks}[1]{Student clicks \textbf{#1} button}
+\newcommand{\userclicks}[1]{User clicks \textbf{#1} button}
+
 % Screenshot version of gotohome
 \newcommand{\gotohomess}[1]{
     \screenshotstep
       {\clickmainmenu}
-      {#1}{User clicks \textbf{Grade Tracker} button}
+      {#1}{\studentclicks{Grade Tracker}}
     \mainmenu
 }
 
@@ -231,7 +236,7 @@ on courses the student has entered through the grade tracking component.
     \loginpage
     \screenshotstep
       {\usershall click the \textbf{Register} button.}
-      {click_register}{User clicks \emph{Register} button}
+      {click_register}{\userclicks{Register}}
     \screenshotstep
       {\sysshall display the \emph{Registration} page.}
       {registration_page}{Registration page}
@@ -240,10 +245,10 @@ on courses the student has entered through the grade tracking component.
       {registration_page_filled_out}{Registration page filled out}
     \screenshotstep
       {\usershall click the \textbf{Register} button.}
-      {registration_page_click_register}{User clicks \emph{Register} button}
+      {registration_page_click_register}{\userclicks{Register}}
     \screenshotstep
       {\redirecthome}
-      {new_user_homepage}{New user homepage}
+      {new_user_homepage}{New student homepage}
 \end{requirement}
 
 \begin{requirement}{\sysshall allow a student to login to his/her account}
@@ -253,26 +258,26 @@ on courses the student has entered through the grade tracking component.
       {login_page_filled_out}{Login page filled out}
     \screenshotstep
       {\stushall click the \textbf{Login} button.}
-      {login_page_click_login}{User clicks \emph{Login} button}
+      {login_page_click_login}{\studentclicks{Login}}
     \screenshotstep
       {\redirecthome}
-      {existing_user_homepage}{Existing user homepage}
+      {existing_user_homepage}{Existing student homepage}
 \end{requirement}
 
 \begin{requirement}{\sysshall allow a student to logout of his/her account}
     \mainmenu
     \screenshotstep
       {\stushall click the \textbf{Logout} button.}
-      {main_menu_click_logout}{User clicks \emph{Logout} button}
+      {main_menu_click_logout}{\studentclicks{Logout}}
     \loginpage
 \end{requirement}
 
 \begin{requirement}{\sysshall allow a student to view progress in a concentration}
     \mainmenu
     \screenshotstep
-      {\stushall click the \textbf{Concentration Progress Tracker} button.}
+      {\stushall click the \textbf{Concentration Progress} button.}
       {main_menu_click_concentration_progress_tracker}
-      {User clicks \emph{Concentration Progress Tracker} button}
+      {\studentclicks{Concentration Progress}}
     \screenshotstep
       {\sysshall display the \emph{Concentration Progress} page.}
       {concentration_progress_page}
@@ -280,19 +285,19 @@ on courses the student has entered through the grade tracking component.
     \screenshotstep
       {\stushall select the college which the concentration is in.}
       {concentration_progress_college_select}
-      {User selects college}
+      {Student selects college}
     \screenshotstep
       {\stushall select the major which the concentration is in.}
       {concentration_progress_major_select}
-      {User selects major}
+      {Student selects major}
     \screenshotstep
       {\stushall select the concentration.}
       {concentration_progress_concentration_select}
-      {User selects concentration}
+      {Student selects concentration}
     \screenshotstep
       {\stushall click the \textbf{Load Progress} button.}
       {concentration_progress_click_load_progress}
-      {User clicks \textbf{Load Progress} button}
+      {\studentclicks{Load Progress}}
     \screenshotstep
       {\sysshall display the concentration requirement structure.}
       {concentration_progress_requirement_structure}
@@ -306,7 +311,7 @@ on courses the student has entered through the grade tracking component.
     \screenshotstep
       {\stushall click the \textbf{Grade Tracker Home} button.}
       {main_menu_click_grade_tracker_home}
-      {User clicks \textbf{Grade Tracker Home} button}
+      {\studentclicks{Grade Tracker Home}}
     \screenshotstep
       {\sysshall display the semesters the student is enrolled in.}
       {grade_tracker_home}
@@ -323,7 +328,7 @@ on courses the student has entered through the grade tracking component.
     \screenshotstep
       {\stushall click the \textbf{Add Semester} button.}
       {click_add_semester}
-      {User clicks \textbf{Add Semester} button}
+      {\studentclicks{Add Semester}}
     \screenshotstep
       {\sysshall display the \emph{Add Semester} form.}
       {add_semester_form}
@@ -331,11 +336,11 @@ on courses the student has entered through the grade tracking component.
     \screenshotstep
       {\stushall select the semester to add.}
       {add_semester_select}
-      {User selects semester}
+      {Student selects semester}
     \screenshotstep
       {\stushall click the \textbf{Save} button.}
       {add_semester_click_save}
-      {User clicks \textbf{Save} button}
+      {\studentclicks{Save}}
     \screenshotstep
       {\sysshall add that semester to the semesters shown.}
       {newly_added_semester}
@@ -343,7 +348,7 @@ on courses the student has entered through the grade tracking component.
     \screenshotstep
       {\stushall click the \textbf{Delete} button next to one of the semesters.}
       {semester_click_delete_button}
-      {User clicks \textbf{Delete} button}
+      {\studentclicks{Delete}}
     \screenshotstep
       {\sysshall display a delete confirmation message.}
       {semester_confirm_delete}
@@ -351,7 +356,7 @@ on courses the student has entered through the grade tracking component.
     \screenshotstep
       {\stushall click the \textbf{Yes, Delete} button.}
       {semester_click_confirm_delete}
-      {User clicks \textbf{Yes, Delete} button}
+      {\studentclicks{Yes, Delete}}
     \screenshotstep
       {\sysshall remove that semester from the semesters shown.}
       {removed_deleted_semester}
@@ -365,7 +370,7 @@ on courses the student has entered through the grade tracking component.
     \screenshotstep
       {\stushall click the chosen semester.}
       {grade_tracker_view_click_semester}
-      {User clicks semester}
+      {Student clicks semester}
     \screenshotstep
       {\sysshall display the courses the student is enrolled in, in the selected semester.}
       {courses_page}
@@ -382,7 +387,7 @@ on courses the student has entered through the grade tracking component.
     \screenshotstep
       {\stushall click the \textbf{Add Course} button.}
       {click_add_course}
-      {User clicks \textbf{Add Course} button}
+      {\studentclicks{Add Course}}
     \screenshotstep
       {\sysshall display the \emph{Add Course} form.}
       {add_course_form}
@@ -394,7 +399,7 @@ on courses the student has entered through the grade tracking component.
     \screenshotstep
       {\stushall click the \textbf{Save} button.}
       {add_course_form_click_save}
-      {User clicks \textbf{Save} button}
+      {\studentclicks{Save}}
     \screenshotstep
       {\sysshall add that course to the courses shown.}
       {newly_added_course}
@@ -402,7 +407,7 @@ on courses the student has entered through the grade tracking component.
     \screenshotstep
       {\stushall click the \textbf{Delete} button next to one of the courses.}
       {courses_click_delete}
-      {User clicks \textbf{Delete} button}
+      {\studentclicks{Delete}}
     \screenshotstep
       {\sysshall display a delete confirmation message.}
       {course_delete_confirmation}
@@ -410,7 +415,7 @@ on courses the student has entered through the grade tracking component.
     \screenshotstep
       {\stushall click the \textbf{Yes, Delete} button.}
       {courses_click_confirm_delete}
-      {User clicks \textbf{Yes, Delete} button}
+      {\studentclicks{Yes, Delete}}
     \screenshotstep
       {\sysshall remove that course from the courses shown.}
       {course_deleted}
@@ -424,7 +429,7 @@ on courses the student has entered through the grade tracking component.
     \screenshotstep
       {\stushall click the chosen course.}
       {courses_click_course}
-      {User clicks a course}
+      {Student clicks a course}
     \screenshotstep
       {\sysshall display the course details for the selected course.}
       {course_details_page}
@@ -441,7 +446,7 @@ on courses the student has entered through the grade tracking component.
     \screenshotstep
       {\stushall click the \textbf{Add Grade Entry} button under one of the categories.}
       {click_add_grade_entry}
-      {User clicks \textbf{Add Grade Entry} button under one of the categories}
+      {Student clicks \textbf{Add Grade Entry} button under one of the categories}
     \screenshotstep
       {\sysshall display the \emph{Grade Entry} form.}
       {add_grade_entry_form}
@@ -453,7 +458,7 @@ on courses the student has entered through the grade tracking component.
     \screenshotstep
       {\stushall click the \textbf{Save} button.}
       {add_grade_entry_click_save}
-      {User clicks \textbf{Save} button}
+      {\studentclicks{Save}}
     \screenshotstep
       {\sysshall add the new grade entry to the grade entries shown.}
       {newly_added_grade_entry}
@@ -461,7 +466,7 @@ on courses the student has entered through the grade tracking component.
     \screenshotstep
       {\stushall click the \textbf{Edit} button next to one of the grade entries.}
       {click_edit_grade_entry}
-      {User clicks \textbf{Edit} button next to one of the grade entries}
+      {Student clicks \textbf{Edit} button next to one of the grade entries}
     \screenshotstep
       {\sysshall display the \emph{Grade Entry} form, populated with the selected grade entry's
       information.}
@@ -470,11 +475,11 @@ on courses the student has entered through the grade tracking component.
     \screenshotstep
       {\stushall edit the grade entry information.}
       {edit_grade_entry_form_updated}
-      {User edits grade entry information}
+      {Student edits grade entry information}
     \screenshotstep
       {\stushall click the \textbf{Save} button.}
       {edit_grade_entry_click_save}
-      {User clicks \textbf{Save} button}
+      {\studentclicks{Save}}
     \screenshotstep
       {\sysshall update the grade entry information on the course details page accordingly.}
       {newly_edited_grade_entry}
@@ -482,7 +487,7 @@ on courses the student has entered through the grade tracking component.
     \screenshotstep
       {\stushall click the \textbf{Edit} button next to one of the courses.}
       {click_edit_grade_entry_to_delete}
-      {User clicks \textbf{Edit} button}
+      {\studentclicks{Edit}}
     \screenshotstep
       {\sysshall display the \emph{Grade Entry} form, populated with the selected grade entry's
       information.}
@@ -491,7 +496,7 @@ on courses the student has entered through the grade tracking component.
     \screenshotstep
       {\stushall click the \textbf{Delete} button.}
       {edit_grade_entry_to_delete_click_delete}
-      {User clicks \textbf{Delete} button}
+      {\studentclicks{Delete}}
     \screenshotstep
       {\sysshall display a delete confirmation message.}
       {delete_grade_entry_confirmation_popup}
@@ -499,7 +504,7 @@ on courses the student has entered through the grade tracking component.
     \screenshotstep
       {\stushall click the \textbf{Yes, Delete} button.}
       {delete_grade_entry_click_confirmation}
-      {User clicks \textbf{Yes, Delete} button}
+      {\studentclicks{Yes, Delete}}
     \screenshotstep
       {\sysshall remove that grade entry from the course details page.}
       {grade_entry_deleted}
@@ -521,17 +526,17 @@ on courses the student has entered through the grade tracking component.
   \begin{justify}
     The use-case diagram in \autoref{fig:useCaseDiagram} depicts the various use cases of the
     software system. The \textbf{Register for Account} \usecaseall a new user to register for an
-    account. The \textbf{Login} \usecaseall a user who already has an account to login to his/her
-    account. The \textbf{Logout} \usecaseall a user who is logged in to his/her account to logout.
-    The \textbf{View Concentration Progress} \usecaseall a user to view their course progress in a
-    concentration. The \textbf{View Semesters} \usecaseall a user to view the semesters he or she is
-    enrolled in. The \textbf{Manage Semesters} \usecaseall a user to add/remove semesters he or she
-    is enrolled in. The \textbf{View Courses} \usecaseall a user to view the courses they are taking
-    during a semester. The \textbf{Manage Courses} \usecaseall a user to add/remove courses he or
-    she is enrolled in. The \textbf{View Course Details} \usecaseall a user to view detailed
-    information about their grades in a course in which they are enrolled. The \textbf{Manage Grade
-    Entries} \usecaseall a user to add/edit/remove grade entries in the grading categories of a
-    course.
+    account. The \textbf{Login} \usecaseall a student who already has an account to login to his/her
+    account. The \textbf{Logout} \usecaseall a student who is logged in to his/her account to
+    logout. The \textbf{View Concentration Progress} \usecaseall a student to view their course
+    progress in a concentration. The \textbf{View Semesters} \usecaseall a student to view the
+    semesters he or she is enrolled in. The \textbf{Manage Semesters} \usecaseall a student to
+    add/remove semesters he or she is enrolled in. The \textbf{View Courses} \usecaseall a student
+    to view the courses they are taking during a semester. The \textbf{Manage Courses} \usecaseall a
+    student to add/remove courses he or she is enrolled in. The \textbf{View Course Details}
+    \usecaseall a student to view detailed information about their grades in a course in which they
+    are enrolled. The \textbf{Manage Grade Entries} \usecaseall a student to add/edit/remove grade
+    entries in the grading categories of a course.
   \end{justify}
 \end{figure}
 
@@ -550,18 +555,18 @@ on courses the student has entered through the grade tracking component.
 The class diagram in \autoref{fig:classDiagram} depicts the classes used in the software system's
 backend and their relationships, attributes, and functions. The \textbf{Common} class is a generic
 class that almost all other classes inherit from to get some common attributes. The \textbf{User}
-class is for storing users who use the system. The \textbf{College} class stores information about a
-college which majors belong to. The \textbf{Major} class stores information about a college major
-that concentrations belong to. The \textbf{Concentration} class stores information about a major
-concentration. The \textbf{Requirement} class stores information about recursive requirements of a
-concentration. The \textbf{Semester} class stores information about semesters which students can
-enroll in. The  \textbf{Course} class stores immutable information about a particular course. The
-\textbf{CourseInstance} class stores semester-specific information about a course offered during a
-semester. The \textbf{Category} class stores information about a grading category of a course, such
-as \emph{Homework} or \emph{Exams}. The \textbf{CategoryScoreRequirement} class stores information
-about additional grade requirements for categories, such as a minimum score needed in multiple
-categories to get a particular grade. The \textbf{GradeEntry} class stores individual grade entries
-entered by the user.
+class is for storing students who use the system. The \textbf{College} class stores information
+about a college which majors belong to. The \textbf{Major} class stores information about a college
+major that concentrations belong to. The \textbf{Concentration} class stores information about a
+major concentration. The \textbf{Requirement} class stores information about recursive requirements
+of a concentration. The \textbf{Semester} class stores information about semesters which students
+can enroll in. The  \textbf{Course} class stores immutable information about a particular course.
+The \textbf{CourseInstance} class stores semester-specific information about a course offered during
+a semester. The \textbf{Category} class stores information about a grading category of a course,
+such as \emph{Homework} or \emph{Exams}. The \textbf{CategoryScoreRequirement} class stores
+information about additional grade requirements for categories, such as a minimum score needed in
+multiple categories to get a particular grade. The \textbf{GradeEntry} class stores individual grade
+entries entered by the student.
 
 \clearpage
 
@@ -589,7 +594,7 @@ entered by the user.
   \includegraphics[width=\linewidth]{login_sequence_diagram.pdf}
   \caption{Login Sequence Diagram}
   \label{fig:loginSequenceDiagram}
-  \seqdiades{Login}{fig:loginSequenceDiagram}{logging in a returning user}
+  \seqdiades{Login}{fig:loginSequenceDiagram}{logging in a returning student}
 \end{figure}
 
 \begin{figure}[p!]
@@ -598,7 +603,7 @@ entered by the user.
   \includegraphics[width=\linewidth]{logout_sequence_diagram.pdf}
   \caption{Logout Sequence Diagram}
   \label{fig:logoutSequenceDiagram}
-  \seqdiades{Logout}{fig:logoutSequenceDiagram}{logging out a user who is logged in}
+  \seqdiades{Logout}{fig:logoutSequenceDiagram}{logging out a student who is logged in}
 \end{figure}
 
 \begin{figure}[p!]
@@ -720,7 +725,7 @@ entered by the user.
   {login_activity_diagram.pdf}
   {loginActivityDiagram}
   {loginSequenceDiagram}
-  {logging in a returning user}
+  {logging in a returning student}
 
 \actdia
   {Logout}
@@ -728,7 +733,7 @@ entered by the user.
   {logout_activity_diagram.pdf}
   {logoutActivityDiagram}
   {logoutSequenceDiagram}
-  {logging out a user who is logged in}
+  {logging out a student who is logged in}
 
 \actdia
   {Concentration Progress}
