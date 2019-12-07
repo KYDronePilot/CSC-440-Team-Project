@@ -77,6 +77,7 @@ matrix:
         - yarn
       script:
         - yarn build
+        - yarn run test
         - ../../../utils/collect_backend_static_files.sh $(realpath ../../backend/csc_440_project_backend)
         - docker build -t $REPO:$COMMIT .
       after_success:
