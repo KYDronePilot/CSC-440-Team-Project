@@ -3,7 +3,7 @@ language: generic
 matrix:
   include:
     - name: 'Build Docs'
-      dist: bionic
+      dist: xenial
       addons:
         apt:
           packages:
