@@ -103,11 +103,8 @@ class GradeEntryForm extends Component {
     /**
      * Handle changes to any of the input items.
      *  - Updates the value, validity, and invalid feedback (if any) of the input
-     * @param e Event
      */
-    handleChange(e) {
-        const name = e.target.name;
-        const value = e.target.value;
+    handleChange(name, value) {
         const validationFeedback = this.inputValidators[name](value);
 
         // Update info
@@ -191,20 +188,20 @@ class GradeEntryForm extends Component {
                                 <TextInput
                                     name={'name'} label={'Name'} onChange={this.handleChange}
                                     displayFeedback={this.props.displayValidation}
-                                    invalidFeedback={this.props.fields.name.invalidFeedback}
+                                    invalidFeedback={() => this.props.fields.name.invalidFeedback}
                                     valid={this.props.fields.name.valid} value={this.props.fields.name.value}
                                 />
                                 <TextInput
                                     name={'points'} label={'Points'} onChange={this.handleChange}
                                     displayFeedback={this.props.displayValidation}
-                                    invalidFeedback={this.props.fields.points.invalidFeedback}
+                                    invalidFeedback={() => this.props.fields.points.invalidFeedback}
                                     hint={'Number of points obtained'}
                                     valid={this.props.fields.points.valid} value={this.props.fields.points.value}
                                 />
                                 <TextInput
                                     name={'max_points'} label={'Max Points'} onChange={this.handleChange}
                                     displayFeedback={this.props.displayValidation}
-                                    invalidFeedback={this.props.fields.max_points.invalidFeedback}
+                                    invalidFeedback={() => this.props.fields.max_points.invalidFeedback}
                                     hint={'Max points obtainable'} valid={this.props.fields.max_points.valid}
                                     value={this.props.fields.max_points.value}
                                 />

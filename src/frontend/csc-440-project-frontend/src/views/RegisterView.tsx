@@ -66,34 +66,36 @@ class RegisterView extends Component<RegisterViewProps, RegisterViewState> {
         displayFeedback: false
     };
 
-    fields: { [key in Fields]: { invalidFeedback: (value: string) => string | undefined } } = {
-        firstName: {
-            invalidFeedback: RegisterView.firstNameInvalidFeedback
-        },
-        lastName: {
-            invalidFeedback: RegisterView.lastNameInvalidFeedback
-        },
-        username: {
-            invalidFeedback: RegisterView.usernameInvalidFeedback
-        },
-        email: {
-            invalidFeedback: RegisterView.emailInvalidFeedback
-        },
-        password: {
-            invalidFeedback: this.passwordInvalidFeedback
-        },
-        passwordConfirmation: {
-            invalidFeedback: this.passwordConfirmationInvalidFeedback
-        }
-    };
+    fields: { [key in Fields]: { invalidFeedback: (value: string) => string | undefined } };
 
     constructor(props: RegisterViewProps) {
         super(props);
 
         this.onSubmit = this.onSubmit.bind(this);
+
         this.onChange = this.onChange.bind(this);
         this.passwordInvalidFeedback = this.passwordInvalidFeedback.bind(this);
         this.passwordConfirmationInvalidFeedback = this.passwordConfirmationInvalidFeedback.bind(this);
+        this.fields = {
+            firstName: {
+                invalidFeedback: RegisterView.firstNameInvalidFeedback
+            },
+            lastName: {
+                invalidFeedback: RegisterView.lastNameInvalidFeedback
+            },
+            username: {
+                invalidFeedback: RegisterView.usernameInvalidFeedback
+            },
+            email: {
+                invalidFeedback: RegisterView.emailInvalidFeedback
+            },
+            password: {
+                invalidFeedback: this.passwordInvalidFeedback
+            },
+            passwordConfirmation: {
+                invalidFeedback: this.passwordConfirmationInvalidFeedback
+            }
+        };
     }
 
     private static firstNameInvalidFeedback(value: string) {

@@ -45,22 +45,24 @@ class LoginView extends Component<LoginViewProps, LoginViewState> {
         displayFeedback: false
     };
 
-    fields: { [key in Fields]: { invalidFeedback: (value: string) => string | undefined } } = {
-        username: {
-            invalidFeedback: this.usernameInvalidFeedback
-        },
-        password: {
-            invalidFeedback: this.passwordInvalidFeedback
-        }
-    };
+    fields: { [key in Fields]: { invalidFeedback: (value: string) => string | undefined } };
 
     constructor(props: LoginViewProps) {
         super(props);
+
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.usernameInvalidFeedback = this.usernameInvalidFeedback.bind(this);
         this.passwordInvalidFeedback = this.passwordInvalidFeedback.bind(this);
         this.areFieldsValid = this.areFieldsValid.bind(this);
+        this.fields = {
+            username: {
+                invalidFeedback: this.usernameInvalidFeedback
+            },
+            password: {
+                invalidFeedback: this.passwordInvalidFeedback
+            }
+        };
     }
 
     /**
