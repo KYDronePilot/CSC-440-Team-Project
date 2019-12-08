@@ -105,7 +105,7 @@ export class Header extends Component<HeaderProps, HeaderState> {
                             </MDBNavItem>
                             <MDBNavItem active={this.props.location.pathname === CONCENTRATION_PROGRESS_URL}>
                                 <MDBNavLink to={CONCENTRATION_PROGRESS_URL}>
-                                    Concentration Progress Tracker
+                                    Concentration Progress
                                 </MDBNavLink>
                             </MDBNavItem>
                             <MDBNavItem className={'mt-2 ml-2'}>

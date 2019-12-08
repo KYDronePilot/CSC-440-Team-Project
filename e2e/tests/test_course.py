@@ -18,7 +18,7 @@ class CourseTests(GenericSeleniumTestActions):
     def test_add_remove_courses(self):
         self.navigate_courses()
         driver = self.driver
-        self.screenshot_xpath_element(self._contents_xpath('Add Course Instance'), 'click_add_course')
+        self.screenshot_xpath_element(self._contents_xpath('Add Course'), 'click_add_course')
         time.sleep(1)
         self.take_screenshot('add_course_form')
         self.click_and_screenshot_select_option(
