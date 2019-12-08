@@ -539,257 +539,22 @@ on courses the student has entered through the grade tracking component.
   \end{justify}
 \end{figure}
 
-\clearpage
+\section{Data Flow Diagrams}
 
 \begin{figure}[p!]
-  \section{Class Diagram}
+  \subsection{Level 0 DFD}
   \centering
-  \includegraphics[width=0.90\linewidth]{class_diagram.pdf}
-  \caption{Class Diagram}
-  \label{fig:classDiagram}
+  \includegraphics[width=0.7\linewidth]{level_0_dfd.pdf}
+  \caption{Level 0 DFD}
 \end{figure}
 
 \clearpage
 
-The class diagram in \autoref{fig:classDiagram} depicts the classes used in the software system's
-backend and their relationships, attributes, and functions. The \textbf{Common} class is a generic
-class that almost all other classes inherit from to get some common attributes. The \textbf{User}
-class is for storing students who use the system. The \textbf{College} class stores information
-about a college which majors belong to. The \textbf{Major} class stores information about a college
-major that concentrations belong to. The \textbf{Concentration} class stores information about a
-major concentration. The \textbf{Requirement} class stores information about recursive requirements
-of a concentration. The \textbf{Semester} class stores information about semesters which students
-can enroll in. The  \textbf{Course} class stores immutable information about a particular course.
-The \textbf{CourseInstance} class stores semester-specific information about a course offered during
-a semester. The \textbf{Category} class stores information about a grading category of a course,
-such as \emph{Homework} or \emph{Exams}. The \textbf{CategoryScoreRequirement} class stores
-information about additional grade requirements for categories, such as a minimum score needed in
-multiple categories to get a particular grade. The \textbf{GradeEntry} class stores individual grade
-entries entered by the student.
+% \section{Sequence Diagrams}
 
-\clearpage
+% \section{State Diagram}
 
-% Sequence diagram description
-\newcommand{\seqdiades}[3]{
-    \begin{justify}
-      The \textbf{#1} sequence diagram in \autoref{#2} depicts the function calls and returns
-      involved in #3.
-    \end{justify}
-}
-
-\begin{figure}[p!]
-  \section{Sequence Diagrams}
-  \subsection{Register Sequence Diagram}
-  \centering
-  \includegraphics[width=\linewidth]{register_sequence_diagram.pdf}
-  \caption{Register Sequence Diagram}
-  \label{fig:registerSequenceDiagram}
-  \seqdiades{Register}{fig:registerSequenceDiagram}{registering a new user}
-\end{figure}
-
-\begin{figure}[p!]
-  \subsection{Login Sequence Diagram}
-  \centering
-  \includegraphics[width=\linewidth]{login_sequence_diagram.pdf}
-  \caption{Login Sequence Diagram}
-  \label{fig:loginSequenceDiagram}
-  \seqdiades{Login}{fig:loginSequenceDiagram}{logging in a returning student}
-\end{figure}
-
-\begin{figure}[p!]
-  \subsection{Logout Sequence Diagram}
-  \centering
-  \includegraphics[width=\linewidth]{logout_sequence_diagram.pdf}
-  \caption{Logout Sequence Diagram}
-  \label{fig:logoutSequenceDiagram}
-  \seqdiades{Logout}{fig:logoutSequenceDiagram}{logging out a student who is logged in}
-\end{figure}
-
-\begin{figure}[p!]
-  \subsection{Concentration Progress Sequence Diagram}
-  \centering
-  \includegraphics[width=\linewidth]{concentration_progress_sequence_diagram.pdf}
-  \caption{Concentration Progress Sequence Diagram}
-  \label{fig:concentrationProgressSequenceDiagram}
-  \seqdiades{Concentration Progress}{fig:concentrationProgressSequenceDiagram}
-  {generating a concentration progress view, showing the concentration requirements and courses and
-  which have and have not been fulfilled}
-\end{figure}
-
-\begin{figure}[p!]
-  \subsection{View Semesters Sequence Diagram}
-  \centering
-  \includegraphics[width=\linewidth]{view_semesters_sequence_diagram.pdf}
-  \caption{View Semesters Sequence Diagram}
-  \label{fig:viewSemestersSequenceDiagram}
-  \seqdiades{View Semesters}{fig:viewSemestersSequenceDiagram}
-  {viewing the semesters that a student is enrolled in}
-\end{figure}
-
-\begin{figure}[p!]
-  \subsection{Add/Remove Semesters Sequence Diagram}
-  \centering
-  \includegraphics[width=\linewidth]{add_remove_semesters_sequence_diagram.pdf}
-  \caption{Add/Remove Semesters Sequence Diagram}
-  \label{fig:addRemoveSemestersSequenceDiagram}
-  \seqdiades{Add/Remove Semesters}{fig:addRemoveSemestersSequenceDiagram}
-  {adding and removing semesters that a student is enrolled in}
-\end{figure}
-
-\begin{figure}[p!]
-  \subsection{View Courses Sequence Diagram}
-  \centering
-  \includegraphics[width=\linewidth]{view_courses_sequence_diagram.pdf}
-  \caption{View Courses Sequence Diagram}
-  \label{fig:viewCoursesSequenceDiagram}
-  \seqdiades{View Courses}{fig:viewCoursesSequenceDiagram}
-  {viewing the courses that a student is enrolled in}
-\end{figure}
-
-\begin{figure}[p!]
-  \subsection{Add/Remove Courses Sequence Diagram}
-  \centering
-  \includegraphics[width=\linewidth]{add_remove_courses_sequence_diagram.pdf}
-  \caption{Add/Remove Courses Sequence Diagram}
-  \label{fig:addRemoveCoursesSequenceDiagram}
-  \seqdiades{Add/Remove Courses}{fig:addRemoveCoursesSequenceDiagram}
-  {adding and removing courses that a student is enrolled in}
-\end{figure}
-
-\begin{figure}[p!]
-  \subsection{View Course Details Sequence Diagram}
-  \centering
-  \includegraphics[width=\linewidth]{view_course_details_sequence_diagram.pdf}
-  \caption{View Course Details Sequence Diagram}
-  \label{fig:viewCourseDetailsSequenceDiagram}
-  \seqdiades{View Course Details}{fig:viewCourseDetailsSequenceDiagram}
-  {viewing the grading details of a course that the student is enrolled in}
-\end{figure}
-
-\begin{figure}[p!]
-  \subsection{Add/Edit/Remove Grade Entries Sequence Diagram}
-  \centering
-  \includegraphics[width=0.52\linewidth]{add_edit_remove_grade_entries_sequence_diagram.pdf}
-  \caption{Add/Edit/Remove Grade Entries Sequence Diagram}
-  \label{fig:addEditRemoveGradeEntriesSequenceDiagram}
-  \seqdiades{Add/Edit/Remove Grade Entries}{fig:addEditRemoveGradeEntriesSequenceDiagram}
-  {adding, editing, and removing individual grade entries from a grading category in a course}
-\end{figure}
-
-\begin{figure}[p!]
-  \section{State Diagram}
-  \centering
-  \includegraphics[width=\linewidth]{state_diagram.pdf}
-  \caption{State Diagram}
-  \label{fig:stateDiagram}
-  \begin{justify}
-      The \textbf{State Diagram} in \autoref{fig:stateDiagram} depicts the various states that
-      the system frontend can be in across the various use-cases of the system.
-    \end{justify}
-\end{figure}
-
-% Activity diagram description
-\newcommand{\actdiades}[4]{
-    \begin{justify}
-      The \textbf{#1} activity diagram in \autoref{fig:#2} depicts the inner workings of the
-      functions in the corresponding sequence diagram in \autoref{fig:#3} when #4.
-    \end{justify}
-}
-
-% Activity diagram
-\newcommand{\actdia}[6]{
-  \begin{figure}[p!]
-    \subsection{#1 Activity Diagram}
-    \centering
-    \includegraphics[width=#2\linewidth]{#3}
-    \caption{#1 Activity Diagram}
-    \label{fig:#4}
-    \actdiades{#1}{#4}{#5}{#6}
-  \end{figure}
-}
-
-\begin{figure}[p!]
-  \section{Activity Diagrams}
-  \subsection{Register Activity Diagram}
-  \centering
-  \includegraphics[width=0.89\linewidth]{register_activity_diagram.pdf}
-  \caption{Register Activity Diagram}
-  \label{fig:registerActivityDiagram}
-  \actdiades{Register}{registerActivityDiagram}{registerSequenceDiagram}{registering a new user}
-\end{figure}
-
-\actdia
-  {Login}
-  {0.75}
-  {login_activity_diagram.pdf}
-  {loginActivityDiagram}
-  {loginSequenceDiagram}
-  {logging in a returning student}
-
-\actdia
-  {Logout}
-  {1}
-  {logout_activity_diagram.pdf}
-  {logoutActivityDiagram}
-  {logoutSequenceDiagram}
-  {logging out a student who is logged in}
-
-\actdia
-  {Concentration Progress}
-  {1}
-  {concentration_progress_activity_diagram.pdf}
-  {concentrationProgressActivityDiagram}
-  {concentrationProgressSequenceDiagram}
-  {generating a concentration progress view}
-
-\actdia
-  {View Semesters}
-  {1}
-  {view_semesters_activity_diagram.pdf}
-  {viewSemestersActivityDiagram}
-  {viewSemestersSequenceDiagram}
-  {viewing the semesters a student is enrolled in}
-
-\actdia
-  {Add/Remove Semesters}
-  {1}
-  {add_remove_semesters_activity_diagram.pdf}
-  {addRemoveSemestersActivityDiagram}
-  {addRemoveSemestersSequenceDiagram}
-  {adding and removing semesters that a student is enrolled in}
-
-\actdia
-  {View Courses}
-  {1}
-  {view_courses_activity_diagram.pdf}
-  {viewCoursesActivityDiagram}
-  {viewCoursesSequenceDiagram}
-  {viewing the courses that a student is enrolled in}
-
-\actdia
-  {Add/Remove Courses}
-  {1}
-  {add_remove_courses_activity_diagram.pdf}
-  {addRemoveCoursesActivityDiagram}
-  {addRemoveCoursesSequenceDiagram}
-  {adding and removing courses that a student is enrolled in}
-
-\actdia
-  {View Course Details}
-  {0.75}
-  {view_course_details_activity_diagram.pdf}
-  {viewCourseDetailsActivityDiagram}
-  {viewCourseDetailsSequenceDiagram}
-  {viewing grading details of a course that the student is enrolled in}
-
-\actdia
-  {Add/Edit/Remove Grade Entries}
-  {0.44}
-  {add_edit_remove_grade_entries_activity_diagram.pdf}
-  {addEditRemoveGradeEntriesActivityDiagram}
-  {addEditRemoveGradeEntriesSequenceDiagram}
-  {adding, editing, and removing individual grade entries from a grading category in a course
-  that the student is enrolled in}
+% \section{Activity Diagrams}
 
 \begin{figure}[p!]
   \section{Database Design}
@@ -798,12 +563,6 @@ entries entered by the student.
   \includegraphics[width=0.90\linewidth]{database_erd.pdf}
   \caption{Database ERD}
 \end{figure}
-
-\clearpage
-
-The \textbf{Database ERD} shows the entities and their attributes and relationships that will be
-stored in the database. This diagram is similar to the class diagram in \autoref{fig:classDiagram},
-so more information about the entities can be found there.
 
 \clearpage
 
@@ -826,10 +585,17 @@ organizations to quickly set it up and use it.
     particular course (e.g. Homework, Tests, etc.).
     \dictitem{Grade Entry} A graded piece of material associated with a particular section 
     (e.g. Homework 2, Exam 1, etc.).
-    \dictitem{User} A new user of the software system who does not yet have an account.
-    \dictitem{Student} A user of the software system who has an account and is a college student.
-    \dictitem{Requirement Structure} A recursive structure defining the required courses to complete
-    a concentration.
-\end{dict}
+    \item \textbf{studentName} (string): Name of a student
+    \item \textbf{studentEmail} (string): Email of a student
+    \item \textbf{studentUsername} (string): Username of a student
+    \item \textbf{studentPassword} (string): Password of a student
+    \item \textbf{student} (Student): Student object, composed of studentName, studentEmail,
+          studentUsername, studentPassword
+    \item \textbf{semester} (Semester): Semester object
+    \item \textbf{course} (Course): Course object
+    \item \textbf{category} (Category): Category object
+    \item \textbf{gradeEntry} (GradeEntry): GradeEntry object
+    \item \textbf{gradeEntry} (GradeEntry): GradeEntry object
+\end{itemize}
 
 \end{document}
