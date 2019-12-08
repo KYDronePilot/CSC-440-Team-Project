@@ -1,3 +1,4 @@
+from grades.models.requirement import get_requirements_structure
 from grades.serializers import RequirementStructureSerializer
 from grades.tests.test_model_relationships import TestDatabaseSetup
 
@@ -25,7 +26,7 @@ class TestSerializers(TestDatabaseSetup):
 
     def test_requirements_structure_serializer(self):
         self.csc_494_instance.students.add(self.student_william)
-        struct = self.csg_concentration_sub_req.get_requirements_structure(self.student_william)
+        struct = get_requirements_structure(self.csg_concentration_sub_req, self.student_william)
         serialized = RequirementStructureSerializer(struct)
         self.assertEqual(
             serialized.data,
