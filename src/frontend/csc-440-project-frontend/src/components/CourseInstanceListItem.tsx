@@ -6,11 +6,6 @@ import DeleteWarning from './DeleteWarning';
 import {COURSE_URL} from '../routes/urls';
 import {formatScore, LetterGrade} from '../api/gradeEntry';
 
-// function mapStateToProps(state: any) {
-//     return {
-//         courses: state.course.courses
-//     };
-// }
 
 interface CourseInstanceListItemProps {
     name: string;
@@ -35,20 +30,11 @@ class CourseInstanceListItem extends Component<CourseInstanceListItemProps, Cour
             deleteWarningVisible: false
         };
 
-        // this.handleCourseInstanceSelected = this.handleCourseInstanceSelected.bind(this);
-        // this.course = this.course.bind(this);
         this.toggleDeleteWarningVisible = this.toggleDeleteWarningVisible.bind(this);
         this.deleteCourseInstance = this.deleteCourseInstance.bind(this);
         this.deleteButton = this.deleteButton.bind(this);
         this.gradeDetails = this.gradeDetails.bind(this);
     }
-
-    /**
-     * Gets the corresponding course for this course instance.
-     */
-    // course() {
-    //     return this.props.courses[this.props.courseInstance.course];
-    // }
 
     /**
      * Toggle visibility of delete warning message.
@@ -69,7 +55,12 @@ class CourseInstanceListItem extends Component<CourseInstanceListItemProps, Cour
         if (this.props.removeCourseInstance === undefined)
             return null;
         return (
-            <MDBBtn color={''} onClick={this.toggleDeleteWarningVisible} className={'btn-link p-1'}>
+            <MDBBtn
+                color={''}
+                onClick={this.toggleDeleteWarningVisible}
+                className={'btn-link p-1'}
+                id={'delete-course-button'}
+            >
                 Delete
             </MDBBtn>
         );
@@ -80,7 +71,7 @@ class CourseInstanceListItem extends Component<CourseInstanceListItemProps, Cour
         if (props.maxPoints === 0)
             return <></>;
         return (
-            <p className={'mb-1 font-weight-bold'}>
+            <p className={'mb-1 font-weight-bold'} id={'grade-details'}>
                 Grade:&nbsp;{props.letterGrade}&nbsp;({formatScore(props.score)})
                 | Points:&nbsp;{props.points}&nbsp;/&nbsp;{props.maxPoints}
             </p>
@@ -120,12 +111,6 @@ class CourseInstanceListItem extends Component<CourseInstanceListItemProps, Cour
                         {this.deleteButton()}
                     </MDBCol>
                 </MDBRow>
-                <div className={'d-flex w-100 justify-content-between'}>
-                    {/*<MDBBtn onClick={this.toggleDeleteWarningVisible}>Delete</MDBBtn>*/}
-                </div>
-                {/*<div className="d-flex w-100 justify-content-between">*/}
-                {/*    /!*<a onClick={this.editGradeEntryEH}>Edit</a>*!/*/}
-                {/*</div>*/}
             </MDBListGroupItem>
         );
     }

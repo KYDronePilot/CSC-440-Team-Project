@@ -24,7 +24,7 @@ interface TextInputProps<Field> {
     /** Whether the field is a password field */
     password: boolean;
     /** Explicitly pass field validity */
-    valid?: boolean | ((value: string) => boolean);
+    valid?: boolean;
     /** Feedback when field is valid */
     validFeedback?: string;
     /** Value of field */
@@ -165,7 +165,7 @@ class TextInput<Field extends string> extends Component<TextInputProps<Field>, T
 
         // If validity is explicitly set, use it
         if (!check.undefined(props.valid))
-            return check.boolean(props.valid) ? props.valid : props.valid(props.value);
+            return props.valid;
 
         // If invalid feedback, use it to determine validity
         if (!check.undefined(props.invalidFeedback))
