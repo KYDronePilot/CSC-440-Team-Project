@@ -1,11 +1,6 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
 import * as PropTypes from 'prop-types';
 import {MDBBtn, MDBContainer, MDBModal, MDBModalBody, MDBModalFooter, MDBModalHeader} from 'mdbreact';
-
-function mapStateToProps(state) {
-    return {};
-}
 
 class DeleteWarning extends Component {
     static propTypes = {
@@ -33,6 +28,7 @@ class DeleteWarning extends Component {
                         <MDBBtn
                             color={'danger'}
                             onClick={this.props.onConfirmation}
+                            id={'delete-confirmation-button'}
                         >
                             Yes, Delete
                         </MDBBtn>
@@ -43,6 +39,4 @@ class DeleteWarning extends Component {
     }
 }
 
-export default connect(
-    mapStateToProps
-)(DeleteWarning);
+export default DeleteWarning;
