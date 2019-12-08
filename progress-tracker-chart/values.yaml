@@ -13,7 +13,7 @@ backend:
     corsOriginAllowAll: 'False'
   image:
     repo: kydronepilot19/csc-440-project-backend
-    tag: 0.0.1
+    tag: master
     pullPolicy: Always
 
 # Frontend/NGINX of application
@@ -21,7 +21,7 @@ frontend:
   name: csc-440-frontend
   image:
     repo: kydronepilot19/csc-440-project-frontend
-    tag: 0.0.1
+    tag: master
     pullPolicy: Always
 
 imagePullSecrets: []
