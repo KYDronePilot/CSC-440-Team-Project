@@ -9,9 +9,10 @@ import {fetchGradeEntries} from '../actions/gradeEntryActions';
 import {fetchCategories} from '../actions/categoryActions';
 import {fetchCSRs} from '../actions/csrActions';
 import {LOGIN_URL} from './urls';
+import {AuthState} from '../reducers/auth';
 
 interface StateProps {
-    auth: any;
+    auth: AuthState;
     dataLoaded: boolean;
     forceDataReloadState: boolean;
 }

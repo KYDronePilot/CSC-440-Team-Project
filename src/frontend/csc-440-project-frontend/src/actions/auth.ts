@@ -1,5 +1,6 @@
-import axios from 'axios';
+import axios, {AxiosRequestConfig} from 'axios';
 import {
+    ADD_SEMESTER_TO_STUDENT,
     AUTH_ERROR,
     DATA_NOT_LOADED,
     LOGIN_FAIL,
@@ -7,16 +8,86 @@ import {
     LOGOUT_SUCCESS,
     REGISTER_FAIL,
     REGISTER_SUCCESS,
+    REMOVE_SEMESTER_FROM_STUDENT,
     USER_LOADED,
     USER_LOADING
 } from './types';
 import {LOGIN_URL, LOGOUT_URL, REGISTER_URL, USER_URL} from '../api/urls';
 import {clearState} from './commonActions';
+import {UserSubState} from '../reducers/auth';
+import {ThunkAction} from 'redux-thunk';
+import {Action} from 'redux';
+import {User} from '../api/types';
+
+/**
+ * Returned result when a user is authenticated
+ */
+interface AuthenticatedUserResult {
+    user: User;
+    token: string;
+}
+
+interface UserLoadedAction {
+    type: typeof USER_LOADED;
+    payload: UserSubState;
+}
+
+interface AuthErrorAction {
+    type: typeof AUTH_ERROR;
+}
+
+interface LoginSuccessAction {
+    type: typeof LOGIN_SUCCESS;
+    payload: AuthenticatedUserResult;
+}
+
+interface LoginFailAction {
+    type: typeof LOGIN_FAIL;
+}
+
+interface RegisterSuccessAction {
+    type: typeof REGISTER_SUCCESS;
+    payload: AuthenticatedUserResult;
+}
+
+interface RegisterFailAction {
+    type: typeof REGISTER_FAIL;
+}
+
+interface DataNotLoadedAction {
+    type: typeof DATA_NOT_LOADED;
+}
+
+interface LogoutSuccessAction {
+    type: typeof LOGOUT_SUCCESS;
+}
+
+interface AddSemesterToStudentAction {
+    type: typeof ADD_SEMESTER_TO_STUDENT;
+    payload: number;
+}
+
+interface RemoveSemesterFromStudentAction {
+    type: typeof REMOVE_SEMESTER_FROM_STUDENT;
+    payload: number;
+}
+
+interface UserLoadingAction {
+    type: typeof USER_LOADING;
+}
+
+export type AuthActionTypes = UserLoadedAction | AuthErrorAction | LoginSuccessAction | LoginFailAction
+    | RegisterSuccessAction | RegisterFailAction | DataNotLoadedAction | LogoutSuccessAction
+    | AddSemesterToStudentAction | RemoveSemesterFromStudentAction | UserLoadingAction;
+
+
+type RootState = any;
+type ThunkResult<R> = ThunkAction<R, RootState, {}, Action>;
 
 /**
  * Check token and load user
  */
-export const loadUser = () => (dispatch, getState) => {
+export const loadUser = (): ThunkResult<void> => (dispatch, getState) => {
     dispatch({type: USER_LOADING});
 
     axios.get(USER_URL, tokenConfig(getState))
@@ -36,9 +107,8 @@ export const loadUser = () => (dispatch, getState) => {
 
 /**
  * Login user
- * @return {Function}
  */
-export const login = (username, password) => dispatch => {
+export const login = (username: string, password: string): ThunkResult<void> => dispatch => {
     // Headers
     const config = {
         headers: {
@@ -71,11 +141,14 @@ export const login = (username, password) => dispatch => {
 
 /**
  * Register user
- * @param username
- * @param password
- * @return {Function}
  */
-export const register = ({firstName, lastName, username, email, password}) => dispatch => {
+export const register = (
+    firstName: string,
+    lastName: string,
+    username: string,
+    email: string,
+    password: string
+): ThunkResult<void> => dispatch => {
     // Headers
     const config = {
         headers: {
@@ -105,7 +178,7 @@ export const register = ({firstName, lastName, username, email, password}) => di
 /**
  * Logout user
  */
-export const logout = () => (dispatch, getState) => {
+export const logout = (): ThunkResult<void> => (dispatch, getState) => {
     axios.post(LOGOUT_URL, null, tokenConfig(getState))
         .then(res => {
             // Clear state
@@ -123,12 +196,12 @@ export const logout = () => (dispatch, getState) => {
 /**
  * Setup config with token
  */
-export const tokenConfig = getState => {
+export const tokenConfig = (getState: () => RootState) => {
     // Get token from state
     const token = getState().auth.token;
 
     // Headers
-    const config = {
+    const config: AxiosRequestConfig = {
         headers: {
             'Content-Type': 'application/json'
         }

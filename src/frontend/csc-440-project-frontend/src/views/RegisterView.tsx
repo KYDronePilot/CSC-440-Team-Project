@@ -8,20 +8,13 @@ import validator from 'validator';
 import TextInput from '../components/TextInput';
 import {toKeys} from './LoginView';
 
-export interface NewUser {
-    firstName: string;
-    lastName: string;
-    username: string;
-    email: string;
-    password: string;
-}
 
 interface StateProps {
     isAuthenticated: boolean;
 }
 
 interface DispatchProps {
-    register: (user: NewUser) => void;
+    register: (firstName: string, lastName: string, username: string, email: string, password: string) => void;
 }
 
 function mapStateToProps(state: any) {
@@ -145,14 +138,9 @@ class RegisterView extends Component<RegisterViewProps, RegisterViewState> {
             return;
         }
         const {firstName, lastName, username, email, password} = this.state;
-        const newUser = {
-            firstName,
-            lastName,
-            username,
-            email,
-            password
-        };
-        this.props.register(newUser);
+
+        // Make registration request
+        this.props.register(firstName, lastName, username, email, password);
     }
 
     onChange(name: Fields, value: string) {

@@ -20,6 +20,18 @@ export interface GenericDjangoRestObject {
     last_updated: string;
 }
 
+export interface User {
+    id: number;
+    first_name: string;
+    last_name: string;
+    username: string;
+    email: string;
+    colleges: number[];
+    majors: number[];
+    concentrations: number[];
+    semesters: number[];
+}
+
 export interface CourseInstance extends GenericDjangoRestObject {
     grading_strategy: POINT_BASED | WEIGHT_BASED;
     min_a: number;
