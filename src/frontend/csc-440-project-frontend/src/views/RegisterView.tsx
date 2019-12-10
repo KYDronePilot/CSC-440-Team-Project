@@ -7,6 +7,7 @@ import check from 'check-types';
 import validator from 'validator';
 import TextInput from '../components/TextInput';
 import {toKeys} from './LoginView';
+import {AxiosPromise} from 'axios';
 
 
 interface StateProps {
@@ -14,7 +15,13 @@ interface StateProps {
 }
 
 interface DispatchProps {
-    register: (firstName: string, lastName: string, username: string, email: string, password: string) => void;
+    register: (
+        firstName: string,
+        lastName: string,
+        username: string,
+        email: string,
+        password: string
+    ) => void;
 }
 
 function mapStateToProps(state: any) {

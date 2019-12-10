@@ -1,4 +1,4 @@
-import axios, {AxiosRequestConfig} from 'axios';
+import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
 import {
     ADD_SEMESTER_TO_STUDENT,
     AUTH_ERROR,
@@ -22,10 +22,13 @@ import {User} from '../api/types';
 /**
  * Returned result when a user is authenticated
  */
-interface AuthenticatedUserResult {
+export interface AuthenticatedUserResult {
     user: User;
     token: string;
 }
+
+// Shortcut for axios promise response
+type AxiosPromise<T> = Promise<AxiosResponse<T>>;
 
 interface UserLoadedAction {
     type: typeof USER_LOADED;
@@ -82,7 +85,7 @@ export type AuthActionTypes = UserLoadedAction | AuthErrorAction | LoginSuccessA
 
 
 type RootState = any;
-type ThunkResult<R> = ThunkAction<R, RootState, {}, Action>;
+type ThunkResult<R> = ThunkAction<R, RootState, undefined, Action>;
 
 /**
  * Check token and load user
@@ -108,7 +111,7 @@ export const loadUser = (): ThunkResult<void> => (dispatch, getState) => {
 /**
  * Login user
  */
-export const login = (username: string, password: string): ThunkResult<void> => dispatch => {
+export const login = (username: string, password: string): ThunkResult<AxiosPromise<AuthenticatedUserResult>> => async dispatch => {
     // Headers
     const config = {
         headers: {
@@ -117,9 +120,9 @@ export const login = (username: string, password: string): ThunkResult<void> => 
     };
 
     // Request body
-    const body = JSON.stringify({username, password});
+    const body = JSON.stringify({usernames: username, password});
 
-    axios.post(LOGIN_URL, body, config)
+    return axios.post<AuthenticatedUserResult>(LOGIN_URL, body, config)
         .then(res => {
             // Force state reload
             dispatch({
@@ -130,12 +133,15 @@ export const login = (username: string, password: string): ThunkResult<void> => 
                 type: LOGIN_SUCCESS,
                 payload: res.data
             });
+            return res;
         })
         .catch(err => {
             console.log('Auth error: CHANGE THIS MESSAGE!!!');
             dispatch({
                 type: LOGIN_FAIL
             });
+            // Rethrow to get error messages in component
+            throw err;
         });
 };
 

@@ -1,10 +1,23 @@
 import React, {Component, FormEvent} from 'react';
 import {Link, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {login} from '../actions/auth';
+import {AuthenticatedUserResult, login} from '../actions/auth';
 import {REGISTER_URL, ROOT_URL} from '../routes/urls';
 import TextInput from '../components/TextInput';
 import check from 'check-types';
+import {AxiosPromise} from 'axios';
+import {ThunkDispatch} from 'redux-thunk';
+import {Action, bindActionCreators} from 'redux';
+import {log} from 'util';
+import {getDjangoFieldErrors} from '../utils';
+
+interface StateProps {
+    isAuthenticated: boolean;
+}
+
+interface DispatchProps {
+    login: (username: string, password: string) => AxiosPromise<AuthenticatedUserResult>;
+}
 
 function mapStateToProps(state: any) {
     return {
@@ -12,12 +25,10 @@ function mapStateToProps(state: any) {
     };
 }
 
-interface StateProps {
-    isAuthenticated: boolean;
-}
-
-interface DispatchProps {
-    login: (username: string, password: string) => any;
+function mapDispatchToProps(dispatch: ThunkDispatch<any, undefined, Action>): DispatchProps {
+    return {
+        login: (username: string, password: string) => dispatch(login(username, password))
+    };
 }
 
 interface LoginViewProps extends StateProps, DispatchProps {
@@ -34,8 +45,17 @@ interface LoginViewState {
     displayFeedback: boolean;
 }
 
-export function toKeys<T extends string | number | symbol>(obj: { [key in T]: any }): T[] {
+export function toKeys<T extends string | number | symbol, O = { [key in T]: any }>(obj: O): T[] {
     return Object.keys(obj) as T[];
+}
+
+/**
+ * Flatten Django field feedback that comes in string arrays.
+ * @param feedback - Array of feedback items
+ * @return Feedback flattened into a single string
+ */
+export function flattenDjangoFieldErrorFeedback(feedback: string[]) {
+    return feedback.join(' - ');
 }
 
 class LoginView extends Component<LoginViewProps, LoginViewState> {
@@ -87,7 +107,15 @@ class LoginView extends Component<LoginViewProps, LoginViewState> {
         }
 
         // Try to login the user
-        this.props.login(this.state.username, this.state.password);
+        this.props.login(this.state.username, this.state.password)
+            .catch(err => {
+                let feedback = getDjangoFieldErrors(err, this.fields);
+                if (check.null(feedback))
+                    return;
+                for (const field of toKeys(feedback)) {
+
+                }
+            });
     }
 
     /**
@@ -163,5 +191,5 @@ class LoginView extends Component<LoginViewProps, LoginViewState> {
 
 export default connect<StateProps, DispatchProps>(
     mapStateToProps,
-    {login}
+    mapDispatchToProps
 )(LoginView);
