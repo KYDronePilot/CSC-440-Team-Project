@@ -3,6 +3,7 @@ from typing import Union, Dict
 from django.db import models
 from django.db.models import QuerySet
 
+from grades.models.course import is_completed
 from .common import Common
 
 
@@ -89,7 +90,7 @@ def is_sub_requirement(requirement) -> bool:
     """
     return requirement.super_requirement is not None
 
-@property
+
 def course_instances(requirement) -> QuerySet:
     """
     All course instances of directly related courses.
@@ -97,7 +98,7 @@ def course_instances(requirement) -> QuerySet:
     from grades.models import CourseInstance
     return CourseInstance.objects.filter(course__requirements=requirement)
 
-def get_Courses(student) -> QuerySet:
+def get_Courses(requirement, student) -> QuerySet:
     """
     Get Courses completed by student
 
@@ -107,9 +108,8 @@ def get_Courses(student) -> QuerySet:
     Returns:
         Courses completed by student
     """
-    from grades.models import Course
 
-    return Course.course_instances.filter(students=student)
+    return course_instances(requirement).filter(students=student)
 
 def filter_instances(query) -> QuerySet:
     """
@@ -125,7 +125,7 @@ def filter_instances(query) -> QuerySet:
 
     return Course.objects.filter(course_instances__in=query)
 
-def get_completed_courses(student) -> QuerySet:
+def get_completed_courses(requirement, student) -> QuerySet:
     """
     Get courses that the student has completed.
 
@@ -135,7 +135,7 @@ def get_completed_courses(student) -> QuerySet:
     Returns:
         Courses completed by the student
     """
-    course_instances = get_Courses(student)
+    course_instances = get_Courses(requirement, student)
 
     return filter_instances(course_instances)
 
@@ -190,7 +190,7 @@ def are_course_requirements_fulfilled(requirement, student) -> bool:
     if requirement.course_count is None:
         return True
 
-    return get_completed_courses(student).count() >= requirement.course_count
+    return get_completed_courses(requirement, student).count() >= requirement.course_count
 
 def are_sub_requirements_fulfilled(requirement, student) -> bool:
     """
@@ -206,8 +206,8 @@ def are_sub_requirements_fulfilled(requirement, student) -> bool:
         return True
 
     completed_count = 0
-    for requirement in requirement.sub_requirements.all():
-        if requirement.is_fulfilled(student):
+    for subrequirements in requirement.sub_requirements.all():
+        if is_fulfilled(subrequirements, student):
             completed_count += 1
 
     return completed_count >= requirement.sub_requirement_count
@@ -225,7 +225,7 @@ def is_sub_requirement_course_count_fulfilled(requirement, student) -> bool:
     if requirement.sub_requirement_course_count is None:
         return True
 
-    return requirement.get_completed_sub_requirement_courses(student).count() >= requirement.sub_requirement_course_count
+    return get_completed_sub_requirement_courses(requirement, student).count() >= requirement.sub_requirement_course_count
 
 def is_fulfilled(requirement, student) -> bool:
     """
@@ -235,9 +235,9 @@ def is_fulfilled(requirement, student) -> bool:
         Whether the requirement is fulfilled or not
     """
     return (
-            requirement.are_course_requirements_fulfilled(student)
-            and requirement.are_sub_requirements_fulfilled(student)
-            and requirement.is_sub_requirement_course_count_fulfilled(student)
+            are_course_requirements_fulfilled(requirement, student)
+            and are_sub_requirements_fulfilled(requirement, student)
+            and is_sub_requirement_course_count_fulfilled(requirement, student)
     )
 
 def get_requirements_structure(requirement, student) -> Dict[str, Union[bool, list]]:
@@ -267,17 +267,17 @@ def get_requirements_structure(requirement, student) -> Dict[str, Union[bool, li
     """
     return {
         'name': requirement.name,
-        'fulfilled': requirement.is_fulfilled(student),
+        'fulfilled': is_fulfilled(requirement, student),
         'courses': [
             {
                 'name': course.name,
                 'code': course.code,
                 'credit_hours': course.credit_hours,
-                'fulfilled': course.is_completed(student)
+                'fulfilled': is_completed(course, student)
             } for course in requirement.courses.order_by('code').all()
         ],
         'sub_requirements': [
-            requirement.get_requirements_structure(student)
+            get_requirements_structure(requirement, student)
             for requirement in requirement.sub_requirements.order_by('name').all()
         ]
     }

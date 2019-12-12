@@ -10,6 +10,8 @@ from grades.serializers import CourseSerializer, CourseInstanceSerializer, Grade
     CollegeSerializer, CategoryScoreRequirementSerializer, SemesterSerializer, CourseInstanceSearchSerializer, \
     RequirementStructureSerializer, MajorSerializer, ConcentrationSerializer
 
+from  grades.models.requirement import get_requirements_structure
+
 
 class GenericViewSet(viewsets.ModelViewSet):
     permission_classes = [
@@ -203,7 +205,7 @@ class RequirementStructureViewSet(viewsets.ReadOnlyModelViewSet):
         #     return Response(status=status.HTTP_404_NOT_FOUND)
         queryset = Requirement.objects.get(concentration_id=self.kwargs['pk'])
         # queryset = Requirement.objects.get(concentration_id=self.request.query_params['concentration'])
-        data = queryset.get_requirements_structure(self.request.user)
+        data = get_requirements_structure(queryset, self.request.user)
         serializer = RequirementStructureSerializer(data)
         return Response(serializer.data)
 
