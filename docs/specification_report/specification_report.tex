@@ -78,7 +78,7 @@
 
 
 \author{Michael Galliers and James Miller}
-\title{Grade/Progress Tracker - Specification Report}
+\title{Grade/Progress Tracker System}
 
 
 \begin{document}
@@ -101,10 +101,11 @@
 \section{Introduction}
 \subsection{Problem Statement}
 As EKU college students, we the authors have firsthand experience with the difficulties of
-grade/progress management. The tools already used by the college for grade management have their
-flaws. Many professors either do not setup the grading categories and weights properly, or they
-choose to not use BlackBoard for tracking grades at all. Also, BlackBoard does not have the ability
-to give advanced insights for student grades other than simple weighted averages or totals.
+grade/progress management. The tools already used by the college for grade management (namely
+BlackBoard) have their flaws. Many professors either do not setup the grading categories and weights
+properly, or they choose to not use BlackBoard for tracking grades at all. Also, BlackBoard does not
+have the ability to give advanced insights for student grades other than simple weighted averages or
+totals.
 
 Students can choose to manage their grades on their own, either using technology, such as
 spreadsheets, or pen and paper. Students who do this are able to gain more insights into their
@@ -113,26 +114,26 @@ hand, especially when predicting grades needed on an assignment.
 
 \subsection{Proposal}
 As a solution to these problems, we propose a software system for grade and progress tracking. The
-system shall have 2 main related components: one for grade tracking and one for major/concentration
-progress tracking. The grade tracking system will allow students to easily enter and track their
-grades across colleges, semesters, courses, and categories (homework, exams, etc.). Various views on
-the user interface will display grades/scores using visual elements and animations, making it easy
-for students to see how well they are doing.
+system shall have 2 main related subsystems: one for grade tracking and one for concentration
+progress tracking. The grade tracking subsystem will allow students to easily enter and track their
+grades across semesters, courses, and categories (homework, exams, etc.). Various views on the user
+interface will display grades/scores using visual elements and animations, making it easy for
+students to see how well they are doing.
 
-The second component of the application is a progress tracker for majors and concentrations.
-Information provided through the grade tracking feature, coupled with course requirements structures
-will allow students to view their progress across multiple majors and concentrations.
+The second subsystem of the application is a progress tracker for concentrations. Information
+provided through the grade tracking subsystem, coupled with concentration requirement structures
+will allow students to view their progress across multiple concentrations.
 
 \section{System Description}
 The system shall have an account management component to keep track of students, including the
-ability to register, login, edit account, and logout. When a student logs into the system, the
-student shall see a dashboard containing the most relevant information and navigation links. From
-there, the student will also be able to access the system menu, allowing them to navigate to either
-the grade tracking component or the progress tracking component.
+ability to register, login, and logout. When a student logs into the system, the student shall see a
+dashboard containing the most relevant information and navigation links. From there, the student
+will also be able to access the system menu, allowing them to navigate to either the grade tracking
+subsystem or the progress tracking subsystem.
 
-\subsection{Grade Tracking Component}
+\subsection{Grade Tracking Subsystem}
 \noindent
-The grade tracking component shall have views for the following items:
+The grade tracking subsystem shall have views for the following items:
 
 \begin{enumerate}
     \item All semesters (root grade tracking view)
@@ -150,37 +151,25 @@ to any of the courses.
 
 The \textit{Course Detail} view shall display all remaining details for a particular course. This
 includes the statistics of a student's grades in the course, the grading categories of the course,
-and the grade entries themselves. The student shall also have the ability to add/remove/edit
-categories and grade entries.
+and the grade entries themselves. The student shall also have the ability to add/remove/edit grade
+entries.
 
-\subsection{Progress Tracking Component}
+\subsection{Progress Tracking Subsystem}
 \noindent
-The progress tracking component shall allow students to track their progress across major
-concentrations. This component shall have the following hierarchical views:
+The progress tracking subsystem shall allow students to track their progress across major
+concentrations. The main page for this subsystem shall have 3 dropdowns to narrow down which
+concentration the student would like to view the progress for. These 3 dropdowns shall be:
 
-\begin{enumerate}
-    \item Colleges (root progress tracking view)
-    \item Majors
-    \item Concentrations
-    \item Concentration progress
-\end{enumerate}
+\begin{itemize}
+  \item College
+  \item Major
+  \item Concentration
+\end{itemize}
 
-The \textit{Colleges} view shall display the colleges in which the student is enrolled and allow
-him/her to navigate to the \textit{Majors} view for that college. The student shall also have the
-ability to add/remove colleges which he/she is enrolled in.
-
-The \textit{Majors} view shall display the majors of the college which was navigated from that the
-student is enrolled in. The student shall be able to add/remove majors which he/she is enrolled in
-and also navigate to the \textit{Concentrations} view for a particular major.
-
-The \textit{Concentrations} view shall display \textbf{all} the concentrations of the major which
-was navigated from, broken up into 2 sections: one for the concentration(s) the student in enrolled
-in and one for all other concentrations. The student shall be able to add/remove concentrations
-which they are enrolled in and navigate to the \textit{Concentration progress} view.
-
-The \textit{Concentration progress} view shall display visuals for the student's progress in the
-concentration, including overall progress and individual courses completed. This view shall be based
-on courses the student has entered through the grade tracking component.
+Once the user has selected the specified college, major, and concentration, the \textbf{Load
+Progress} button shall be made visible. When the user clicks on it, the hierarchical organization of
+the concentration's requirement structure shall be displayed. Courses that are completed shall be
+colored green and sub-requirement shall be expandable/collapsible.
 
 \section{System Requirements}
 \subsection{Functional Requirements}
@@ -360,7 +349,7 @@ on courses the student has entered through the grade tracking component.
       {\sysshall remove that semester from the semesters shown.}
       {removed_deleted_semester}
       {Semester removed}
-    \gotohome
+    \gotohomess{grade_tracker_click_grade_tracker}
 \end{requirement}
 
 % Shortcut for navigating to enrolled courses
@@ -821,8 +810,9 @@ organizations to quickly set it up and use it.
 \begin{dict}
     \dictitem{Semester} A single semester of education consisting of courses. Each semester can
     be associated with a different educational institution; consistency is not required.
-    \dictitem{Course} Any educational course/class occurring within a particular semester.
-    \dictitem{Section} An equally weighted or logically grouped collection of material within a
+    \dictitem{Course} Immutable information about a course offered at a college.
+    \dictitem{Course Instance} Semester-specific information about a particular course.
+    \dictitem{Category} An equally weighted or logically grouped collection of material within a
     particular course (e.g. Homework, Tests, etc.).
     \dictitem{Grade Entry} A graded piece of material associated with a particular section 
     (e.g. Homework 2, Exam 1, etc.).
