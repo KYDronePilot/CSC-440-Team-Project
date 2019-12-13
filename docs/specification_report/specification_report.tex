@@ -524,18 +524,15 @@ colored green and sub-requirement shall be expandable/collapsible.
   \newcommand{\usecaseall}{use-case is to allow }
   \begin{justify}
     The use-case diagram in \autoref{fig:useCaseDiagram} depicts the various use cases of the
-    software system. The \textbf{Register for Account} \usecaseall a new user to register for an
-    account. The \textbf{Login} \usecaseall a student who already has an account to login to his/her
-    account. The \textbf{Logout} \usecaseall a student who is logged in to his/her account to
-    logout. The \textbf{View Concentration Progress} \usecaseall a student to view their course
-    progress in a concentration. The \textbf{View Semesters} \usecaseall a student to view the
-    semesters he or she is enrolled in. The \textbf{Manage Semesters} \usecaseall a student to
-    add/remove semesters he or she is enrolled in. The \textbf{View Courses} \usecaseall a student
-    to view the courses they are taking during a semester. The \textbf{Manage Courses} \usecaseall a
-    student to add/remove courses he or she is enrolled in. The \textbf{View Course Details}
-    \usecaseall a student to view detailed information about their grades in a course in which they
-    are enrolled. The \textbf{Manage Grade Entries} \usecaseall a student to add/edit/remove grade
-    entries in the grading categories of a course.
+    software system. The \textbf{Register User} \usecaseall the system to register a new user. The 
+    \textbf{Authenticate Student} \usecaseall the system to authenticate a student's credentials.
+    The \textbf{Logout Student} \usecaseall the system to de-authenticate a student. The 
+    \textbf{Calculate Concentration Progress} \usecaseall the system to generate the concentration
+    requirement structure for a student. The \textbf{Manage Semesters} \usecaseall the frontend to
+    manage semesters through the backend. The \textbf{Manage Courses} \usecaseall the frontend to
+    manage courses through the backend. The \textbf{Manage Categories} \usecaseall the frontend to
+    manage categories through the backend. The \textbf{Manage Grade Entries} \usecaseall the
+    frontend to manage grade entries through the backend.
   \end{justify}
 \end{figure}
 
@@ -560,13 +557,12 @@ colored green and sub-requirement shall be expandable/collapsible.
   \includegraphics[width=\linewidth]{level_1_dfd.pdf}
   \caption{Level 1 DFD}
   \begin{flushleft}
-    The level one DFD depicts the main use cases of the backend API. All but one of the main use
-    cases is generic enough that the implementation is not worth decomposing further (already
-    implemented by software libraries). In these use cases, the word \emph{manage} is referring to
-    being able to create, retrieve, update and delete the data structure. The \emph{Calculate
-    Concentration Progress} process is for constructing a recursive data structure representing the
-    requirement structure of a concentration, including which requirements/courses the student has
-    completed.
+    The level 1 DFD depicts the main use cases of the backend API. All but one of the main use cases
+    is generic enough that the implementation is not worth decomposing further (already implemented
+    by software libraries). In these use cases, the word \emph{manage} is referring to being able to
+    create, retrieve, update and delete the data structure. The \emph{Calculate Concentration
+    Progress} process is for constructing a recursive data structure representing the requirement
+    structure of a concentration, including which requirements/courses the student has completed.
   \end{flushleft}
 \end{figure}
 
