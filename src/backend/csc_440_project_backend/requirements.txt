@@ -5,7 +5,7 @@ ddt==1.2.1
 Django==2.2.4
 django-cors-headers==3.1.0
 django-rest-knox==4.1.0
-djangorestframework==3.10.3
+djangorestframework==3.11.2
 djangorestframework-recursive==0.1.2
 pip-autoremove==0.9.1
 pycparser==2.19
